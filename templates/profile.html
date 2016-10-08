@@ -12,7 +12,7 @@
 	<!-- Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   	
-	<link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" />
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     
@@ -31,45 +31,24 @@
 	                    </button>
 	      				<a class="navbar-brand" href={{url_for('home_page')}}><img src="static/book_logo_gray.png" width="110%" height="270%" style="padding-bottom: 30%;" border="0" /></a>              
 	      				<ul class="nav navbar-nav">
-	                        <li class="active"><a href="#" class="">Home</a></li>
 	                        <li class=" dropdown">
-	                            <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Departments <span class="caret"></span></a>
+	                            <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Books <span class="caret"></span></a>
 	                            <ul class="dropdown-menu">
 	                                <li class=" dropdown">
-	                                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">View Departments</a>
+	                                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">New Releases</a>
 	                                </li>
-	                                <li><a href="#">Add New</a></li>
+	                                <li><a href="#">Popular</a></li>
 	                            </ul>
 	                        </li>
-	                        <li><a href="#">Add New</a></li>
-	                        <li class=" dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Managers <span class="caret"></span></a>
+	                        <li><a href="#">Profile</a></li>
+	                        <li class=" dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Authors<span class="caret"></span></a>
 	                            <ul class="dropdown-menu">
-	                                <li><a href="#">View Managers</a></li>
-	                                <li><a href="#">Add New</a></li>
-	                            </ul>
-	                        </li>
-	                        <li class=" dropdown"><a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Staff <span class="caret"></span></a>
-	                            <ul class="dropdown-menu">
-	                                <li><a href="#">View Staff</a></li>
-	                                <li><a href="#">Add New</a></li>
-	                                <li><a href="#">Bulk Upload</a></li>
-	                            </ul>
-	                        </li>
-	                        <li class=" down"><a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">HR <span class="caret"></span></a>
-	                            <ul class="dropdown-menu">
-	                                <li><a href="#">Change Time Entry</a></li>
-	                                <li><a href="#">Report</a></li>
+	                                <li><a href="#">View Authors</a></li>
 	                            </ul>
 	                        </li>
 	                    </ul>
 	                    <ul class="nav navbar-nav pull-right">
-	                        <li class=" dropdown"><a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Signed in as  <span class="caret"></span></a>
-	                            <ul class="dropdown-menu">
-	                                <li><a href="#">Change Password</a></li>
-	                                <li><a href="#">My Profile</a></li>
-	                            </ul>
-	                        </li>
-	                        <li class=""><a href="#">Logout</a></li>
+	                        <li class=""><a href="#">News</a></li>
 	                    </ul>
 	                </div>
 	            </div>
