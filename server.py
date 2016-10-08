@@ -17,6 +17,10 @@ def home_page():
 def login_page():
     return render_template('login.html')
 
+@app.route('/profile', methods=['GET', 'POST'])
+def profile_page():
+    return render_template('profile.html')
+
 
 if __name__ == '__main__':
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
