@@ -1,24 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Login - Register</title>
-     <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	
-	<!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	
-	<!-- Latest compiled JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  	
-	<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" />
-	
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-    
-  </head>
-  <body>
-  	<div class="navbar-wrapper">
+{% extends "template.html" %}
+{% block title %}Profile{% endblock %}
+{% block head %}	
+<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" />
+{% endblock %}
+{% block navbar %}
+	<div class="navbar-wrapper">
 	    <div class="container-fluid">
 	        <nav class="navbar navbar-fixed-top">
 	            <div class="container">
@@ -55,25 +41,7 @@
 	        </nav>
 	    </div>
 	</div>
-	<script type="text/javascript">
-		$(function() {
-	
-		    $('#login-form-link').click(function(e) {
-				$("#login-form").delay(100).fadeIn(100);
-		 		$("#register-form").fadeOut(100);
-				$('#register-form-link').removeClass('active');
-				$(this).addClass('active');
-				e.preventDefault();
-			});
-			$('#register-form-link').click(function(e) {
-				$("#register-form").delay(100).fadeIn(100);
-		 		$("#login-form").fadeOut(100);
-				$('#login-form-link').removeClass('active');
-				$(this).addClass('active');
-				e.preventDefault();
-			});
-	
-		});
-	</script>
-  </body>
-</html>
+{% endblock %}
+{% block content %}
+{% endblock %}
+

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>SocialReaders - {% block title %}{% endblock %}</title>
+     <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	
+	<link rel="stylesheet" href="{{ url_for('static', filename='template.css') }}" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block head %}{% endblock %}
+</head>
+<body>
+	<div class="navbar-wrapper">
+	    <div class="container-fluid">
+	        <nav class="navbar navbar-fixed-top">
+	            <div class="container">
+	                <div class="navbar-header">
+	                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	                    <span class="sr-only">Toggle navigation</span>
+	                    <span class="icon-bar"></span>
+	                    <span class="icon-bar"></span>
+	                    <span class="icon-bar"></span>
+	                    </button>
+	      				<a class="navbar-brand" href={{url_for('home_page')}}><img src="static/book_logo_gray.png" width="110%" height="270%" style="padding-bottom: 30%;" border="0" /></a>              
+	                </div>
+	                <div id="navbar" class="navbar-collapse collapse">               	
+						{% block navbar %}{% endblock %}
+	                </div>
+	            </div>
+	        </nav>
+	    </div>
+	</div>
+	{% block content %}{% endblock %}
+</body>
+</html>
