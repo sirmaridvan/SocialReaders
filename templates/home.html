@@ -2,46 +2,74 @@
 {% block title %}Home{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='tab_menu.css') }}" />
 {% endblock %}
 {% block navbar %}
 	<div class="navbar-wrapper">
 	    <div class="container-fluid">
 	        <nav class="navbar navbar-fixed-top">
-	            <div class="container">
-	                <div class="navbar-header">
-	                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-	                    <span class="sr-only">Toggle navigation</span>
-	                    <span class="icon-bar"></span>
-	                    <span class="icon-bar"></span>
-	                    <span class="icon-bar"></span>
-	                    </button>
-	      				<a class="navbar-brand" href={{url_for('home_page')}}><img src="static/book_logo_gray.png" width="110%" height="270%" style="padding-bottom: 30%;" border="0" /></a>
-	      				<ul class="nav navbar-nav">
-	                        <li><a href="#">Popular</a></li>
-	                        <li><a href="#">Science</a></li>
-	                        <li><a href="#">Art</a></li>
-	                        <li><a href="#">History</a></li>
-	                        <li><a href="#">Literature</a></li>
-	                        <li class=" dropdown">
-	                            <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">*** <span class="caret"></span></a>
-	                            <ul class="dropdown-menu">
-			                        <li><a href="#">Philosophy</a></li>
-			                        <li><a href="#">Education</a></li>
-			                        <li><a href="#">Religion</a></li>
-			                        <li><a href="#">Economy</a></li>
-			                        <li><a href="#">Foreign Languages</a></li>
-	                                <li><a href="#">Culture</a></li>
-	                            </ul>
-	                        </li>
-	                    </ul>
-	                    <ul class="nav navbar-nav pull-right">
-	                        <li class=""><a href={{url_for('profile_page')}}>Profile</a></li>
-	                    </ul>
-	                </div>
-	            </div>
+		            <div class="container">
+		                <div class="navbar-header">
+		                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+		                    <span class="sr-only">Toggle navigation</span>
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                    </button>
+		      				<a class="navbar-brand" href={{url_for('home_page')}}><img src="static/book_logo_gray.png" width="110%" height="270%" style="padding-bottom: 30%;" border="0" /></a>
+		      				<ul class="nav navbar-nav">
+		                        <li><a href="#">Science</a></li>
+		                        <li><a href="#">Art</a></li>
+		                        <li><a href="#">History</a></li>
+		                        <li><a href="#">Literature</a></li>
+		                        <li class=" dropdown">
+		                            <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">*** <span class="caret"></span></a>
+		                            <ul class="dropdown-menu">
+				                        <li><a href="#">Philosophy</a></li>
+				                        <li><a href="#">Education</a></li>
+				                        <li><a href="#">Religion</a></li>
+				                        <li><a href="#">Economy</a></li>
+				                        <li><a href="#">Foreign Languages</a></li>
+		                                <li><a href="#">Culture</a></li>
+		                            </ul>
+		                        </li>
+		                    </ul>
+		                    <ul class="nav navbar-nav pull-right">
+		                        <li class=""><a href={{url_for('profile_page')}}>Profile</a></li>
+		                    </ul>
+		                </div>
+		                <div class="row">
+					        <div class="col-sm-3">
+					            <a href="#" class="nav-tabs-dropdown btn btn-block btn-primary">Tabs</a>
+					            <ul id="nav-tabs-wrapper" class="nav nav-tabs nav-pills nav-stacked well">
+					            	<h2>Popular</h2>
+						            <li class="active"><a href="#vtab1" data-toggle="tab">Book 1</a></li>
+						            <li><a href="#vtab2" data-toggle="tab">Book 2</a></li>
+						            <li><a href="#vtab3" data-toggle="tab">Book 3</a></li>
+					            </ul>
+					        </div>
+					        <div class="col-sm-9">
+					            <div class="tab-content">
+					                <div role="tabpanel" class="tab-pane fade in active" id="vtab1">
+					                    <h3>Book 1</h3>
+					                    <p>Etiam id pharetra quam. Morbi tristique nunc vel sapien dapibus, sit amet imperdiet quam venenatis. Vestibulum et suscipit urna. Suspendisse volutpat quis est eu volutpat. Nulla non tortor venenatis turpis congue aliquet. Vivamus at elit vel massa elementum tempor sit amet sed odio. Nullam placerat, arcu sed ullamcorper ornare, erat erat placerat quam, in feugiat nulla purus in nunc. Maecenas vitae erat auctor, aliquam tellus et, vulputate eros.</p>
+					                </div>
+					                <div role="tabpanel" class="tab-pane fade" id="vtab2">
+					                    <h3>Book 2</h3>
+					                    <p> Mauris imperdiet dignissim ante, in efficitur mauris elementum sed. Cras vulputate malesuada magna. Morbi tincidunt eros a dui cursus, vitae dignissim nulla scelerisque. Duis pharetra scelerisque mi vel luctus. Cras eu purus efficitur, blandit nisi id, fringilla nulla.</p>
+					                </div>
+					                <div role="tabpanel" class="tab-pane fade in" id="vtab3">
+					                    <h3>Book 3</h3>
+					                    <p>Etiam id pharetra quam. Morbi tristique nunc vel sapien dapibus, sit amet imperdiet quam venenatis. Vestibulum et suscipit urna. Suspendisse volutpat quis est eu volutpat. Nulla non tortor venenatis turpis congue aliquet. Vivamus at elit vel massa elementum tempor sit amet sed odio. Nullam placerat, arcu sed ullamcorper ornare, erat erat placerat quam, in feugiat nulla purus in nunc. Maecenas vitae erat auctor, aliquam tellus et, vulputate eros.</p>
+					                </div>
+					            </div>
+					        </div>
+					    </div>
+					</div>
 	        </nav>
 	    </div>
 	</div>
+
 {% endblock %}
 {% block content %}
 {% endblock %}

@@ -21,7 +21,6 @@ def login_page():
 def profile_page():
     return render_template('profile.html')
 
-
 if __name__ == '__main__':
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
     if VCAP_APP_PORT is not None:
