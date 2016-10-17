@@ -17,6 +17,10 @@ def home_page():
 def login_page():
     return render_template('login.html')
 
+@app.route('/authors',methods=['GET', 'POST'])
+def authors_page():
+    return render_template('authors.html')
+
 @app.route('/profile', methods=['GET', 'POST'])
 def profile_page():
     return render_template('profile.html')
