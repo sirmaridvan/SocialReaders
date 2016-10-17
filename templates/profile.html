@@ -3,44 +3,27 @@
 {% block head %}	
 <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" />
 {% endblock %}
-{% block navbar %}
-	<div class="navbar-wrapper">
-	    <div class="container-fluid">
-	        <nav class="navbar navbar-fixed-top">
-	            <div class="container">
-	                <div class="navbar-header">
-	                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-	                    <span class="sr-only">Toggle navigation</span>
-	                    <span class="icon-bar"></span>
-	                    <span class="icon-bar"></span>
-	                    <span class="icon-bar"></span>
-	                    </button>
-	      				<a class="navbar-brand" href={{url_for('home_page')}}><img src="static/book_logo_gray.png" width="110%" height="270%" style="padding-bottom: 30%;" border="0" /></a>              
-	      				<ul class="nav navbar-nav">
-	                        <li class=" dropdown">
-	                            <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Books <span class="caret"></span></a>
-	                            <ul class="dropdown-menu">
-	                                <li class=" dropdown">
-	                                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">New Releases</a>
-	                                </li>
-	                                <li><a href="#">Popular</a></li>
-	                            </ul>
-	                        </li>
-	                        <li><a href="#">Profile</a></li>
-	                        <li class=" dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Authors<span class="caret"></span></a>
-	                            <ul class="dropdown-menu">
-	                                <li><a href="#">View Authors</a></li>
-	                            </ul>
-	                        </li>
-	                    </ul>
-	                    <ul class="nav navbar-nav pull-right">
-	                        <li class=""><a href="#">News</a></li>
-	                    </ul>
-	                </div>
-	            </div>
-	        </nav>
-	    </div>
-	</div>
+{% block navbar %}           
+<ul class="nav navbar-nav">
+	<li class=" dropdown">
+	    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Books <span class="caret"></span></a>
+	    <ul class="dropdown-menu">
+	        <li class=" dropdown">
+	            <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">New Releases</a>
+	        </li>
+	        <li><a href="#">Popular</a></li>
+	    </ul>
+	</li>
+	<li><a href="#">Profile</a></li>
+	<li class=" dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Authors<span class="caret"></span></a>
+	    <ul class="dropdown-menu">
+	        <li><a href="#">View Authors</a></li>
+	    </ul>
+	</li>
+   </ul>
+   <ul class="nav navbar-nav pull-right">
+       <li class=""><a href="#">News</a></li>
+   </ul>
 {% endblock %}
 {% block content %}
 {% endblock %}
