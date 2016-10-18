@@ -29,6 +29,11 @@ def profile_page():
 def news_page():
     return render_template('news.html')
 
+@app.route('/bookpage')
+def book_page():
+    return render_template('bookpage.html')
+
+
 if __name__ == '__main__':
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
     if VCAP_APP_PORT is not None:
