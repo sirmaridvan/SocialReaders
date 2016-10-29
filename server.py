@@ -55,17 +55,35 @@ def initialize():
 
 @app.route('/login',methods=['GET', 'POST'])
 def login_page():
-    connection = dbapi2.connect(app.config['dsn'])     
-    cursor = connection.cursor()
-    error = None
     if request.method == 'POST':
-        if "login-submit" in request.form:
-            username = request.form['username']
-            getUser(cursor, username) 
-            ((salt,hash),) =  cursor.fetchall()
-            if hash == createHash(salt,request.form['password']):
-                session['logged_in'] = True
+        connection = dbapi2.connect(app.config['dsn'])     
+        try:
+            cursor =connection.cursor()
+            try:
+                error = None
+                if "login-submit" in request.form:
+                    username = request.form['username']
+                    getUser(cursor, username) 
+                    ((salt,hash),) =  cursor.fetchall()
+                    if hash == createHash(salt,request.form['password']):
+                        session['logged_in'] = True
+                elif "register-submit" in request.form:
+                    salt = createRandomSalt()
+                    getUserType(cursor,'User')
+                    ((typeid),) = cursor.fetchall()
+                    insert_siteuser(cursor,User(0,request.form['username'], request.form['password'], salt, createHash(salt,request.form['password']),request.form['email'],request.form['name'],request.form['surname'],typeid))
+            except dbapi2.Error as e:
+                print(e.pgerror)
+            finally:
+                cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
             return redirect(url_for('home_page'))
+
     return render_template('login.html')
 
 @app.route('/authors',methods=['GET', 'POST'])
@@ -84,6 +102,9 @@ def news_page():
 def book_page():
     return render_template('bookpage.html')
 
+@app.route('/users')
+def users_page():
+    return render_template('users.html')
 
 def get_elephantsql_dsn(vcap_services):
     """Returns the data source name for ElephantSQL."""
