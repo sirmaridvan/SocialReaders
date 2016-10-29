@@ -1,3 +1,6 @@
+import psycopg2 as dbapi2
+
+
 def drop_tables(cursor):
     statement = """
                 DROP TABLE IF EXISTS SITEUSER CASCADE;
@@ -37,3 +40,32 @@ def insert_siteuser(cursor,user):
                 )"""
     cursor.execute(statement,(user.userName,user.salt, user.hash, user.email, 
                               user.name, user.surname, user.userTypeId));
+    
+    
+    
+''' Author table '''
+
+dsn = """user='vagrant' password='vagrant'
+         host='localhost' port=5432 dbname='itucsdb'"""
+
+def create_author_table():
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """ CREATE TABLE IF NOT EXISTS AUTHORS(
+            ID SERIAL PRIMARY KEY,
+            NAME VARCHAR(50) NOT NULL,
+            LASTNAME VARCHAR(50) NOT NULL,
+            BIRTHDATE NUMERIC(4) NOT NULL,
+            NATIONALITY VARCHAR(50) NOT NULL,
+            PENNAME VARCHAR(50)
+        )"""
+        cursor.execute(statement)
+        cursor.close()
+  
+        
+def insert_author(author):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """ INSERT INTO AUTHORS (NAME, LASTNAME, BIRTHDATE, NATIONALITY, PENNAME) VALUES (%s,%s,%s,%s,%s)"""
+        cursor.execute(statement,(author.name,author.lastname,author.birthdate,author.nationality,author.penname))
+        cursor.close()

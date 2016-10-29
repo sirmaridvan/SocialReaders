@@ -13,6 +13,7 @@ from flask.helpers import url_for
 from initialize_database import *
 
 from user import *
+from Authors import *
 
 app = Flask(__name__)
 
@@ -51,6 +52,14 @@ def initialize():
     finally:
         connection.commit()
         connection.close()
+        
+        
+        
+    create_author_table()
+    insert_author(author1)
+    insert_author(author2)
+        
+        
     return redirect(url_for('home_page'))
 
 @app.route('/login',methods=['GET', 'POST'])
