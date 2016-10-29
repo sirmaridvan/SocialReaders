@@ -15,14 +15,18 @@ def create_usertype_table(cursor):
                 )"""
     cursor.execute(statement);
     
-def insert_siteuser(cursor,user):
-    statement = """INSERT INTO SITEUSER (USERNAME, SALT,HASH, EMAIL, NAME, SURNAME, USERTYPEID) VALUES (
-                %s, %s, %s, %s, %s, %s, %s
+def create_user_table(cursor):
+    statement = """CREATE TABLE SITEUSER (
+                USERID SERIAL PRIMARY KEY,
+                USERNAME VARCHAR(20) UNIQUE NOT NULL,
+                SALT VARCHAR(40) UNIQUE NOT NULL, 
+                HASH VARCHAR(44) NOT NULL,
+                EMAIL VARCHAR(40) NOT NULL,
+                NAME VARCHAR(20) NOT NULL,
+                SURNAME VARCHAR(20) NOT NULL,
+                USERTYPEID INTEGER REFERENCES USERTYPE(ID) ON UPDATE CASCADE
                 )"""
-    cursor.execute(statement,(user.userName,user.salt, user.hash, user.email, 
-                              user.name, user.surname, user.userTypeId));
-    
-    
+    cursor.execute(statement)   
     
 ''' Author table '''
 

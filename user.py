@@ -30,19 +30,14 @@ def insert_usertype(cursor,type):
                 %(type)s
                 )"""
     cursor.execute(statement,{'type':type})
-
-def create_user_table(cursor):
-    statement = """CREATE TABLE SITEUSER (
-                USERID SERIAL PRIMARY KEY,
-                USERNAME VARCHAR(20) UNIQUE NOT NULL,
-                SALT VARCHAR(40) UNIQUE NOT NULL, 
-                HASH VARCHAR(44) NOT NULL,
-                EMAIL VARCHAR(40) NOT NULL,
-                NAME VARCHAR(20) NOT NULL,
-                SURNAME VARCHAR(20) NOT NULL,
-                USERTYPEID INTEGER REFERENCES USERTYPE(ID) ON UPDATE CASCADE
+    
+def insert_siteuser(cursor,user):
+    statement = """INSERT INTO SITEUSER (USERNAME, SALT,HASH, EMAIL, NAME, SURNAME, USERTYPEID) VALUES (
+                %s, %s, %s, %s, %s, %s, %s
                 )"""
-    cursor.execute(statement)
+    cursor.execute(statement,(user.userName,user.salt, user.hash, user.email, 
+                              user.name, user.surname, user.userTypeId));
+
 
 def getUserType(cursor,typename):
     statement = """SELECT ID FROM USERTYPE WHERE (TYPE = %(type)s)"""
@@ -50,8 +45,22 @@ def getUserType(cursor,typename):
 
 def getUser(cursor,username):
     statement = """SELECT SALT, HASH FROM SITEUSER WHERE (USERNAME = %(username)s)"""
-    cursor.execute(statement, {'username':username});
+    cursor.execute(statement, {'username':username})
+
+def getUserById(cursor,userid):
+    statement = """SELECT * FROM SITEUSER WHERE (USERID = %(userid)s)"""
+    cursor.execute(statement, {'userid':userid})
 
 def getAllUsers(cursor):
-    statement = """SELECT ID,USERNAME,EMAIL,NAME,SURNAME,SALT,USERTYPEID FROM SITEUSER"""
-    cursor.execute(statement);
+    statement = """SELECT USERID,USERNAME,EMAIL,NAME,SURNAME,SALT,USERTYPEID FROM SITEUSER"""
+    cursor.execute(statement)
+
+def deleteUser(cursor,userid):
+    statement = """DELETE FROM SITEUSER WHERE (USERID = %(userid)s)"""
+    cursor.execute(statement,{'userid':userid})
+    
+def updateUser(cursor,user):
+    statement = """UPDATE SITEUSER SET USERNAME=%(username)s, 
+                EMAIL=%(email)s, NAME=%(name)s, SURNAME=%(surname)s,
+                HASH=%(hash)s, USERTYPEID=%(usertypeid)s WHERE (USERID = %(userid)s)"""
+    cursor.execute(statement,{'userid':user.userId,'username':user.userName,'email':user.email,'hash':user.hash,'name':user.name,'surname':user.surname,'usertypeid':user.userTypeId})

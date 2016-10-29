@@ -1,0 +1,99 @@
+{% extends "template.html" %}
+{% block title %}Admin Panel - User Update{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" />
+{% endblock %}
+{% block navbar %}
+<ul class="nav navbar-nav">
+	<li class=" dropdown">
+	    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Books <span class="caret"></span></a>
+	    <ul class="dropdown-menu">
+	        <li class=" dropdown">
+	            <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">New Releases</a>
+	        </li>
+	        <li><a href="#">Popular</a></li>
+	    </ul>
+	</li>
+	<li><a href="#">Profile</a></li>
+	<li class=" dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Authors<span class="caret"></span></a>
+	    <ul class="dropdown-menu">
+	        <li><a href="#">View Authors</a></li>
+	    </ul>
+	</li>
+   </ul>
+   <ul class="nav navbar-nav pull-right">
+       <li class=""><a href={{url_for('news_page')}}>News</a></li>
+   </ul>
+{% endblock %}
+{% block content %}
+	<div class="container">
+		<form class="form-horizontal" action="{{ url_for('userUpdate_page')}}" method="POST">
+			<fieldset>	
+				<!-- Form Name -->
+				<legend>UPDATING USER</legend>
+				
+				<input type="hidden" name="userid" value="{{user.userId}}"></input>
+				<input type="hidden" name="salt" value="{{user.salt}}"></input>
+				<!-- Text input-->
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="username">USERNAME</label>  
+				  <div class="col-md-4">
+				  <input id="username" name="username" value="{{user.userName}}" type="text" placeholder="" class="form-control input-md" required="">
+				    
+				  </div>
+				</div>
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="email">EMAIL</label>  
+				  <div class="col-md-4">
+				  <input id="email" name="email" value="{{user.email}}" type="text" placeholder="" class="form-control input-md" required="">
+				    
+				  </div>
+				</div>
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="name">NAME</label>  
+				  <div class="col-md-4">
+				  <input id="name" name="name" value="{{user.name}}" type="text" placeholder="" class="form-control input-md" required="">
+				    
+				  </div>
+				</div>
+				
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="surname">SURNAME</label>  
+				  <div class="col-md-4">
+				  <input id="surname" name="surname" value="{{user.surname}}" type="text" placeholder="" class="form-control input-md" required="">
+				    
+				  </div>
+				</div>
+				
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="password">PASSWORD</label>  
+				  <div class="col-md-4">
+				  <input id="password" name="password" type="password" placeholder="" class="form-control input-md" required="">  
+				  </div>
+				</div>
+				
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="cfpassword">CONFIRM PASSWORD</label>  
+				  <div class="col-md-4">
+				  <input id="cfpassword" name="cfpassword" type="password" placeholder="" class="form-control input-md" required="">  
+				  </div>
+				</div>
+				
+				<!-- Text input-->
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="usertypeid">USERTYPEID</label>  
+				  <div class="col-md-4">
+				  <input id="usertypeid" name="usertypeid" value="{{user.userTypeId}}" type="text" placeholder="" class="form-control input-md" required="">   
+				  </div>
+				</div>
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="button1idFFF"></label>
+				  <div class="col-md-8">
+				    <button id="button1idFFF" name="update" class="btn btn-success">UPDATE</button>
+				    <button id="button2id" name="cancel" class="btn btn-danger">CANCEL</button>
+				  </div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+{% endblock %}

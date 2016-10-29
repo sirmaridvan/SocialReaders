@@ -14,6 +14,7 @@ from initialize_database import *
 
 from user import *
 from Authors import *
+from flask.globals import session
 
 app = Flask(__name__)
 
@@ -111,9 +112,65 @@ def news_page():
 def book_page():
     return render_template('bookpage.html')
 
-@app.route('/users')
+@app.route('/users',methods=['GET', 'POST'])
 def users_page():
-    return render_template('users.html')
+    connection = dbapi2.connect(app.config['dsn'])     
+    try: 
+        cursor =connection.cursor()
+        try:
+            if request.method == 'POST':
+                if "edit" in request.form:
+                    userid = request.form['editid']
+                    
+                elif "delete" in request.form:
+                    userid = request.form['deleteid']
+                    deleteUser(cursor,userid)
+                getAllUsers(cursor)
+                mUsers = cursor.fetchall()
+                return render_template('users.html',users=mUsers)
+            else:    
+                getAllUsers(cursor)
+                mUsers = cursor.fetchall()
+                return render_template('users.html',users=mUsers)
+        except dbapi2.Error as e:
+            print(e.pgerror)
+        finally:
+            cursor.close()
+    except dbapi2.Error as e:
+        print(e.pgerror)
+        connection.rollback()
+    finally:
+        connection.commit()
+        connection.close()
+        
+@app.route('/userupdate',methods=['GET', 'POST'])
+def userUpdate_page():
+    connection = dbapi2.connect(app.config['dsn'])     
+    try:
+        cursor =connection.cursor()
+        try:
+            if request.method == 'GET':
+                userid = request.args.get('id')
+                getUserById(cursor,userid)
+                ((id,username,salt,hash,email,name,surname,usertypeid),) = cursor.fetchall()
+                mUser = User(id,username,"",salt,hash,email,name,surname,usertypeid)
+                return render_template('userupdate.html',user = mUser)
+            elif request.method == 'POST':
+                if 'update' in request.form:
+                    user = User(request.form['userid'],request.form['username'],request.form['password'],request.form['salt'],createHash(request.form['salt'],request.form['password']), request.form['email'],request.form['name'],request.form['surname'],request.form['usertypeid'])
+                    updateUser(cursor,user)
+                return redirect(url_for('users_page'))
+        except dbapi2.Error as e:
+                print(e.pgerror)
+        finally:
+                cursor.close()
+    except dbapi2.Error as e:
+        print(e.pgerror)
+        connection.rollback()
+    finally:
+        connection.commit()
+        connection.close()            
+    return render_template('userupdate.html')
 
 def get_elephantsql_dsn(vcap_services):
     """Returns the data source name for ElephantSQL."""
