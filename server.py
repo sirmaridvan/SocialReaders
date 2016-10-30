@@ -14,6 +14,9 @@ from initialize_database import *
 
 from user import *
 from Authors import *
+from Books import *
+from Genres import *
+from Quotes import *
 from flask.globals import session
 
 app = Flask(__name__)
@@ -35,14 +38,14 @@ def initialize():
             create_user_table(cursor)
             insert_usertype(cursor,'Admin')
             insert_usertype(cursor,'User')
-            
+
             salt1 = createRandomSalt()
             user1 = User(0,'benlielif','123456',salt1,createHash(salt1,'123456'),'elfbnli@gmail.com','Elif','Benli',1)
             salt2 = createRandomSalt()
             user2 = User(0,'uyar','123456',salt2,createHash(salt2,'123456'),'uyar@itu.edu.tr','Turgut','Uyar',1)
             insert_siteuser(cursor,user1)
             insert_siteuser(cursor,user2)
-            
+
         except dbapi2.Error as e:
             print(e.pgerror)
         finally:
@@ -53,27 +56,41 @@ def initialize():
     finally:
         connection.commit()
         connection.close()
-        
-        
-        
+
+
+
     create_author_table()
     insert_author(author1)
     insert_author(author2)
-        
-        
+
+
+    cursor =connection.cursor()
+    create_book_table(cursor)
+    create_genre_table(cursor)
+    create_quote_table(cursor)
+
+
+    insert_genre(genre1)
+    insert_genre(genre2)
+    insert_book(book1)
+    insert_book(book2)
+    insert_quote(quote1)
+    insert_quote(quote2)
+
+
     return redirect(url_for('home_page'))
 
 @app.route('/login',methods=['GET', 'POST'])
 def login_page():
     if request.method == 'POST':
-        connection = dbapi2.connect(app.config['dsn'])     
+        connection = dbapi2.connect(app.config['dsn'])
         try:
             cursor =connection.cursor()
             try:
                 error = None
                 if "login-submit" in request.form:
                     username = request.form['username']
-                    getUser(cursor, username) 
+                    getUser(cursor, username)
                     ((salt,hash),) =  cursor.fetchall()
                     if hash == createHash(salt,request.form['password']):
                         session['logged_in'] = True
@@ -114,21 +131,21 @@ def book_page():
 
 @app.route('/users',methods=['GET', 'POST'])
 def users_page():
-    connection = dbapi2.connect(app.config['dsn'])     
-    try: 
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
         cursor =connection.cursor()
         try:
             if request.method == 'POST':
                 if "edit" in request.form:
                     userid = request.form['editid']
-                    
+
                 elif "delete" in request.form:
                     userid = request.form['deleteid']
                     deleteUser(cursor,userid)
                 getAllUsers(cursor)
                 mUsers = cursor.fetchall()
                 return render_template('users.html',users=mUsers)
-            else:    
+            else:
                 getAllUsers(cursor)
                 mUsers = cursor.fetchall()
                 return render_template('users.html',users=mUsers)
@@ -142,10 +159,10 @@ def users_page():
     finally:
         connection.commit()
         connection.close()
-        
+
 @app.route('/userupdate',methods=['GET', 'POST'])
 def userUpdate_page():
-    connection = dbapi2.connect(app.config['dsn'])     
+    connection = dbapi2.connect(app.config['dsn'])
     try:
         cursor =connection.cursor()
         try:
@@ -169,7 +186,7 @@ def userUpdate_page():
         connection.rollback()
     finally:
         connection.commit()
-        connection.close()            
+        connection.close()
     return render_template('userupdate.html')
 
 def get_elephantsql_dsn(vcap_services):
