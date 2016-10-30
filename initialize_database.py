@@ -34,6 +34,15 @@ def create_jobs_table(cursor):
                 )"""
     cursor.execute(statement);
 
+def create_feeds_table(cursor):
+    statement = """CREATE TABLE IF NOT EXISTS FEEDS (
+                ID SERIAL PRIMARY KEY,
+                DATE DATE NOT NULL DEFAULT CURRENT_DATE,
+                USERNAME VARCHAR(20) UNIQUE NOT NULL,
+                DESCRIPTION TEXT NOT NULL
+                )"""
+    cursor.execute(statement);
+
 def create_user_table(cursor):
     statement = """CREATE TABLE SITEUSER (
                 USERID SERIAL PRIMARY KEY,
@@ -107,7 +116,7 @@ def insert_group(group):
         statement = """ INSERT INTO GROUPS (NAME) VALUES (%s)"""
         cursor.execute(statement,(group.name,))
         cursor.close()
-        
+
 
 def insert_member(memberid,groupid):
     with dbapi2.connect(dsn) as connection:

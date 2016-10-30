@@ -18,6 +18,8 @@ from Books import *
 from Genres import *
 from Quotes import *
 from BlogPost import *
+from Job import *
+from Feed import *
 from flask.globals import session
 from Groups import *
 
@@ -76,6 +78,7 @@ def initialize():
             create_user_table(cursor)
             create_blogs_table(cursor)
             create_jobs_table(cursor)
+            create_feeds_table(cursor)
             insert_usertype(cursor,'Admin')
             insert_usertype(cursor,'User')
 
@@ -85,6 +88,10 @@ def initialize():
             user2 = User(0,'uyar','123456',salt2,createHash(salt2,'123456'),'uyar@itu.edu.tr','Turgut','Uyar',1)
             insert_siteuser(cursor,user1)
             insert_siteuser(cursor,user2)
+            job=Job(0,datetime.date.today(),"Veritabanı uzmanı","En az 5 yıl tecrübeli")
+            insert_job(cursor,job)
+            feed=Feed(0,datetime.date.today(),createRandomUserName(),"Beğeni")
+            insert_feed(cursor,feed)
 
         except dbapi2.Error as e:
             print(e.pgerror)
