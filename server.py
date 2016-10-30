@@ -1,4 +1,4 @@
-import datetime
+﻿import datetime
 import os
 import json
 import re
@@ -22,7 +22,7 @@ from Job import *
 from Feed import *
 from flask.globals import session
 from Groups import *
-
+from News import *
 app = Flask(__name__)
 
 
