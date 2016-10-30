@@ -1,0 +1,64 @@
+{% extends "template.html" %}
+{% block title %}Blogs{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" />
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+                      <script>
+                           $(document).ready(function(){
+
+                                $('#submit').click(function(){
+
+                                    $.ajax({
+                                      type: 'POST',
+                                      url: '/insertBlogPost',
+                                      success: function(data){
+                                        alert(data);
+                                      }
+                                    });
+                                });
+
+                           });
+                      </script>
+{% endblock %}
+{% block navbar %}
+{% endblock %}
+{% block content %}
+<div class="container">
+    	<div class="row">
+    	<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+  <script>
+          tinymce.init({
+              selector: "textarea",
+              menu: {
+                table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'}
+              },
+              plugins: [
+                  "advlist autolink lists link image charmap preview anchor",
+                  "searchreplace visualblocks code fullscreen",
+                  "insertdatetime media table contextmenu paste"
+              ],
+              toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+          });
+  </script>
+  <hr>
+
+                <!-- the comment box -->
+                <div class="well">
+                    <h4><i class="fa fa-paper-plane-o"></i> Leave a Comment:</h4>
+                    <form role="form">
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                        <button type="submit" name="say" id="submit" value="process" class="btn btn-primary"><i class="fa fa-reply"></i> Submit</button>
+                    </form>
+                </div>
+</script>
+                <hr>
+                <!-- the comments -->
+
+            </div>
+	</div>
+	</div>
+</div>
+{% endblock %}
