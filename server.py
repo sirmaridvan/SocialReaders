@@ -79,8 +79,6 @@ def initialize():
             create_blogs_table(cursor)
             create_jobs_table(cursor)
             create_feeds_table(cursor)
-            create_groups_table()
-            #create_members_table()
             create_news_table(cursor)
             newBest = News("Best authors are voted! There is also one Turkish in top 50",2016,"Best authers")
             insert_news(cursor,newBest)
@@ -111,6 +109,16 @@ def initialize():
     finally:
         connection.commit()
         connection.close()
+
+
+    create_groups_table()
+    create_members_table()
+
+
+
+
+
+
 
     '''create_author_table()
     insert_author(author1)
