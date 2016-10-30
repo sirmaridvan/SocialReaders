@@ -67,6 +67,51 @@ def insert_author(author):
         cursor.close()
 
 
+''' Groups Table '''
+
+
+
+def create_groups_table():
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """ CREATE TABLE IF NOT EXISTS GROUPS (
+            ID SERIAL PRIMARY KEY,
+            NAME VARCHAR(50) NOT NULL
+        )"""
+        cursor.execute(statement)
+        cursor.close()
+
+
+def create_members_table():
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """CREATE TABLE IF NOT EXISTS MEMBERS (
+            GROUPUSER INTEGER REFERENCES SITEUSER (USERID),
+            GROUPID INTEGER REFERENCES GROUPS (ID)
+        )"""
+        cursor.execute(statement)
+        cursor.close()
+
+
+def insert_group(group):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """ INSERT INTO GROUPS (NAME) VALUES (%s)"""
+        cursor.execute(statement,(group.name,))
+        cursor.close()
+        
+
+def insert_member(memberid,groupid):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """ INSERT INTO MEMBERS (GROUPUSER,GROUPID) VALUES (%s,%s)"""
+        cursor.execute(statement,(memberid,groupid))
+        cursor.close()
+
+
+
+
+
 ''' Book Table'''
 
 def create_book_table(cursor):

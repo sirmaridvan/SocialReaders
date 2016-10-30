@@ -19,6 +19,7 @@ from Genres import *
 from Quotes import *
 from BlogPost import *
 from flask.globals import session
+from Groups import *
 
 app = Flask(__name__)
 
@@ -92,7 +93,10 @@ def initialize():
         connection.commit()
         connection.close()
 
-
+    create_groups_table()
+    create_members_table()
+    insert_group(group1)
+    insert_member(1,1)
 
     '''create_author_table()
     insert_author(author1)
