@@ -79,9 +79,14 @@ def initialize():
             create_blogs_table(cursor)
             create_jobs_table(cursor)
             create_feeds_table(cursor)
+            create_groups_table()
+            #create_members_table()
+            create_news_table(cursor)
+            #insert_news(news1)
+            insert_group(group1)
+            #insert_member(1,1)
             insert_usertype(cursor,'Admin')
             insert_usertype(cursor,'User')
-
             salt1 = createRandomSalt()
             user1 = User(0,'benlielif','123456',salt1,createHash(salt1,'123456'),'elfbnli@gmail.com','Elif','Benli',1)
             salt2 = createRandomSalt()
@@ -92,7 +97,7 @@ def initialize():
             insert_job(cursor,job)
             feed=Feed(0,datetime.date.today(),createRandomUserName(),"Beğeni")
             insert_feed(cursor,feed)
-            
+
         except dbapi2.Error as e:
             print(e.pgerror)
         finally:
@@ -104,12 +109,7 @@ def initialize():
         connection.commit()
         connection.close()
 
-    create_groups_table()
-    create_members_table()
-    insert_group(group1)
-    insert_member(1,1)
-
-    create_author_table()
+    '''create_author_table()
     insert_author(author1)
     insert_author(author2)
 
@@ -118,17 +118,14 @@ def initialize():
     create_book_table(cursor)
     create_genre_table(cursor)
     create_quote_table(cursor)
-    create_news_table(cursor)
-    newBest = News("Best authors are voted! There is also one Turkish in top 50",2016,"Best authers")
-    insert_news(cursor,newBest)
-    
     insert_genre(genre1)
     insert_genre(genre2)
     insert_book(book1)
     insert_book(book2)
     insert_quote(quote1)
-    insert_quote(quote2)
-    
+    insert_quote(quote2)'''
+
+
     return redirect(url_for('home_page'))
 
 @app.route('/login',methods=['GET', 'POST'])
