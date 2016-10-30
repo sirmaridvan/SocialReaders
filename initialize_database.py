@@ -8,13 +8,8 @@ def drop_tables(cursor):
                 DROP TABLE IF EXISTS BLOGS CASCADE;
                 DROP TABLE IF EXISTS JOBS CASCADE;
                 DROP TABLE IF EXISTS FEEDS CASCADE;
-                DROP TABLE IF EXISTS AUTHORS CASCADE;
                 DROP TABLE IF EXISTS GROUPS CASCADE;
                 DROP TABLE IF EXISTS MEMBERS CASCADE;
-                DROP TABLE IF EXISTS BOOKS CASCADE;
-                DROP TABLE IF EXISTS GENRES CASCADE;
-                DROP TABLE IF EXISTS QUOTES CASCADE;
-                DROP TABLE IF EXISTS NEWS CASCADE;
                 """
     cursor.execute(statement)
 
