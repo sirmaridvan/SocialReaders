@@ -31,6 +31,9 @@ def home_page():
 @app.route('/blogs')
 def blogs_page():
     return render_template('blogs.html')
+@app.route('/writepost')
+def write_post_page():
+    return render_template('writePost.html')
 
 @app.route('/insertBlogPost', methods=['POST'])
 def insert_blog_post():
@@ -72,6 +75,7 @@ def initialize():
             create_usertype_table(cursor)
             create_user_table(cursor)
             create_blogs_table(cursor)
+            create_jobs_table(cursor)
             insert_usertype(cursor,'Admin')
             insert_usertype(cursor,'User')
 
