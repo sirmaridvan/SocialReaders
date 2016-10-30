@@ -1,61 +1,35 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>News</title>
-     <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	
-	<!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	
-	<!-- Latest compiled JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  	
-	<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" />
-	
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-    
-  </head>
-  <body>
-  	<div class="navbar-wrapper">
-	    <div class="container-fluid">
-	        <nav class="navbar navbar-fixed-top">
-	            <div class="container">
-	                <div class="navbar-header">
-	                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-	                    <span class="sr-only">Toggle navigation</span>
-	                    <span class="icon-bar"></span>
-	                    <span class="icon-bar"></span>
-	                    <span class="icon-bar"></span>
-	                    </button>
-	      				<a class="navbar-brand" href={{url_for('home_page')}}><img src="static/book_logo_gray.png" width="110%" height="270%" style="padding-bottom: 30%;" border="0" /></a>              
-	      				<ul class="nav navbar-nav">
-	                        <li class=" dropdown">
-	                            <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Books <span class="caret"></span></a>
-	                            <ul class="dropdown-menu">
-	                                <li class=" dropdown">
-	                                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">New Releases</a>
-	                                </li>
-	                                <li><a href="#">Popular</a></li>
-	                            </ul>
-	                        </li>
-	                        <li><a href="#">Profile</a></li>
-	                        <li class=" dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Authors<span class="caret"></span></a>
-	                            <ul class="dropdown-menu">
-	                                <li><a href="#">View Authors</a></li>
-	                            </ul>
-	                        </li>
-	                    </ul>
-	                    <ul class="nav navbar-nav pull-right">
-	                        <li class=""><a href="#">News</a></li>
-	                    </ul>
-	                </div>
+﻿{% extends "template.html" %}
+{% block title %}News{% endblock %}
+{% block navbar %}
+<ul class="nav navbar-nav">
+	<li class=" dropdown">
+	    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Books <span class="caret"></span></a>
+	    <ul class="dropdown-menu">
+	        <li class=" dropdown">
+	            <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">New Releases</a>
+	        </li>
+	        <li><a href="#">Popular</a></li>
+	    </ul>
+	</li>
+	<li><a href="#">Profile</a></li>
+	<li class=" dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Authors<span class="caret"></span></a>
+	    <ul class="dropdown-menu">
+	        <li><a href="#">View Authors</a></li>
+	    </ul>
+	</li>
+   </ul>
+   <ul class="nav navbar-nav pull-right">
+       <li class=""><a href={{url_for('news_page')}}>News</a></li>
+   </ul>
+{% endblock %}
+
+{% block content %}
+
 <div class="row">
-					        
+
 					        <div class="col-sm-9">
-						
-						
+
+
 					            <div class="container">
 
     <div class="row">
@@ -71,8 +45,8 @@
                 <div role="tabpanel" class="tab-pane fade in active" id="vtab1">
                     <h3>Harry Potter and the Cursed Child</h3>
                     <p>Harry Potter and the Cursed Child released on 31th July 2016</p>
-                    
-                    
+
+
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="vtab2">
                     <h3>Frankfurt Book Fair</h3>
@@ -87,5 +61,4 @@
 	    </div>
 	</div>
 
-  </body>
-</html>
+{% endblock %}

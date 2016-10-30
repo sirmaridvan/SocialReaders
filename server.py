@@ -111,8 +111,8 @@ def initialize():
     create_book_table(cursor)
     create_genre_table(cursor)
     create_quote_table(cursor)
-
-
+    create_news_table(cursor)
+    insert_news(news1)
     insert_genre(genre1)
     insert_genre(genre2)
     insert_book(book1)

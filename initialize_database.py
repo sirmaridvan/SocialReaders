@@ -178,3 +178,19 @@ def insert_quote(quote):
         cursor.execute(statement,(quote.quotetext, quote.author_id, quote.book_id))
         cursor.close()
 
+def create_news_table(cursor):
+    statement = """CREATE TABLE IF NOT EXIST NEWS (
+                NEWSID SERIAL PRIMARY KEY,
+                NEWSTEXT VARCHAR(200) NOT NULL,
+                NEWSDATE NUMERIC(4) NOT NULL,
+                NEWSHEADLINE VARCHAR(50) NOT NULL
+                )"""
+    cursor.execute(statement)
+
+
+def insert_news(news):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """ INSERT INTO NEWS (NEWSTEXT, NEWSDATE, NEWSHEADLINE) VALUES (%s, %s, %s)"""
+        cursor.execute(statement,(news.newstext, news.newsdate,news.newsheadline))
+        cursor.close()
