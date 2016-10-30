@@ -4,4 +4,8 @@ class News:
         self.newsdate = newsdate
         self.newsheadline= newsheadline
 
-news1 = News("There has been a tragedic accident in Bhosphorus",2016,"Accident")
+def insert_news(cursor,news):
+    statement = """INSERT INTO NEWS (NEWSTEXT,NEWSDATE,NEWSHEADLINE) VALUES (
+                %s, %s, %s
+                )"""
+    cursor.execute(statement,(news.newstext,news.newsdate,news.newsheadline));
