@@ -5,6 +5,16 @@ def drop_tables(cursor):
     statement = """
                 DROP TABLE IF EXISTS SITEUSER CASCADE;
                 DROP TABLE IF EXISTS USERTYPE CASCADE;
+                DROP TABLE IF EXISTS BLOGS CASCADE;
+                DROP TABLE IF EXISTS JOBS CASCADE;
+                DROP TABLE IF EXISTS FEEDS CASCADE;
+                DROP TABLE IF EXISTS AUTHORS CASCADE;
+                DROP TABLE IF EXISTS GROUPS CASCADE;
+                DROP TABLE IF EXISTS MEMBERS CASCADE;
+                DROP TABLE IF EXISTS BOOKS CASCADE;
+                DROP TABLE IF EXISTS GENRES CASCADE;
+                DROP TABLE IF EXISTS QUOTES CASCADE;
+                DROP TABLE IF EXISTS NEWS CASCADE;
                 """
     cursor.execute(statement)
 
@@ -188,7 +198,7 @@ def insert_quote(quote):
         cursor.close()
 
 def create_news_table(cursor):
-    statement = """CREATE TABLE IF NOT EXIST NEWS (
+    statement = """CREATE TABLE IF NOT EXISTS NEWS (
                 NEWSID SERIAL PRIMARY KEY,
                 NEWSTEXT VARCHAR(200) NOT NULL,
                 NEWSDATE NUMERIC(4) NOT NULL,
