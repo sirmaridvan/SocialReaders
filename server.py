@@ -80,9 +80,11 @@ def initialize():
             create_jobs_table(cursor)
             create_feeds_table(cursor)
             create_groups_table()
-            create_members_table()
+            #create_members_table()
+            create_news_table(cursor)
+            #insert_news(news1)
             insert_group(group1)
-            insert_member(1,1)
+            #insert_member(1,1)
             insert_usertype(cursor,'Admin')
             insert_usertype(cursor,'User')
             salt1 = createRandomSalt()
@@ -121,9 +123,7 @@ def initialize():
     insert_book(book1)
     insert_book(book2)
     insert_quote(quote1)
-    insert_quote(quote2)
-            create_news_table(cursor)
-            insert_news(news1)'''
+    insert_quote(quote2)'''
 
 
     return redirect(url_for('home_page'))
