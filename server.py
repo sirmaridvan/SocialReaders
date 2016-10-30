@@ -17,6 +17,7 @@ from Authors import *
 from Books import *
 from Genres import *
 from Quotes import *
+from BlogPost import *
 from flask.globals import session
 
 app = Flask(__name__)
@@ -26,6 +27,39 @@ app = Flask(__name__)
 def home_page():
     now = datetime.datetime.now()
     return render_template('home.html', current_time=now.ctime())
+@app.route('/blogs')
+def blogs_page():
+    return render_template('blogs.html')
+
+@app.route('/insertBlogPost', methods=['POST'])
+def insert_blog_post():
+
+    if request.method == 'POST':
+        #your database process here
+        userName = createRandomUserName()
+        date=datetime.datetime.now()
+        header="header"
+        text="text"
+        blogPost = BlogPost(0,userName,NULL,header,text);
+
+        connection = dbapi2.connect(app.config['dsn'])
+        try:
+            cursor =connection.cursor()
+            try:
+              insert_blogPost(cursor,blogPost)
+            except dbapi2.Error as e:
+                print(e.pgerror)
+            finally:
+                cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
+        return "OK"
+    else:
+        return "NO OK"
 
 @app.route('/dontrunthis')
 def initialize():
@@ -36,6 +70,7 @@ def initialize():
             drop_tables(cursor)
             create_usertype_table(cursor)
             create_user_table(cursor)
+            create_blogs_table(cursor)
             insert_usertype(cursor,'Admin')
             insert_usertype(cursor,'User')
 
@@ -59,7 +94,7 @@ def initialize():
 
 
 
-    create_author_table()
+    '''create_author_table()
     insert_author(author1)
     insert_author(author2)
 
@@ -75,7 +110,7 @@ def initialize():
     insert_book(book1)
     insert_book(book2)
     insert_quote(quote1)
-    insert_quote(quote2)
+    insert_quote(quote2)'''
 
 
     return redirect(url_for('home_page'))

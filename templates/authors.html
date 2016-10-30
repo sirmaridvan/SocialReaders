@@ -4,26 +4,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='authors.css') }}" />
 {% endblock %}
 {% block navbar %}
-<ul class="nav navbar-nav">
-	<li class=" dropdown">
-	    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Books <span class="caret"></span></a>
-	    <ul class="dropdown-menu">
-	        <li class=" dropdown">
-	            <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">New Releases</a>
-	        </li>
-	        <li><a href="#">Popular</a></li>
-	    </ul>
-	</li>
-	<li><a href="{{url_for('profile_page')}}">Profile</a></li>
-	<li class=" dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Authors<span class="caret"></span></a>
-	    <ul class="dropdown-menu">
-	        <li><a href="#">View Authors</a></li>
-	    </ul>
-	</li>
-   </ul>
-   <ul class="nav navbar-nav pull-right">
-       <li class=""><a href="#">News</a></li>
-   </ul>
+
 {% endblock %}
 {% block content %}
     <div class="wrapper">
@@ -35,7 +16,7 @@
                     <th>Birth Date</th>
                     <th>Country</th>
                     <th>Last Book</th>
-                    
+
                 </tr>
             </thead>
             <tbody>
@@ -56,7 +37,7 @@
                 </tr>
         </table>
     </div>
-    
+
 
 {% endblock %}
 

@@ -34,7 +34,27 @@
 						        </a>
 	                </div>
 	                <div id="navbar" class="navbar-collapse collapse">
-						{% block navbar %}{% endblock %}
+						<ul class="nav navbar-nav">
+		                        <li><a href={{url_for('book_page')}}>Books</a></li>
+		                        <li><a href={{url_for('authors_page')}}>Authors</a></li>
+		                        <li><a href={{url_for('news_page')}}>News</a></li>
+		                        <li><a href={{url_for('blogs_page')}}>Blogs</a></li>
+		                        <li class=" dropdown">
+		                            <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">*** <span class="caret"></span></a>
+		                            <ul class="dropdown-menu">
+				                        <li><a href="#">Philosophy</a></li>
+				                        <li><a href="#">Education</a></li>
+				                        <li><a href="#">Religion</a></li>
+				                        <li><a href="#">Economy</a></li>
+				                        <li><a href="#">Foreign Languages</a></li>
+		                                <li><a href="#">Culture</a></li>
+		                                <li><a href="{{ url_for('book_page') }}">Book</a></li>
+		                            </ul>
+		                        </li>
+		                    </ul>
+		                    <ul class="nav navbar-nav pull-right">
+		                        <li class=""><a href={{url_for('profile_page')}}>Profile</a></li>
+		                    </ul>
 	                </div>
 	            </div>
 	        </nav>
