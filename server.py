@@ -82,6 +82,9 @@ def initialize():
             create_groups_table()
             #create_members_table()
             create_news_table(cursor)
+            newBest = News("Best authors are voted! There is also one Turkish in top 50",2016,"Best authers")
+            insert_news(cursor,newBest)
+            
             #insert_news(news1)
             insert_group(group1)
             #insert_member(1,1)

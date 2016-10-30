@@ -10,6 +10,7 @@ def drop_tables(cursor):
                 DROP TABLE IF EXISTS FEEDS CASCADE;
                 DROP TABLE IF EXISTS GROUPS CASCADE;
                 DROP TABLE IF EXISTS MEMBERS CASCADE;
+                DROP TABLE IF EXISTS NEWS CASCADE;
                 """
     cursor.execute(statement)
 
