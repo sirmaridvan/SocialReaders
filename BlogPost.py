@@ -4,7 +4,7 @@ class BlogPost:
     def __init__(self, id, userName, date, header, text):
         self.id = id
         self.userName = userName
-        self.date = date
+        self.date=date
         self.header = header
         self.text = text
 

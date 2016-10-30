@@ -40,7 +40,7 @@ def insert_blog_post():
         date=datetime.datetime.now()
         header="header"
         text="text"
-        blogPost = BlogPost(0,userName,NULL,header,text);
+        blogPost = BlogPost(0,userName,datetime.date.today(),header,text);
 
         connection = dbapi2.connect(app.config['dsn'])
         try:
