@@ -44,7 +44,7 @@ def getUserType(cursor,typename):
     cursor.execute(statement,{'type':typename})
 
 def getUser(cursor,username):
-    statement = """SELECT SALT, HASH FROM SITEUSER WHERE (USERNAME = %(username)s)"""
+    statement = """SELECT USERID, SALT, HASH, USERTYPEID FROM SITEUSER WHERE (USERNAME = %(username)s)"""
     cursor.execute(statement, {'username':username})
 
 def getUserById(cursor,userid):

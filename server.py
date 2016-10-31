@@ -28,58 +28,46 @@ app = Flask(__name__)
 
 @app.route('/')
 def home_page():
-    if 'logged_in' in session and session['logged_in'] == True:
-        now = datetime.datetime.now()
-        return render_template('home.html', current_time=now.ctime())
-    else:
-        #Burada Kullanıcı giriş yapmamış, baska bir home_page gosterilecek
-        now = datetime.datetime.now()
-        return render_template('home.html', current_time=now.ctime())
+    now = datetime.datetime.now()
+    return render_template('home.html', current_time=now.ctime())
+
     
 @app.route('/blogs')
 def blogs_page():
-    if 'logged_in' in session and session['logged_in'] == True:
-        return render_template('blogs.html')
-    else:
-        redirect(url_for('home_page'))
+    return render_template('blogs.html')
+
 @app.route('/writepost')
 def write_post_page():
-    if 'logged_in' in session and session['logged_in'] == True:
-        return render_template('writePost.html')
-    else:
-        redirect(url_for('home_page'))
+    return render_template('writePost.html')
 
 @app.route('/insertBlogPost', methods=['POST'])
 def insert_blog_post():
-    if 'logged_in' in session and session['logged_in'] == True:
-        if request.method == 'POST':
-            #your database process here
-            userName = createRandomUserName()
-            date=datetime.datetime.now()
-            header="header"
-            text="text"
-            blogPost = BlogPost(0,userName,datetime.date.today(),header,text);
-    
-            connection = dbapi2.connect(app.config['dsn'])
+    if request.method == 'POST':
+        #your database process here
+        userName = createRandomUserName()
+        date=datetime.datetime.now()
+        header="header"
+        text="text"
+        blogPost = BlogPost(0,userName,datetime.date.today(),header,text);
+
+        connection = dbapi2.connect(app.config['dsn'])
+        try:
+            cursor =connection.cursor()
             try:
-                cursor =connection.cursor()
-                try:
-                  insert_blogPost(cursor,blogPost)
-                except dbapi2.Error as e:
-                    print(e.pgerror)
-                finally:
-                    cursor.close()
+              insert_blogPost(cursor,blogPost)
             except dbapi2.Error as e:
                 print(e.pgerror)
-                connection.rollback()
             finally:
-                connection.commit()
-                connection.close()
-            return "OK"
-        else:
-            return "NO OK"
+                cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
+        return "OK"
     else:
-        redirect(url_for('home_page'))
+        return "NO OK"
         
 @app.route('/dontrunthis')
 def initialize():
@@ -100,15 +88,18 @@ def initialize():
             insert_news(cursor,newBest)
             
             #insert_news(news1)
-            insert_group(group1)
+            #insert_group(group1)
             #insert_member(1,1)
             insert_usertype(cursor,'Admin')
             insert_usertype(cursor,'User')
             salt1 = createRandomSalt()
-            user1 = User(0,'benlielif','123456',salt1,createHash(salt1,'123456'),'elfbnli@gmail.com','Elif','Benli',1)
-            salt2 = createRandomSalt()
-            user2 = User(0,'uyar','123456',salt2,createHash(salt2,'123456'),'uyar@itu.edu.tr','Turgut','Uyar',1)
+            password = '123456'
+            createdHash = createHash(salt1,password)
+            user1 = User(0,'benlielif',password,salt1,createdHash,'elfbnli@gmail.com','Elif','Benli',1)
             insert_siteuser(cursor,user1)
+            salt2 = createRandomSalt()
+            createdHash = createHash(salt2,password)
+            user2 = User(0,'uyar',password,salt2,createdHash,'uyar@itu.edu.tr','Turgut','Uyar',1)
             insert_siteuser(cursor,user2)
             job=Job(0,datetime.date.today(),"Veritabanı uzmanı","En az 5 yıl tecrübeli")
             insert_job(cursor,job)
@@ -125,17 +116,14 @@ def initialize():
     finally:
         connection.commit()
         connection.close()
-
+    logout()
     return redirect(url_for('home_page'))
 
 ##########ADMIN PAGES##########
 
 @app.route('/admin')
 def admin_index():
-    if 'logged_in' in session and session['logged_in'] == True:
-        return render_template('admin_index.html')
-    else:
-        redirect(url_for('home_page'))
+    return render_template('admin_index.html')
 ###############################
 
 @app.route('/login',methods=['GET', 'POST'])
@@ -149,9 +137,19 @@ def login_page():
                 if "login-submit" in request.form:
                     username = request.form['username']
                     getUser(cursor, username)
-                    ((salt,hash),) =  cursor.fetchall()
-                    if hash == createHash(salt,request.form['password']):
+                    ((userid,salt,hash,usertypeid),) =  cursor.fetchall()
+                    password = request.form['password']
+                    createdHash = createHash(salt,password)
+                    if hash == createdHash:
                         session['logged_in'] = True
+                        session['userId'] = userid
+                        session['username'] = username
+                        if usertypeid == 1:
+                            session['isAdmin'] = True
+                        else:
+                            session['isAdmin'] = False
+                    #else:
+                        
                 elif "register-submit" in request.form:
                     salt = createRandomSalt()
                     getUserType(cursor,'User')
@@ -175,97 +173,84 @@ def login_page():
 
 @app.route('/authors',methods=['GET', 'POST'])
 def authors_page():
-    if 'logged_in' in session and session['logged_in'] == True:
-        return render_template('authors.html')
-    else:
-        redirect(url_for('home_page'))
+    return render_template('authors.html')
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile_page():
-    if 'logged_in' in session and session['logged_in'] == True:
-        return render_template('profile.html')
-    else:
-        redirect(url_for('home_page'))
+    return render_template('profile.html')
         
 @app.route('/news')
 def news_page():
-    if 'logged_in' in session and session['logged_in'] == True:
-        return render_template('news.html')
-    else:
-        redirect(url_for('home_page'))
+    return render_template('news.html')
 
 @app.route('/bookpage')
 def book_page():
-    if 'logged_in' in session and session['logged_in'] == True:
-        return render_template('bookpage.html')
-    else:
-        redirect(url_for('home_page'))
+    return render_template('bookpage.html')
 
 @app.route('/admin/users',methods=['GET', 'POST'])
 def users_page():
-    if 'logged_in' in session and session['logged_in'] == True:
-        connection = dbapi2.connect(app.config['dsn'])
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
+        cursor =connection.cursor()
         try:
-            cursor =connection.cursor()
-            try:
-                if request.method == 'POST':
-                    if "edit" in request.form:
-                        userid = request.form['editid']
-    
-                    elif "delete" in request.form:
-                        userid = request.form['deleteid']
-                        deleteUser(cursor,userid)
-                    getAllUsers(cursor)
-                    mUsers = cursor.fetchall()
-                    return render_template('users.html',users=mUsers)
-                else:
-                    getAllUsers(cursor)
-                    mUsers = cursor.fetchall()
-                    return render_template('users.html',users=mUsers)
-            except dbapi2.Error as e:
-                print(e.pgerror)
-            finally:
-                cursor.close()
+            if request.method == 'POST':
+                if "edit" in request.form:
+                    userid = request.form['editid']
+
+                elif "delete" in request.form:
+                    userid = request.form['deleteid']
+                    deleteUser(cursor,userid)
+                getAllUsers(cursor)
+                mUsers = cursor.fetchall()
+                return render_template('users.html',users=mUsers)
+            else:
+                getAllUsers(cursor)
+                mUsers = cursor.fetchall()
+                return render_template('users.html',users=mUsers)
         except dbapi2.Error as e:
             print(e.pgerror)
-            connection.rollback()
         finally:
-            connection.commit()
-            connection.close()
-    else:
-        redirect('home_page')
+            cursor.close()
+    except dbapi2.Error as e:
+        print(e.pgerror)
+        connection.rollback()
+    finally:
+        connection.commit()
+        connection.close()
         
 @app.route('/admin/userupdate',methods=['GET', 'POST'])
 def userUpdate_page():
-    if 'logged_in' in session and session['logged_in'] == True:
-        connection = dbapi2.connect(app.config['dsn'])
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
+        cursor =connection.cursor()
         try:
-            cursor =connection.cursor()
-            try:
-                if request.method == 'GET':
-                    userid = request.args.get('id')
-                    getUserById(cursor,userid)
-                    ((id,username,salt,hash,email,name,surname,usertypeid),) = cursor.fetchall()
-                    mUser = User(id,username,"",salt,hash,email,name,surname,usertypeid)
-                    return render_template('userupdate.html',user = mUser)
-                elif request.method == 'POST':
-                    if 'update' in request.form:
-                        user = User(request.form['userid'],request.form['username'],request.form['password'],request.form['salt'],createHash(request.form['salt'],request.form['password']), request.form['email'],request.form['name'],request.form['surname'],request.form['usertypeid'])
-                        updateUser(cursor,user)
-                    return redirect(url_for('users_page'))
-            except dbapi2.Error as e:
-                    print(e.pgerror)
-            finally:
-                    cursor.close()
+            if request.method == 'GET':
+                userid = request.args.get('id')
+                getUserById(cursor,userid)
+                ((id,username,salt,hash,email,name,surname,usertypeid),) = cursor.fetchall()
+                mUser = User(id,username,"",salt,hash,email,name,surname,usertypeid)
+                return render_template('userupdate.html',user = mUser)
+            elif request.method == 'POST':
+                if 'update' in request.form:
+                    user = User(request.form['userid'],request.form['username'],request.form['password'],request.form['salt'],createHash(request.form['salt'],request.form['password']), request.form['email'],request.form['name'],request.form['surname'],request.form['usertypeid'])
+                    updateUser(cursor,user)
+                return redirect(url_for('users_page'))
         except dbapi2.Error as e:
-            print(e.pgerror)
-            connection.rollback()
+                print(e.pgerror)
         finally:
-            connection.commit()
-            connection.close()
-        return render_template('userupdate.html')
-    else:
-        redirect(url_for('home_page'))
+                cursor.close()
+    except dbapi2.Error as e:
+        print(e.pgerror)
+        connection.rollback()
+    finally:
+        connection.commit()
+        connection.close()
+    return render_template('userupdate.html')
+
+def logout():
+    session['logged_in'] = False;
+    session['username'] = "";
+    session['isAdmin'] = False;
 
 def get_elephantsql_dsn(vcap_services):
     """Returns the data source name for ElephantSQL."""
