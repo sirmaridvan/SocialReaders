@@ -113,7 +113,7 @@ def initialize():
     try:
         cursor =connection.cursor()
         try:
-            insert_news(cursor,newBest)
+            #insert_news(cursor,newBest)
             insert_usertype(cursor,'Admin')
             insert_usertype(cursor,'User')
             salt1 = createRandomSalt()
