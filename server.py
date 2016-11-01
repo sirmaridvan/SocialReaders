@@ -34,24 +34,32 @@ def home_page():
 
 @app.route('/blogs', methods=['GET', 'POST'])
 def blogs_page():
-    if request.method == 'GET':
-        connection = dbapi2.connect(app.config['dsn'])
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
+        cursor =connection.cursor()
         try:
-            cursor =connection.cursor()
-            try:
+            if request.method == 'GET':
                 statement = """SELECT USERNAME,DATE,HEADER,TEXT FROM BLOGS"""
                 cursor.execute(statement)
                 return render_template('blogs.html', blogs = cursor)
-            except dbapi2.Error as e:
-                print(e.pgerror)
-            finally:
-                cursor.close()
+            if request.method == 'POST':
+                if "delete" in request.form:
+                    name = request.form['deleteid']
+                    statement = """DELETE FROM BLOGS WHERE (USERNAME = %(name)s)"""
+                    cursor.execute(statement,{'name':name})
+                    statement = """SELECT USERNAME,DATE,HEADER,TEXT FROM BLOGS"""
+                    cursor.execute(statement)
+                    return render_template('blogs.html', blogs = cursor)
         except dbapi2.Error as e:
             print(e.pgerror)
-            connection.rollback()
         finally:
-            connection.commit()
-            connection.close()
+            cursor.close()
+    except dbapi2.Error as e:
+        print(e.pgerror)
+        connection.rollback()
+    finally:
+        connection.commit()
+        connection.close()
     return render_template('blogs.html', blogs )
 
 @app.route('/writepost', methods=['GET', 'POST'])
@@ -78,9 +86,7 @@ def write_post_page():
             finally:
                 connection.commit()
                 connection.close()
-            return render_template('home.html')
-        else:
-            return render_template('home.html')
+            return redirect(url_for('blogs_page'))
     return render_template('writePost.html')
 
 @app.route('/dontrunthis')
@@ -108,7 +114,7 @@ def initialize():
     finally:
         connection.commit()
         connection.close()
-    
+
     connection = dbapi2.connect(app.config['dsn'])
     try:
         cursor =connection.cursor()
@@ -143,7 +149,7 @@ def initialize():
     finally:
         connection.commit()
         connection.close()
-        
+
     logout()
     return redirect(url_for('home_page'))
 

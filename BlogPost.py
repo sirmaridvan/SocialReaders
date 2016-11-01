@@ -28,4 +28,6 @@ def getPost(cursor,id):
 def getAllPosts(cursor):
     statement = """SELECT ID,USERNAME,DATE,HEADER,TEXT FROM BLOGS"""
     cursor.execute(statement)
-    return cursor
+def deleteUser(cursor,name):
+    statement = """DELETE FROM BLOGS WHERE (USERNAME = %(name)s)"""
+    cursor.execute(statement,{'name':name})

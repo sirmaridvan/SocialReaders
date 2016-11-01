@@ -10,15 +10,48 @@
 <div class="container">
 <a href={{url_for('write_post_page')}} ><button type="writePost"  name="say" id="submit" value="process" class="btn btn-primary"><i class="fa fa-reply"></i> Write a post</button></a>
 {% for name, date, header, text in blogs %}
-<div class="col-md-12">
-    <h1>{{header}}</h1>
-    <p>{{text}}</p>
-    <div>
-		<span class="badge">Posted {{date}}</span><div class="pull-right"><span class="label label-default">alice</span> <span class="label label-primary">story</span> <span class="label label-success">blog</span> <span class="label label-info">personal</span> <span class="label label-warning">Warning</span>
-		<span class="label label-danger">{{name}}</span></div>
-     </div>
-
-</div>
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css"/>
+  <div class="well">
+      <div class="media">
+      	<a class="pull-left" href="#">
+    		<img class="media-object" src="http://placekitten.com/150/150">
+  		</a>
+  		<div class="media-body">
+    		<h4 class="media-heading">{{header}}</h4>
+          <p class="text-right">{{name}}</p>
+          {{text}}
+          <ul class="list-inline list-unstyled">
+  			<li><span><i class="glyphicon glyphicon-calendar"></i>{{date}}</span></li>
+            <li>|</li>
+            <span><i class="glyphicon glyphicon-comment"></i> 2 comments</span>
+            <li>|</li>
+            <li>
+               <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star-empty"></span>
+            </li>
+            <li>|</li>
+            <li>
+            <!-- Use Font Awesome http://fortawesome.github.io/Font-Awesome/ -->
+              <span><i><form action="{{ url_for('blogs_page')}}" method="post" style="float: left;">
+					<button type="submit" name="delete" class="btn btn-danger">
+						<i class="glyphicon glyphicon-trash"></i>
+					</button>
+					<input type="hidden" name="deleteid" value="{{name}}"/>
+				</form></span>
+              <!--<span><i><form action="{{ url_for('userUpdate_page')}}" method="get" style="float: left;">
+					<button type="submit" name="edit" class="btn btn-default">
+						<i class="fa fa-pencil"></i>
+					</button>
+					<input type="hidden" name="id" value="{{userid}}"/>
+				</form></i></span>-->
+            </li>
+			</ul>
+       </div>
+    </div>
+  </div>
 {% endfor %}
 </div>
 {% endblock %}
