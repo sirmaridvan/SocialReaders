@@ -82,6 +82,7 @@ def write_post_page():
         else:
             return render_template('home.html')
     return render_template('writePost.html')
+
 @app.route('/dontrunthis')
 def initialize():
     connection = dbapi2.connect(app.config['dsn'])
@@ -97,12 +98,22 @@ def initialize():
             create_groups_table()
             #create_members_table()
             create_news_table(cursor)
-            newBest = News("Best authors are voted! There is also one Turkish in top 50",2016,"Best authers")
+        except dbapi2.Error as e:
+            print(e.pgerror)
+        finally:
+            cursor.close()
+    except dbapi2.Error as e:
+        print(e.pgerror)
+        connection.rollback()
+    finally:
+        connection.commit()
+        connection.close()
+    
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
+        cursor =connection.cursor()
+        try:
             insert_news(cursor,newBest)
-
-            #insert_news(news1)
-            #insert_group(group1)
-            #insert_member(1,1)
             insert_usertype(cursor,'Admin')
             insert_usertype(cursor,'User')
             salt1 = createRandomSalt()
@@ -118,7 +129,10 @@ def initialize():
             insert_job(cursor,job)
             feed=Feed(0,datetime.date.today(),createRandomUserName(),"Beğeni")
             insert_feed(cursor,feed)
-
+            newBest = News("Best authors are voted! There is also one Turkish in top 50",2016,"Best authers")
+            #insert_news(news1)
+            #insert_group(group1)
+            #insert_member(1,1)
         except dbapi2.Error as e:
             print(e.pgerror)
         finally:
@@ -129,6 +143,7 @@ def initialize():
     finally:
         connection.commit()
         connection.close()
+        
     logout()
     return redirect(url_for('home_page'))
 
