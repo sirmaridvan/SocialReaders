@@ -28,3 +28,4 @@ def getPost(cursor,id):
 def getAllPosts(cursor):
     statement = """SELECT ID,USERNAME,DATE,HEADER,TEXT FROM BLOGS"""
     cursor.execute(statement)
+    return cursor

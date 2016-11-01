@@ -31,30 +31,17 @@ def home_page():
     now = datetime.datetime.now()
     return render_template('home.html', current_time=now.ctime())
 
-    
-@app.route('/blogs')
+
+@app.route('/blogs', methods=['GET', 'POST'])
 def blogs_page():
-    return render_template('blogs.html')
-
-@app.route('/writepost')
-def write_post_page():
-    return render_template('writePost.html')
-
-@app.route('/insertBlogPost', methods=['POST'])
-def insert_blog_post():
-    if request.method == 'POST':
-        #your database process here
-        userName = createRandomUserName()
-        date=datetime.datetime.now()
-        header="header"
-        text="text"
-        blogPost = BlogPost(0,userName,datetime.date.today(),header,text);
-
+    if request.method == 'GET':
         connection = dbapi2.connect(app.config['dsn'])
         try:
             cursor =connection.cursor()
             try:
-              insert_blogPost(cursor,blogPost)
+                statement = """SELECT USERNAME,DATE,HEADER,TEXT FROM BLOGS"""
+                cursor.execute(statement)
+                return render_template('blogs.html', blogs = cursor)
             except dbapi2.Error as e:
                 print(e.pgerror)
             finally:
@@ -65,10 +52,36 @@ def insert_blog_post():
         finally:
             connection.commit()
             connection.close()
-        return "OK"
-    else:
-        return "NO OK"
-        
+    return render_template('blogs.html', blogs )
+
+@app.route('/writepost', methods=['GET', 'POST'])
+def write_post_page():
+    if request.method == 'POST':
+        if "submit" in request.form:
+            userName = createRandomUserName()
+            date=datetime.datetime.now()
+            header="header"
+            text = request.form['text']
+            blogPost = BlogPost(0,userName,datetime.date.today(),header,text);
+            connection = dbapi2.connect(app.config['dsn'])
+            try:
+                cursor =connection.cursor()
+                try:
+                  insert_blogPost(cursor,blogPost)
+                except dbapi2.Error as e:
+                    print(e.pgerror)
+                finally:
+                    cursor.close()
+            except dbapi2.Error as e:
+                print(e.pgerror)
+                connection.rollback()
+            finally:
+                connection.commit()
+                connection.close()
+            return render_template('home.html')
+        else:
+            return render_template('home.html')
+    return render_template('writePost.html')
 @app.route('/dontrunthis')
 def initialize():
     connection = dbapi2.connect(app.config['dsn'])
@@ -86,7 +99,7 @@ def initialize():
             create_news_table(cursor)
             newBest = News("Best authors are voted! There is also one Turkish in top 50",2016,"Best authers")
             insert_news(cursor,newBest)
-            
+
             #insert_news(news1)
             #insert_group(group1)
             #insert_member(1,1)
@@ -149,7 +162,7 @@ def login_page():
                         else:
                             session['isAdmin'] = False
                     #else:
-                        
+
                 elif "register-submit" in request.form:
                     salt = createRandomSalt()
                     getUserType(cursor,'User')
@@ -178,7 +191,7 @@ def authors_page():
 @app.route('/profile', methods=['GET', 'POST'])
 def profile_page():
     return render_template('profile.html')
-        
+
 @app.route('/news')
 def news_page():
     return render_template('news.html')
@@ -217,7 +230,32 @@ def users_page():
     finally:
         connection.commit()
         connection.close()
-        
+
+@app.route('/admin/useradd',methods=['GET', 'POST'])
+def userAdd_page():
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
+        cursor =connection.cursor()
+        try:
+            if request.method == 'POST':
+                if "add" in request.form:
+                    salt = createRandomSalt()
+                    hash = createHash(salt,request.form['password'])
+                    user = User(0,request.form['username'],request.form['password'],salt,hash,request.form['email'],request.form['name'],request.form['surname'],request.form['usertypeid'])
+                    insert_siteuser(cursor,user)
+                    return redirect(url_for('users_page'))
+        except dbapi2.Error as e:
+                print(e.pgerror)
+        finally:
+                cursor.close()
+    except dbapi2.Error as e:
+        print(e.pgerror)
+        connection.rollback()
+    finally:
+        connection.commit()
+        connection.close()
+    return render_template('useradd.html')
+
 @app.route('/admin/userupdate',methods=['GET', 'POST'])
 def userUpdate_page():
     connection = dbapi2.connect(app.config['dsn'])

@@ -3,23 +3,7 @@
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" />
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-                      <script>
-                           $(document).ready(function(){
 
-                                $('#submit').click(function(){
-
-                                    $.ajax({
-                                      type: 'POST',
-                                      url: '/insertBlogPost',
-                                      success: function(data){
-                                        alert(data);
-                                      }
-                                    });
-                                });
-
-                           });
-                      </script>
 {% endblock %}
 {% block navbar %}
 {% endblock %}
@@ -46,11 +30,11 @@
                 <!-- the comment box -->
                 <div class="well">
                     <h4><i class="fa fa-paper-plane-o"></i> Leave a Comment:</h4>
-                    <form role="form">
+                    <form id="register-form" action={{url_for('write_post_page')}} method="post" role="form">
                         <div class="form-group">
-                            <textarea class="form-control" rows="3"></textarea>
+                            <textarea type="text" name="text" id="text" class="form-control" rows="3"></textarea>
                         </div>
-                        <button type="submit" name="say" id="submit" value="process" class="btn btn-primary"><i class="fa fa-reply"></i> Submit</button>
+                        <button type="submit" name="submit" id="submit" value="submit" class="btn btn-primary"><i class="fa fa-reply"></i> Submit</button>
                     </form>
                 </div>
 </script>
