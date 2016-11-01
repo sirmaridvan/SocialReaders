@@ -4,32 +4,30 @@
 {% endblock %}
 {% block content %}
 	<div class="container">
-		<form class="form-horizontal" action="{{ url_for('userUpdate_page')}}" method="POST">
+		<form class="form-horizontal" action="{{ url_for('userAdd_page')}}" method="POST">
 			<fieldset>	
 				<!-- Form Name -->
-				<legend>UPDATE USER</legend>
-				
-				<input type="hidden" name="userid" value="{{user.userId}}"></input>
-				<input type="hidden" name="salt" value="{{user.salt}}"></input>
+				<legend>ADD USER</legend>
+			
 				<!-- Text input-->
 				<div class="form-group">
 				  <label class="col-md-4 control-label" for="username">USERNAME</label>  
 				  <div class="col-md-4">
-				  <input id="username" name="username" value="{{user.userName}}" type="text" placeholder="" class="form-control input-md" required="">
+				  <input id="username" name="username" value="" type="text" placeholder="" class="form-control input-md" required="">
 				    
 				  </div>
 				</div>
 				<div class="form-group">
 				  <label class="col-md-4 control-label" for="email">EMAIL</label>  
 				  <div class="col-md-4">
-				  <input id="email" name="email" value="{{user.email}}" type="text" placeholder="" class="form-control input-md" required="">
+				  <input id="email" name="email" value="" type="text" placeholder="" class="form-control input-md" required="">
 				    
 				  </div>
 				</div>
 				<div class="form-group">
 				  <label class="col-md-4 control-label" for="name">NAME</label>  
 				  <div class="col-md-4">
-				  <input id="name" name="name" value="{{user.name}}" type="text" placeholder="" class="form-control input-md" required="">
+				  <input id="name" name="name" value="" type="text" placeholder="" class="form-control input-md" required="">
 				    
 				  </div>
 				</div>
@@ -37,7 +35,7 @@
 				<div class="form-group">
 				  <label class="col-md-4 control-label" for="surname">SURNAME</label>  
 				  <div class="col-md-4">
-				  <input id="surname" name="surname" value="{{user.surname}}" type="text" placeholder="" class="form-control input-md" required="">
+				  <input id="surname" name="surname" value="" type="text" placeholder="" class="form-control input-md" required="">
 				    
 				  </div>
 				</div>
@@ -60,13 +58,13 @@
 				<div class="form-group">
 				  <label class="col-md-4 control-label" for="usertypeid">USERTYPEID</label>  
 				  <div class="col-md-4">
-				  <input id="usertypeid" name="usertypeid" value="{{user.userTypeId}}" type="text" placeholder="" class="form-control input-md" required="">   
+				  <input id="usertypeid" name="usertypeid" value="" type="text" placeholder="" class="form-control input-md" required="">   
 				  </div>
 				</div>
 				<div class="form-group">
 				  <label class="col-md-4 control-label" for="button1idFFF"></label>
 				  <div class="col-md-8">
-				    <button id="button1idFFF" name="update" class="btn btn-success">UPDATE</button>
+				    <button id="button1idFFF" name="add" class="btn btn-success">ADD</button>
 				    <button id="button2id" name="cancel" class="btn btn-danger">CANCEL</button>
 				  </div>
 				</div>

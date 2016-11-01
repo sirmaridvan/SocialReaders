@@ -217,7 +217,32 @@ def users_page():
     finally:
         connection.commit()
         connection.close()
-        
+
+@app.route('/admin/useradd',methods=['GET', 'POST'])
+def userAdd_page():
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
+        cursor =connection.cursor()
+        try:
+            if request.method == 'POST':
+                if "add" in request.form:
+                    salt = createRandomSalt()
+                    hash = createHash(salt,request.form['password'])
+                    user = User(0,request.form['username'],request.form['password'],salt,hash,request.form['email'],request.form['name'],request.form['surname'],request.form['usertypeid'])
+                    insert_siteuser(cursor,user)
+                    return redirect(url_for('users_page'))
+        except dbapi2.Error as e:
+                print(e.pgerror)
+        finally:
+                cursor.close()
+    except dbapi2.Error as e:
+        print(e.pgerror)
+        connection.rollback()
+    finally:
+        connection.commit()
+        connection.close()
+    return render_template('useradd.html')
+
 @app.route('/admin/userupdate',methods=['GET', 'POST'])
 def userUpdate_page():
     connection = dbapi2.connect(app.config['dsn'])
