@@ -17,7 +17,7 @@
               			<h3 class="panel-title">Users</h3>
               		</div>
               		<div class="col col-xs-6 text-right">
-              			<form action="{{ url_for('userAdd_page')}}" method="get" id="createNew">		
+              			<form action="{{ url_for('userAdd_page')}}" method="get" id="createNew">
                 			<button type="submit"  form="createNew" class="btn btn-sm btn-primary btn-create">Create New</button>
                			</form>
               		</div>
@@ -33,11 +33,11 @@
 							<th>Surname</th>
 							<th>Email</th>
 							<th>Admin</th>
-                		</tr> 
+                		</tr>
               		</thead>
               		<tbody>
             			{% for userid, username, email, name, surname, salt,usertypeid in users %}
-							<tr>                  
+							<tr>
 								<td align="center">
 									<form action="{{ url_for('userUpdate_page')}}" method="get" style="float: left;">
 										<button type="submit" name="edit" class="btn btn-default">
@@ -56,12 +56,12 @@
 								<td>{{name}}</td>
 								<td>{{surname}}</td>
 								<td>{{email}}</td>
-								<td><input type="checkbox" checked={{usertypeid}} class="checkthis" /></td>							 		
+								<td><input type="checkbox" checked={{usertypeid}} class="checkthis" /></td>
 							</tr>
 						{% endfor %}
             		</tbody>
             	</table>
-        
+
           	</div>
           	<div class="panel-footer">
             	<div class="row">
@@ -86,4 +86,3 @@
 </div>
 
 {% endblock %}
-
