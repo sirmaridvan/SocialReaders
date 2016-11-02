@@ -1,3 +1,5 @@
+import psycopg2 as dbapi2
+
 class Group:
     def __init__(self,name):
         self.name= name
