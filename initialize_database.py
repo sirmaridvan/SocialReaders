@@ -11,6 +11,9 @@ def drop_tables(cursor):
                 DROP TABLE IF EXISTS GROUPS CASCADE;
                 DROP TABLE IF EXISTS MEMBERS CASCADE;
                 DROP TABLE IF EXISTS NEWS CASCADE;
+                DROP TABLE IF EXISTS GENRES CASCADE;
+                DROP TABLE IF EXISTS BOOKS CASCADE;
+                DROP TABLE IF EXISTS QUOTES CASCADE;
                 """
     cursor.execute(statement)
 
@@ -138,7 +141,7 @@ def insert_member(memberid,groupid):
 ''' Book Table'''
 
 def create_book_table(cursor):
-    statement = """CREATE TABLE BOOKS (
+    statement = """CREATE TABLE IF NOT EXISTS BOOKS (
                 BOOKID SERIAL PRIMARY KEY,
                 TITLE VARCHAR(40) NOT NULL,
                 YEAR NUMERIC(4) NOT NULL,
@@ -148,36 +151,23 @@ def create_book_table(cursor):
     cursor.execute(statement)
 
 
-def insert_book(book):
-    with dbapi2.connect(dsn) as connection:
-        cursor = connection.cursor()
-        statement = """ INSERT INTO BOOKS (TITLE, YEAR, AUTHORID, GENREID) VALUES (%s,%s,%s,%s)"""
-        cursor.execute(statement,(book.title, book.year, book.author_id, book.genre_id))
-        cursor.close()
-
 
 ''' Genre Table'''
 
 def create_genre_table(cursor):
-    statement = """CREATE TABLE GENRES (
+    statement = """CREATE TABLE IF NOT EXISTS GENRES (
                 GENREID SERIAL PRIMARY KEY,
-                GENRENAME VARCHAR(20) NOT NULL
+                GENRENAME VARCHAR(50) NOT NULL
                 )"""
     cursor.execute(statement)
 
 
-def insert_genre(genre):
-    with dbapi2.connect(dsn) as connection:
-        cursor = connection.cursor()
-        statement = """ INSERT INTO GENRES (GENRENAME) VALUES (%s)"""
-        cursor.execute(statement,(genre.genre_name))
-        cursor.close()
 
 
 ''' Quote Table'''
 
 def create_quote_table(cursor):
-    statement = """CREATE TABLE QUOTES (
+    statement = """CREATE TABLE IF NOT EXISTS QUOTES (
                 QUOTEID SERIAL PRIMARY KEY,
                 QUOTETEXT VARCHAR(200) NOT NULL,
                 AUTHORID NUMERIC(4) NOT NULL,
@@ -186,12 +176,6 @@ def create_quote_table(cursor):
     cursor.execute(statement)
 
 
-def insert_quote(quote):
-    with dbapi2.connect(dsn) as connection:
-        cursor = connection.cursor()
-        statement = """ INSERT INTO QUOTES (QUOTETEXT, AUTHORID, BOOKID) VALUES (%s, %s, %s)"""
-        cursor.execute(statement,(quote.quotetext, quote.author_id, quote.book_id))
-        cursor.close()
 
 def create_news_table(cursor):
     statement = """CREATE TABLE IF NOT EXISTS NEWS (
