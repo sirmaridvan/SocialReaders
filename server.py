@@ -149,14 +149,14 @@ def initialize():
 
 
 
-    
+
 
 
     connection = dbapi2.connect(app.config['dsn'])
     try:
         cursor =connection.cursor()
         try:
-            
+
             #insert_news(cursor,newBest)
             insert_usertype(cursor,'Admin')
             insert_usertype(cursor,'User')
