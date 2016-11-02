@@ -102,6 +102,9 @@ def initialize():
             create_jobs_table(cursor)
             create_feeds_table(cursor)
             create_groups_table()
+            create_genre_table(cursor)
+            create_book_table(cursor)
+            create_quote_table(cursor)
             #create_members_table()
             create_news_table(cursor)
         except dbapi2.Error as e:
@@ -139,6 +142,28 @@ def initialize():
             #insert_news(news1)
             #insert_group(group1)
             #insert_member(1,1)
+
+            '''Creating and inserting samples for books, genres and quotes tables'''
+
+            '''insert_genre function returns with "not all arguments converted during string formatting"
+            needs to be resolved'''
+            genre1 = Genre(0, "Novel")
+            #insert_genre(cursor,genre1)
+            genre2 = Genre(0, "Satire")
+            #insert_genre(cursor,genre2)
+
+            book1 = Book(0, "The Sun Also Rises", 1926, 1, 1)
+            book2 = Book(0, "Adventures of Hucleberry Finn", 1884, 2, 2)
+
+            insert_book(cursor, book1)
+            insert_book(cursor, book2)
+
+            quote1 = Quote(0, "you can't get away from yourself by moving from one place to another.", 1, 1)
+            quote2 = Quote(0, "All right, then, I'll go to hell.", 2, 2)
+
+            insert_quote(cursor, quote1)
+            insert_quote(cursor, quote2)
+
         except dbapi2.Error as e:
             print(e.pgerror)
         finally:
@@ -152,6 +177,8 @@ def initialize():
 
     logout()
     return redirect(url_for('home_page'))
+
+
 
 ##########ADMIN PAGES##########
 
@@ -305,6 +332,35 @@ def userUpdate_page():
         connection.commit()
         connection.close()
     return render_template('userupdate.html')
+
+'''@app.route('/admin/addbook',methods=['GET', 'POST'])
+def addBook_page():
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
+        cursor =connection.cursor()
+        try:
+            if request.method == 'GET':
+                bookid = request.args.get('id')
+                getUserById(cursor,userid)
+                ((id,username,salt,hash,email,name,surname,usertypeid),) = cursor.fetchall()
+                mUser = User(id,username,"",salt,hash,email,name,surname,usertypeid)
+                return render_template('userupdate.html',user = mUser)
+            elif request.method == 'POST':
+                if 'update' in request.form:
+                    user = User(request.form['userid'],request.form['username'],request.form['password'],request.form['salt'],createHash(request.form['salt'],request.form['password']), request.form['email'],request.form['name'],request.form['surname'],request.form['usertypeid'])
+                    updateUser(cursor,user)
+                return redirect(url_for('users_page'))
+        except dbapi2.Error as e:
+                print(e.pgerror)
+        finally:
+                cursor.close()
+    except dbapi2.Error as e:
+        print(e.pgerror)
+        connection.rollback()
+    finally:
+        connection.commit()
+        connection.close()
+    return render_template('userupdate.html')'''
 
 def logout():
     session['logged_in'] = False;
