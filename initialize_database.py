@@ -108,14 +108,6 @@ def create_members_table(dsn):
         cursor.close()
 
 
-def insert_group(dsn,group):
-    with dbapi2.connect(dsn) as connection:
-        cursor = connection.cursor()
-        statement = """ INSERT INTO GROUPS (NAME) VALUES (%s)"""
-        cursor.execute(statement,(group.name,))
-        cursor.close()
-
-
 def insert_member(dsn,memberid,groupid):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()

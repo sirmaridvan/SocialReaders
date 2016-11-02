@@ -38,6 +38,8 @@ def selectAuthorbyLastName(dsn,lastname):
         cursor = connection.cursor()
         statement = """SELECT * FROM AUTHORS WHERE LASTNAME = %s"""
         cursor.execute(statement,(lastname))
+        authors = cursor.fetchall()
+        return authors
         cursor.close()
 
 
