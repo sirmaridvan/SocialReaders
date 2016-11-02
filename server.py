@@ -38,10 +38,17 @@ def update_post_page():
         cursor =connection.cursor()
         try:
             if request.method == 'GET':
-                name = request.args.get('editid')
-                statement = """SELECT HEADER,TEXT FROM BLOGS WHERE (USERNAME=%(name)s)"""
-                cursor.execute(statement,{'name':name})
+                userid = request.args.get('userid')
+                statement = """SELECT ID, HEADER,TEXT FROM BLOGS WHERE (ID=%(userid)s)"""
+                cursor.execute(statement,{'userid':userid})
                 return render_template('updatePost.html',post=cursor)
+            if request.method == 'POST':
+                text = request.form['text']
+                userid = request.form['userid']
+                date=datetime.datetime.now()
+                statement = """UPDATE BLOGS SET TEXT=%(text)s, DATE=%(date)s WHERE (ID = %(userid)s)"""
+                cursor.execute(statement,{'text':text,'date':date,'userid':userid})
+                return redirect(url_for('blogs_page'))
         except dbapi2.Error as e:
             print(e.pgerror)
         finally:
@@ -62,17 +69,15 @@ def blogs_page():
         cursor =connection.cursor()
         try:
             if request.method == 'GET':
-                statement = """SELECT USERNAME,DATE,HEADER,TEXT FROM BLOGS"""
+                statement = """SELECT ID,USERNAME,DATE,HEADER,TEXT FROM BLOGS"""
                 cursor.execute(statement)
                 return render_template('blogs.html', blogs = cursor)
             if request.method == 'POST':
                 if "delete" in request.form:
-                    name = request.form['deleteid']
-                    statement = """DELETE FROM BLOGS WHERE (USERNAME = %(name)s)"""
-                    cursor.execute(statement,{'name':name})
-                    statement = """SELECT USERNAME,DATE,HEADER,TEXT FROM BLOGS"""
-                    cursor.execute(statement)
-                    return render_template('blogs.html', blogs = cursor)
+                    userid = request.form['deleteid']
+                    statement = """DELETE FROM BLOGS WHERE (ID = %(userid)s)"""
+                    cursor.execute(statement,{'userid':userid})
+                    return redirect(url_for('blogs_page'))
         except dbapi2.Error as e:
             print(e.pgerror)
         finally:
