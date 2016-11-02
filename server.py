@@ -31,6 +31,29 @@ def home_page():
     now = datetime.datetime.now()
     return render_template('home.html', current_time=now.ctime())
 
+@app.route('/updatePost', methods=['GET', 'POST'])
+def update_post_page():
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
+        cursor =connection.cursor()
+        try:
+            if request.method == 'GET':
+                name = request.args.get('editid')
+                statement = """SELECT HEADER,TEXT FROM BLOGS WHERE (USERNAME=%(name)s)"""
+                cursor.execute(statement,{'name':name})
+                return render_template('updatePost.html',post=cursor)
+        except dbapi2.Error as e:
+            print(e.pgerror)
+        finally:
+            cursor.close()
+    except dbapi2.Error as e:
+        print(e.pgerror)
+        connection.rollback()
+    finally:
+        connection.commit()
+        connection.close()
+
+    return render_template('updatePost.html')
 
 @app.route('/blogs', methods=['GET', 'POST'])
 def blogs_page():
@@ -60,7 +83,7 @@ def blogs_page():
     finally:
         connection.commit()
         connection.close()
-    return render_template('blogs.html', blogs )
+    return render_template('blogs.html')
 
 @app.route('/writepost', methods=['GET', 'POST'])
 def write_post_page():
