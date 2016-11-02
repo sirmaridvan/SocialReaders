@@ -8,7 +8,7 @@
 {% block navbar %}
 {% endblock %}
 {% block content %}
-{% for header, text in post %}
+{% for id, header, text in post %}
 <div class="container">
     	<div class="row">
     	<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
@@ -31,11 +31,13 @@
                 <!-- the comment box -->
                 <div class="well">
                     <h4><i class="fa fa-paper-plane-o"></i> Leave a Comment:</h4>
-                    <form id="register-form" action={{url_for('write_post_page')}} method="post" role="form">
+                    <form id="register-form" action={{url_for('update_post_page')}} method="post" role="form">
                         <div class="form-group">
                             <textarea type="text" name="text" id="text" class="form-control" rows="3">{{text}}</textarea>
                         </div>
-                        <button type="submit" name="submit" id="submit" value="submit" class="btn btn-primary"><i class="fa fa-reply"></i> Submit</button>
+    					<input type="hidden" name="userid" id="userid" value="{{id}}"></input>
+                        <button type="submit" name="submit" id="submit" value="submit" class="btn btn-primary"><i class="fa fa-reply"></i> Update</button>
+
                     </form>
                 </div>
 </script>
