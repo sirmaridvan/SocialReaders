@@ -1,0 +1,28 @@
+{% extends "template.html" %}
+{% block title %}Authors{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='group.css') }}" />
+{% endblock %}
+{% block navbar %}
+
+{% endblock %}
+{% block content %}
+   <div class="container">
+	<div class="row">
+    
+        <div class="input-group input-group-lg">
+            <input type="text" class="form-control">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Action <span class="caret"></span></button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a href="#">Create</a></li>
+                    <li><a href="#">Search</a></li>
+                    <li><a href="#">Update</a></li>
+                    <li><a href="#">Delete</a></li>
+                </ul>
+            </div>
+        </div>
+        
+	</div>
+</div>
+{% endblock %}

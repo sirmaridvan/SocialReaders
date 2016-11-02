@@ -277,6 +277,17 @@ def authors_page():
         if request.method == 'GET':
             return render_template('authors.html', authors = selectAuthor(app.config['dsn']))
 
+
+@app.route('/groups',methods=['GET', 'POST'])
+def groups_page():
+            return render_template('groups.html')
+
+
+
+
+
+
+
 @app.route('/profile', methods=['GET', 'POST'])
 def profile_page():
     return render_template('profile.html')
