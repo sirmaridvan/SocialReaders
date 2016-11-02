@@ -129,12 +129,9 @@ def initialize():
             create_blogs_table(cursor)
             create_jobs_table(cursor)
             create_feeds_table(cursor)
-            create_groups_table(app.config['dsn'])
             create_genre_table(cursor)
             create_book_table(cursor)
             create_quote_table(cursor)
-            #create_members_table()
-            create_author_table(app.config['dsn']);
             create_news_table(cursor)
         except dbapi2.Error as e:
             print(e.pgerror)
@@ -150,6 +147,13 @@ def initialize():
 
 
 
+        create_groups_table(app.config['dsn'])
+        create_members_table(app.config['dsn'])
+        create_author_table(app.config['dsn']);
+        insertAuthor(app.config['dsn'],author1)
+        insertAuthor(app.config['dsn'],author2)
+        insertAuthor(app.config['dsn'],author3)
+        insertAuthor(app.config['dsn'],author4)
 
 
     connection = dbapi2.connect(app.config['dsn'])
@@ -175,12 +179,9 @@ def initialize():
             insert_feed(cursor,feed)
             newBest = News("Best authors are voted! There is also one Turkish in top 50",2016,"Best authers")
             #insert_news(news1)
-            #insert_group(group1)
+            insert_group(app.config['dsn'],group1)
             #insert_member(1,1)
-            insertAuthor(app.config['dsn'],author1)
-            insertAuthor(app.config['dsn'],author2)
-            insertAuthor(app.config['dsn'],author3)
-            insertAuthor(app.config['dsn'],author4)
+    
 
             '''Creating and inserting samples for books, genres and quotes tables'''
 
