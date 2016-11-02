@@ -1,8 +1,5 @@
 import psycopg2 as dbapi2
 
-dsn = """user='vagrant' password='vagrant'
-         host='localhost' port=5432 dbname='itucsdb'"""
-
 class Author:
     def __init__(self,id, name, lastname, birthdate, nationality, penname):
         self.id= id
@@ -17,7 +14,8 @@ author2 = Author(None,"Samuel","Clemens",1835,"American","Mark Twain")
 author3 = Author(None,"Metehan","Gültekin",1995,"Turkish",None)
 author4 = Author(None,"İlay","Köksal",1995,"Turkish",None)
 
-def insertAuthor(author):
+
+def insertAuthor(dsn,author):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """ INSERT INTO AUTHORS (NAME, LASTNAME, BIRTHDATE, NATIONALITY, PENNAME) VALUES (%s,%s,%s,%s,%s)"""
@@ -25,7 +23,7 @@ def insertAuthor(author):
         cursor.close()
 
 
-def selectAuthor():
+def selectAuthor(dsn):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """SELECT * FROM AUTHORS ORDER BY ID ASC"""
@@ -35,7 +33,7 @@ def selectAuthor():
         cursor.close()
 
 
-def selectAuthorbyLastName(lastname):
+def selectAuthorbyLastName(dsn,lastname):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """SELECT * FROM AUTHORS WHERE LASTNAME = %s"""
@@ -43,14 +41,14 @@ def selectAuthorbyLastName(lastname):
         cursor.close()
 
 
-def deleteAuthor(id):
+def deleteAuthor(dsn,id):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """ DELETE FROM AUTHORS WHERE ID = %s"""
         cursor.execute(statement,(id))
         cursor.close()
 
-def updateAuthor(id,newauthor):
+def updateAuthor(dsn,id,newauthor):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """ UPDATE AUTHORS SET NAME = %s LASTNAME = %s BIRTHDAY = %s NATIONALITY = %s PENNAME = %s WHERE ID = %s"""

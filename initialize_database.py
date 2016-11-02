@@ -68,10 +68,7 @@ def create_user_table(cursor):
 
 ''' Author table '''
 
-dsn = """user='vagrant' password='vagrant'
-         host='localhost' port=5432 dbname='itucsdb'"""
-
-def create_author_table():
+def create_author_table(dsn):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """ CREATE TABLE IF NOT EXISTS AUTHORS(
@@ -89,7 +86,7 @@ def create_author_table():
 
 
 
-def create_groups_table():
+def create_groups_table(dsn):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """ CREATE TABLE IF NOT EXISTS GROUPS (
@@ -100,7 +97,7 @@ def create_groups_table():
         cursor.close()
 
 
-def create_members_table():
+def create_members_table(dsn):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """CREATE TABLE IF NOT EXISTS MEMBERS (
@@ -111,7 +108,7 @@ def create_members_table():
         cursor.close()
 
 
-def insert_group(group):
+def insert_group(dsn,group):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """ INSERT INTO GROUPS (NAME) VALUES (%s)"""
@@ -119,7 +116,7 @@ def insert_group(group):
         cursor.close()
 
 
-def insert_member(memberid,groupid):
+def insert_member(dsn,memberid,groupid):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """ INSERT INTO MEMBERS (GROUPUSER,GROUPID) VALUES (%s,%s)"""
