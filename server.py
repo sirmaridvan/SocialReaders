@@ -141,10 +141,19 @@ def initialize():
         connection.commit()
         connection.close()
 
+
+    create_author_table();
+    insertAuthor(author1)
+    insertAuthor(author2)
+    insertAuthor(author3)
+    insertAuthor(author4)
+
+
     connection = dbapi2.connect(app.config['dsn'])
     try:
         cursor =connection.cursor()
         try:
+            
             #insert_news(cursor,newBest)
             insert_usertype(cursor,'Admin')
             insert_usertype(cursor,'User')
@@ -257,7 +266,8 @@ def login_page():
 
 @app.route('/authors',methods=['GET', 'POST'])
 def authors_page():
-    return render_template('authors.html')
+        if request.method == 'GET':
+            return render_template('authors.html', authors = selectAuthor())
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile_page():

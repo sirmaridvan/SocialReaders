@@ -1,16 +1,23 @@
+import psycopg2 as dbapi2
+
+dsn = """user='vagrant' password='vagrant'
+         host='localhost' port=5432 dbname='itucsdb'"""
+
 class Author:
-    def __init__(self, name, lastname, birthdate, nationality, penname):
+    def __init__(self,id, name, lastname, birthdate, nationality, penname):
+        self.id= id
         self.name= name
         self.lastname=lastname
         self.birthdate=birthdate
         self.nationality=nationality
         self.penname = penname
 
-author1 = Author("Ernest","Hemingway",1899,"American",None)
-author2 = Author("Samuel","Clemens",1835,"American","Mark Twain")
+author1 = Author(None,"Ernest","Hemingway",1899,"American",None)
+author2 = Author(None,"Samuel","Clemens",1835,"American","Mark Twain")
+author3 = Author(None,"Metehan","Gültekin",1995,"Turkish",None)
+author4 = Author(None,"İlay","Köksal",1995,"Turkish",None)
 
-
-def insert_author(author):
+def insertAuthor(author):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """ INSERT INTO AUTHORS (NAME, LASTNAME, BIRTHDATE, NATIONALITY, PENNAME) VALUES (%s,%s,%s,%s,%s)"""
@@ -23,6 +30,8 @@ def selectAuthor():
         cursor = connection.cursor()
         statement = """SELECT * FROM AUTHORS ORDER BY ID ASC"""
         cursor.execute(statement)
+        authors = cursor.fetchall()
+        return authors
         cursor.close()
 
 

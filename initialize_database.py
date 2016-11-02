@@ -14,6 +14,7 @@ def drop_tables(cursor):
                 DROP TABLE IF EXISTS GENRES CASCADE;
                 DROP TABLE IF EXISTS BOOKS CASCADE;
                 DROP TABLE IF EXISTS QUOTES CASCADE;
+                DROP TABLE IF EXISTS AUTHORS CASCADE;
                 """
     cursor.execute(statement)
 

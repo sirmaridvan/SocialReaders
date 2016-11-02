@@ -15,26 +15,21 @@
                     <th>Last Name</th>
                     <th>Birth Date</th>
                     <th>Country</th>
-                    <th>Last Book</th>
+                    <th>Pen Name</th>
 
                 </tr>
             </thead>
             <tbody>
+            {% for id, name, lastname, birthdate, nationality, penname in authors %}
                 <tr>
-                    <td>İlay</td>
-                    <td>Köksal</td>
-                    <td>1995</td>
-                    <td>Turkey</td>
-                    <td>Darbenin Adı</td>
+                    <td>{{ name }}</td>
+                    <td>{{ lastname }}</td>
+                    <td>{{ birthdate }}</td>
+                    <td>{{ nationality }}</td>
+                    <td>{{ penname }}</td>
                 </tr>
             </tbody>
-            <tr>
-                    <td>Metehan</td>
-                    <td>Gültekin</td>
-                    <td>1995</td>
-                    <td>Turkey</td>
-                    <td>Allah De Ötesini Bırak</td>
-                </tr>
+            {% endfor %}
         </table>
     </div>
 
