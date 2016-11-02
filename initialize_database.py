@@ -84,15 +84,6 @@ def create_author_table():
         cursor.execute(statement)
         cursor.close()
 
-
-def insert_author(author):
-    with dbapi2.connect(dsn) as connection:
-        cursor = connection.cursor()
-        statement = """ INSERT INTO AUTHORS (NAME, LASTNAME, BIRTHDATE, NATIONALITY, PENNAME) VALUES (%s,%s,%s,%s,%s)"""
-        cursor.execute(statement,(author.name,author.lastname,author.birthdate,author.nationality,author.penname))
-        cursor.close()
-
-
 ''' Groups Table '''
 
 
