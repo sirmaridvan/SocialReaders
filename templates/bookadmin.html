@@ -1,0 +1,56 @@
+{% extends "admin_template.html" %}
+{% block title %}Admin Panel - Add Book{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+	<div class="container">
+		<form class="form-horizontal" action="{{ url_for('bookAdmin_page')}}" method="POST">
+			<fieldset>
+				<!-- Form Name -->
+				<legend>ADD BOOK</legend>
+
+				<input type="hidden" name="bookid" value="{{Books.bookid}}"></input>
+				<!-- Text input-->
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="title">TITLE</label>
+				  <div class="col-md-4">
+				  <input id="title" name="title" value="{{Books.title}}" type="text" placeholder="" class="form-control input-md" required="">
+
+				  </div>
+				</div>
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="year">YEAR</label>
+				  <div class="col-md-4">
+				  <input id="year" name="year" value="{{Books.year}}" type="text" placeholder="" class="form-control input-md" required="">
+
+				  </div>
+				</div>
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="authorid">AUTHOR</label>
+				  <div class="col-md-4">
+				  <input id="authorid" name="authorid" value="{{Books.author_id}}" type="text" placeholder="" class="form-control input-md" required="">
+
+				  </div>
+				</div>
+
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="genreid">GENRE</label>
+				  <div class="col-md-4">
+				  <input id="genreid" name="genreid" value="{{Books.genre_id}}" type="text" placeholder="" class="form-control input-md" required="">
+
+				  </div>
+				</div>
+
+				<!-- Text input-->
+
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="button1idFFF"></label>
+				  <div class="col-md-8">
+				    <button id="button1idFFF" name="add" class="btn btn-success">ADD</button>
+				    <button id="button2id" name="cancel" class="btn btn-danger">CANCEL</button>
+				  </div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+{% endblock %}
