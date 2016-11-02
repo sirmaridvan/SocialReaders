@@ -1,10 +1,13 @@
 class Book:
-    def __init__(self, name, year, author_id, genre_id):
-        self.name= name
+    def __init__(self, bookid, title, year, author_id, genre_id):
+        self.bookid = bookid
+        self.title= title
         self.year=year
         self.author_id=author_id
         self.genre_id=genre_id
 
-
-book1 = Book("The Sun Also Rises", 1926, 1, 1)
-book2 = Book("Adventures of Hucleberry Finn", 1884, 2, 2)
+def insert_book(cursor, book):
+        statement = """INSERT INTO BOOKS (TITLE,YEAR,AUTHORID,GENREID) VALUES (
+                %s, %s, %s, %s
+                )"""
+        cursor.execute(statement,(book.title, book.year, book.author_id, book.genre_id))
