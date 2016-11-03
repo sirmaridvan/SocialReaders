@@ -19,6 +19,18 @@ def drop_tables(cursor):
                 """
     cursor.execute(statement)
 
+def dropUserTypeTable(cursor):
+    statement = """
+                DROP TABLE IF EXISTS USERTYPE CASCADE;
+                """
+    cursor.execute(statement)
+
+def dropUserTable(cursor):
+    statement = """
+                DROP TABLE IF EXISTS SITEUSER CASCADE;
+                """
+    cursor.execute(statement)
+    
 def create_usertype_table(cursor):
     statement = """CREATE TABLE USERTYPE (
                 ID SERIAL PRIMARY KEY,
