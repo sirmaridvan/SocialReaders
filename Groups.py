@@ -1,10 +1,11 @@
 import psycopg2 as dbapi2
 
 class Group:
-    def __init__(self,name):
+    def __init__(self,id,name):
+        self.id = id
         self.name= name
         
-group1 = Group("databey")
+group1 = Group(None,"databey")
 
 
 

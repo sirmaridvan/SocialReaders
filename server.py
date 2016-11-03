@@ -281,15 +281,23 @@ def authors_page():
 @app.route('/groups',methods=['GET', 'POST'])
 def groups_page():
     if request.method == 'GET':
-        return render_template('groups.html')
+        return render_template('groups.html',groups = selectGroup(app.config['dsn']))
     else:
         if 'Add' in request.form:
             name = request.form['groupname']
-            group = Group(name)
+            group = Group(None,name)
             insert_group(app.config['dsn'],group)
-            return render_template('groups.html')
-
-
+            return render_template('groups.html',groups = selectGroup(app.config['dsn']))
+        if 'Delete' in request.form:
+            id=request.form['id']
+            deleteGroup(app.config['dsn'],id)
+            return render_template('groups.html',groups = selectGroup(app.config['dsn']))
+        if 'Update' in request.form:
+            id=request.form['id']
+            newname = request.form['newname']
+            newgroup = Group(id,newname)
+            updateGroup(app.config['dsn'],id,newgroup)
+            return render_template('groups.html',groups = selectGroup(app.config['dsn']))
 
 
 
