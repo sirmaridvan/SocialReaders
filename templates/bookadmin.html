@@ -1,56 +1,86 @@
 {% extends "admin_template.html" %}
-{% block title %}Admin Panel - Add Book{% endblock %}
+{% block title %}Admin Panel - Books{% endblock %}
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='users.css') }}" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
 {% endblock %}
+
 {% block content %}
-	<div class="container">
-		<form class="form-horizontal" action="{{ url_for('bookAdmin_page')}}" method="POST">
-			<fieldset>
-				<!-- Form Name -->
-				<legend>ADD BOOK</legend>
 
-				<input type="hidden" name="bookid" value="{{Books.bookid}}"></input>
-				<!-- Text input-->
-				<div class="form-group">
-				  <label class="col-md-4 control-label" for="title">TITLE</label>
-				  <div class="col-md-4">
-				  <input id="title" name="title" value="{{Books.title}}" type="text" placeholder="" class="form-control input-md" required="">
+<div class="row">
+	<div class="col-md-10 col-md-offset-1">
+    	<div class="panel panel-default panel-table">
+        	<div class="panel-heading">
+            	<div class="row">
+              		<div class="col col-xs-6">
+              			<h3 class="panel-title">Books</h3>
+              		</div>
+              		<div class="col col-xs-6 text-right">
+              			<form action="{{ url_for('bookAdd_page')}}" method="get" id="createNew">
+                			<button type="submit"  form="createNew" class="btn btn-sm btn-primary btn-create">Create New</button>
+               			</form>
+              		</div>
+            	</div>
+          	</div>
+          	<div class="panel-body">
+            	<table class="table table-striped table-bordered table-list">
+              		<thead>
+                 		<tr>
+                     		<th><em class="fa fa-cog"></em></th>
+							<th>Title</th>
+							<th>Author</th>
+							<th>Year</th>
+							<th>Genre</th>
+                		</tr>
+              		</thead>
+              		<tbody>
+            			{% for bookid, title, year, author_id, genre_id in books %}
+							<tr>
+								<td align="center">
+									<form action="{{ url_for('bookUpdate_page')}}" method="get" style="float: left;">
+										<button type="submit" name="edit" class="btn btn-default">
+											<i class="fa fa-pencil"></i>
+										</button>
+										<input type="hidden" name="id" value="{{bookid}}"/>
+									</form>
+									<form action="{{ url_for('books_page')}}" method="post">
+										<button type="submit" name="delete" class="btn btn-danger">
+											<i class="glyphicon glyphicon-trash"></i>
+										</button>
+										<input type="hidden" name="deleteid" value="{{bookid}}"/>
+									</form>
+                         		</td>
+								<td>{{title}}</td>
+								<td>{{year}}</td>
+								<td>{{author_id}}</td>
+								<td>{{genre_id}}</td>
+							</tr>
+						{% endfor %}
+            		</tbody>
+            	</table>
 
-				  </div>
-				</div>
-				<div class="form-group">
-				  <label class="col-md-4 control-label" for="year">YEAR</label>
-				  <div class="col-md-4">
-				  <input id="year" name="year" value="{{Books.year}}" type="text" placeholder="" class="form-control input-md" required="">
-
-				  </div>
-				</div>
-				<div class="form-group">
-				  <label class="col-md-4 control-label" for="authorid">AUTHOR</label>
-				  <div class="col-md-4">
-				  <input id="authorid" name="authorid" value="{{Books.author_id}}" type="text" placeholder="" class="form-control input-md" required="">
-
-				  </div>
-				</div>
-
-				<div class="form-group">
-				  <label class="col-md-4 control-label" for="genreid">GENRE</label>
-				  <div class="col-md-4">
-				  <input id="genreid" name="genreid" value="{{Books.genre_id}}" type="text" placeholder="" class="form-control input-md" required="">
-
-				  </div>
-				</div>
-
-				<!-- Text input-->
-
-				<div class="form-group">
-				  <label class="col-md-4 control-label" for="button1idFFF"></label>
-				  <div class="col-md-8">
-				    <button id="button1idFFF" name="add" class="btn btn-success">ADD</button>
-				    <button id="button2id" name="cancel" class="btn btn-danger">CANCEL</button>
-				  </div>
-				</div>
-			</fieldset>
-		</form>
+          	</div>
+          	<div class="panel-footer">
+            	<div class="row">
+              		<div class="col col-xs-4">Page 1 of 5</div>
+             		<div class="col col-xs-8">
+                		<ul class="pagination hidden-xs pull-right">
+	                  		<li><a href="#">1</a></li>
+	                  		<li><a href="#">2</a></li>
+	                  		<li><a href="#">3</a></li>
+	                  		<li><a href="#">4</a></li>
+	                  		<li><a href="#">5</a></li>
+                		</ul>
+                		<ul class="pagination visible-xs pull-right">
+                    		<li><a href="#">«</a></li>
+                    		<li><a href="#">»</a></li>
+                		</ul>
+              		</div>
+           		</div>
+          	</div>
+        </div>
 	</div>
+</div>
+
 {% endblock %}
