@@ -124,8 +124,8 @@ def initialize():
     try:
         cursor =connection.cursor()
         try:
-            dropUserTypeTable(cursor)
             dropUserTable(cursor)
+            dropUserTypeTable(cursor)
             create_usertype_table(cursor)
             create_user_table(cursor)
             insert_usertype(cursor,'Admin')
