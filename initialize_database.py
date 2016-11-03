@@ -3,8 +3,6 @@ import psycopg2 as dbapi2
 
 def drop_tables(cursor):
     statement = """
-                DROP TABLE IF EXISTS SITEUSER CASCADE;
-                DROP TABLE IF EXISTS USERTYPE CASCADE;
                 DROP TABLE IF EXISTS BLOGS CASCADE;
                 DROP TABLE IF EXISTS JOBS CASCADE;
                 DROP TABLE IF EXISTS FEEDS CASCADE;
