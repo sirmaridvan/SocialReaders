@@ -181,7 +181,7 @@ def initialize():
             #insert_news(news1)
             insert_group(app.config['dsn'],group1)
             #insert_member(1,1)
-    
+
 
             '''Creating and inserting samples for books, genres and quotes tables'''
 
@@ -374,23 +374,49 @@ def userUpdate_page():
         connection.close()
     return render_template('userupdate.html')
 
-'''@app.route('/admin/addbook',methods=['GET', 'POST'])
-def addBook_page():
+
+@app.route('/admin/books',methods=['GET', 'POST'])
+def books_page():
     connection = dbapi2.connect(app.config['dsn'])
     try:
         cursor =connection.cursor()
         try:
-            if request.method == 'GET':
-                bookid = request.args.get('id')
-                getUserById(cursor,userid)
-                ((id,username,salt,hash,email,name,surname,usertypeid),) = cursor.fetchall()
-                mUser = User(id,username,"",salt,hash,email,name,surname,usertypeid)
-                return render_template('userupdate.html',user = mUser)
-            elif request.method == 'POST':
-                if 'update' in request.form:
-                    user = User(request.form['userid'],request.form['username'],request.form['password'],request.form['salt'],createHash(request.form['salt'],request.form['password']), request.form['email'],request.form['name'],request.form['surname'],request.form['usertypeid'])
-                    updateUser(cursor,user)
-                return redirect(url_for('users_page'))
+            if request.method == 'POST':
+                if "edit" in request.form:
+                    bookid = request.form['editid']
+
+                elif "delete" in request.form:
+                    bookid = request.form['deleteid']
+                    delete_book(cursor,bookid)
+                select_books(cursor)
+                mBooks = cursor.fetchall()
+                return render_template('bookadmin.html',books=mBooks)
+            else:
+                select_books(cursor)
+                mBooks = cursor.fetchall()
+                return render_template('bookadmin.html',books=mBooks)
+        except dbapi2.Error as e:
+            print(e.pgerror)
+        finally:
+            cursor.close()
+    except dbapi2.Error as e:
+        print(e.pgerror)
+        connection.rollback()
+    finally:
+        connection.commit()
+        connection.close()
+
+@app.route('/admin/bookadd',methods=['GET', 'POST'])
+def bookAdd_page():
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
+        cursor =connection.cursor()
+        try:
+            if request.method == 'POST':
+                if "add" in request.form:
+                    book = Book(0,request.form['title'],request.form['year'],request.form['author_id'],request.form['genre_id'])
+                    insert_book(cursor,book)
+                    return redirect(url_for('books_page'))
         except dbapi2.Error as e:
                 print(e.pgerror)
         finally:
@@ -401,7 +427,37 @@ def addBook_page():
     finally:
         connection.commit()
         connection.close()
-    return render_template('userupdate.html')'''
+    return render_template('bookadd.html')
+
+@app.route('/admin/bookupdate',methods=['GET', 'POST'])
+def bookUpdate_page():
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
+        cursor =connection.cursor()
+        try:
+            if request.method == 'GET':
+                bookid = request.args.get('id')
+                select_bookid(cursor,bookid)
+                ((bookid, title, year, author_id, genre_id),) = cursor.fetchall()
+                mBook = Book(bookid,title,year, author_id, genre_id)
+                return render_template('bookupdate.html',book = mBook)
+            elif request.method == 'POST':
+                if 'update' in request.form:
+                    book = book(request.form['bookid'],request.form['title'],request.form['year'],request.form['author_id'],request.form['genre_id'])
+                    update_book(cursor,book)
+                return redirect(url_for('books_page'))
+        except dbapi2.Error as e:
+                print(e.pgerror)
+        finally:
+                cursor.close()
+    except dbapi2.Error as e:
+        print(e.pgerror)
+        connection.rollback()
+    finally:
+        connection.commit()
+        connection.close()
+    return render_template('bookupdate.html')
+
 
 def logout():
     session['logged_in'] = False;
