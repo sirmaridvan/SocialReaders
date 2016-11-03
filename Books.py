@@ -14,28 +14,38 @@ def insert_book(cursor, book):
 
 
 def select_books(cursor):
-        statement = """SELECT * FROM BOOKS ORDER BY ID ASC"""
+        statement = """SELECT * FROM BOOKS ORDER BY BOOKID ASC"""
         cursor.execute(statement)
 
 def select_bookid(cursor, bookid):
         statement = """SELECT * FROM BOOKS WHERE BOOKID = %s"""
         cursor.execute(statement)
+        books = cursor.fetchall()
+        return books
 
 def select_booktitle(cursor, title):
         statement = """SELECT * FROM BOOKS WHERE TITLE = %s"""
         cursor.execute(statement)
+        books = cursor.fetchall()
+        return books
 
 def select_bookyear(cursor, year):
         statement = """SELECT * FROM BOOKS WHERE YEAR = %s"""
         cursor.execute(statement)
+        books = cursor.fetchall()
+        return books
 
 def select_bookauthorid(cursor, author_id):
         statement = """SELECT * FROM BOOKS WHERE AUTHORID = %s"""
         cursor.execute(statement)
+        books = cursor.fetchall()
+        return books
 
 def select_bookgenreid(cursor, genre_id):
         statement = """SELECT * FROM BOOKS WHERE GENREID = %s"""
         cursor.execute(statement)
+        books = cursor.fetchall()
+        return books
 
 def delete_book(cursor, bookid):
         statement = """DELETE FROM BOOKS WHERE BOOKID = %s """
