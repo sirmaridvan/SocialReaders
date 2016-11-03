@@ -11,10 +11,11 @@ def drop_tables(cursor):
                 DROP TABLE IF EXISTS GROUPS CASCADE;
                 DROP TABLE IF EXISTS MEMBERS CASCADE;
                 DROP TABLE IF EXISTS NEWS CASCADE;
-                DROP TABLE IF EXISTS GENRES CASCADE;
+                DROP TABLE IF EXISTS S CASCADE;
                 DROP TABLE IF EXISTS BOOKS CASCADE;
                 DROP TABLE IF EXISTS QUOTES CASCADE;
                 DROP TABLE IF EXISTS AUTHORS CASCADE;
+                DROP TABLE IF EXISTS GENRES CASCADE;
                 """
     cursor.execute(statement)
 
@@ -96,6 +97,16 @@ def create_groups_table(dsn):
         cursor.execute(statement)
         cursor.close()
 
+def create_genre_table(dsn):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """ CREATE TABLE IF NOT EXISTS GENRES (
+            ID SERIAL PRIMARY KEY,
+            NAME VARCHAR(50) NOT NULL
+        )"""
+        cursor.execute(statement)
+        cursor.close()
+
 
 def create_members_table(dsn):
     with dbapi2.connect(dsn) as connection:
@@ -127,18 +138,7 @@ def create_book_table(cursor):
                 TITLE VARCHAR(40) NOT NULL,
                 YEAR NUMERIC(4) NOT NULL,
                 AUTHORID NUMERIC(4) NOT NULL,
-                GENREID NUMERIC(4) NOT NULL
-                )"""
-    cursor.execute(statement)
-
-
-
-''' Genre Table'''
-
-def create_genre_table(cursor):
-    statement = """CREATE TABLE IF NOT EXISTS GENRES (
-                GENREID SERIAL PRIMARY KEY,
-                GENRENAME VARCHAR(50) NOT NULL
+                ID NUMERIC(4) NOT NULL
                 )"""
     cursor.execute(statement)
 
