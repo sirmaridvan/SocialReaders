@@ -1,0 +1,55 @@
+{% extends "admin_template.html" %}
+{% block title %}Admin Panel - Update Book{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+	<div class="container">
+		<form class="form-horizontal" action="{{ url_for('bookUpdate_page')}}" method="POST">
+			<fieldset>
+				<!-- Form Name -->
+				<legend>UPDATE BOOK</legend>
+
+				<input type="hidden" name="bookid" value="{{book.bookid}}"></input>
+				<!-- Text input-->
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="username">TITLE</label>
+				  <div class="col-md-4">
+				  <input id="username" name="title" value="{{book.title}}" type="text" placeholder="" class="form-control input-md" required="">
+
+				  </div>
+				</div>
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="email">YEAR</label>
+				  <div class="col-md-4">
+				  <input id="year" name="year" value="{{book.year}}" type="text" placeholder="" class="form-control input-md" required="">
+
+				  </div>
+				</div>
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="name">AUTHOR ID</label>
+				  <div class="col-md-4">
+				  <input id="author_id" name="author_id" value="{{book.author_id}}" type="text" placeholder="" class="form-control input-md" required="">
+
+				  </div>
+				</div>
+
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="surname">GENRE ID</label>
+				  <div class="col-md-4">
+				  <input id="genre_id" name="genre_id" value="{{book.genre_id}}" type="text" placeholder="" class="form-control input-md" required="">
+
+				  </div>
+				</div>
+
+				<!-- Text input-->
+				<div class="form-group">
+				  <label class="col-md-4 control-label" for="button1idFFF"></label>
+				  <div class="col-md-8">
+				    <button id="button1idFFF" name="update" class="btn btn-success">UPDATE</button>
+				    <button id="button2id" name="cancel" class="btn btn-danger">CANCEL</button>
+				  </div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+{% endblock %}
