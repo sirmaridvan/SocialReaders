@@ -119,13 +119,42 @@ def write_post_page():
 
 @app.route('/dontrunthis')
 def initialize():
+    
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
+        cursor =connection.cursor()
+        try:
+            dropUserTypeTable(cursor)
+            dropUserTable(cursor)
+            create_usertype_table(cursor)
+            create_user_table(cursor)
+            insert_usertype(cursor,'Admin')
+            insert_usertype(cursor,'User')
+            salt1 = createRandomSalt()
+            password = '123456'
+            createdHash = createHash(salt1,password)
+            user1 = User(0,'benlielif',password,salt1,createdHash,'elfbnli@gmail.com','Elif','Benli',1)
+            insert_siteuser(cursor,user1)
+            salt2 = createRandomSalt()
+            createdHash = createHash(salt2,password)
+            user2 = User(0,'uyar',password,salt2,createdHash,'uyar@itu.edu.tr','Turgut','Uyar',1)
+            insert_siteuser(cursor,user2)
+        except dbapi2.Error as e:
+            print(e.pgerror)
+        finally:
+            cursor.close()
+    except dbapi2.Error as e:
+        print(e.pgerror)
+        connection.rollback()
+    finally:
+        connection.commit()
+        connection.close()
+    
     connection = dbapi2.connect(app.config['dsn'])
     try:
         cursor =connection.cursor()
         try:
             drop_tables(cursor)
-            create_usertype_table(cursor)
-            create_user_table(cursor)
             create_blogs_table(cursor)
             create_jobs_table(cursor)
             create_feeds_table(cursor)
@@ -145,15 +174,13 @@ def initialize():
         connection.close()
 
 
-
-
-        create_groups_table(app.config['dsn'])
-        create_members_table(app.config['dsn'])
-        create_author_table(app.config['dsn']);
-        insertAuthor(app.config['dsn'],author1)
-        insertAuthor(app.config['dsn'],author2)
-        insertAuthor(app.config['dsn'],author3)
-        insertAuthor(app.config['dsn'],author4)
+    create_groups_table(app.config['dsn'])
+    create_members_table(app.config['dsn'])
+    create_author_table(app.config['dsn']);
+    insertAuthor(app.config['dsn'],author1)
+    insertAuthor(app.config['dsn'],author2)
+    insertAuthor(app.config['dsn'],author3)
+    insertAuthor(app.config['dsn'],author4)
 
 
     connection = dbapi2.connect(app.config['dsn'])
@@ -162,17 +189,6 @@ def initialize():
         try:
 
             #insert_news(cursor,newBest)
-            insert_usertype(cursor,'Admin')
-            insert_usertype(cursor,'User')
-            salt1 = createRandomSalt()
-            password = '123456'
-            createdHash = createHash(salt1,password)
-            user1 = User(0,'benlielif',password,salt1,createdHash,'elfbnli@gmail.com','Elif','Benli',1)
-            insert_siteuser(cursor,user1)
-            salt2 = createRandomSalt()
-            createdHash = createHash(salt2,password)
-            user2 = User(0,'uyar',password,salt2,createdHash,'uyar@itu.edu.tr','Turgut','Uyar',1)
-            insert_siteuser(cursor,user2)
             job=Job(0,datetime.date.today(),"Veritabanı uzmanı","En az 5 yıl tecrübeli")
             insert_job(cursor,job)
             feed=Feed(0,datetime.date.today(),createRandomUserName(),"Beğeni")
