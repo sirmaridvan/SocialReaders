@@ -280,9 +280,14 @@ def authors_page():
 
 @app.route('/groups',methods=['GET', 'POST'])
 def groups_page():
+    if request.method == 'GET':
+        return render_template('groups.html')
+    else:
+        if 'Add' in request.form:
+            name = request.form['groupname']
+            group = Group(name)
+            insert_group(app.config['dsn'],group)
             return render_template('groups.html')
-
-
 
 
 

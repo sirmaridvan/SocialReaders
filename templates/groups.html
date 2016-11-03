@@ -7,22 +7,20 @@
 
 {% endblock %}
 {% block content %}
-   <div class="container">
-	<div class="row">
-    
+
+<form action="{{ url_for('groups_page') }}" method="post" role="form">
+    <div class="container">
+        <div class="row">
         <div class="input-group input-group-lg">
-            <input type="text" class="form-control">
+            <input type="text" name="groupname" class="form-control">
             <div class="input-group-btn">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Action <span class="caret"></span></button>
-                <ul class="dropdown-menu pull-right" role="menu">
-                    <li><a href="#">Create</a></li>
-                    <li><a href="#">Search</a></li>
-                    <li><a href="#">Update</a></li>
-                    <li><a href="#">Delete</a></li>
-                </ul>
+                <button type="submit" name="Add" class="btn btn-default">Create<span></span></button>
             </div>
         </div>
-        
-	</div>
-</div>
+        </div>
+    </div>
+</form>
+
 {% endblock %}
+
+  
