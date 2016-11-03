@@ -129,7 +129,7 @@ def initialize():
             create_blogs_table(cursor)
             create_jobs_table(cursor)
             create_feeds_table(cursor)
-            create_genre_table(cursor)
+            create_genre_table(app.config['dsn'])
             create_book_table(cursor)
             create_quote_table(cursor)
             create_news_table(cursor)
@@ -298,6 +298,27 @@ def groups_page():
             newgroup = Group(id,newname)
             updateGroup(app.config['dsn'],id,newgroup)
             return render_template('groups.html',groups = selectGroup(app.config['dsn']))
+
+@app.route('/genres',methods=['GET', 'POST'])
+def genres_page():
+    if request.method == 'GET':
+        return render_template('genres.html',groups = selectGenre(app.config['dsn']))
+    else:
+        if 'Add' in request.form:
+            name = request.form['genrename']
+            genre = Genre(None,name)
+            insert_genre(app.config['dsn'],genre)
+            return render_template('genres.html',genres = selectGenre(app.config['dsn']))
+        if 'Delete' in request.form:
+            id=request.form['id']
+            deleteGenre(app.config['dsn'],id)
+            return render_template('genres.html',genres = selectGenre(app.config['dsn']))
+        if 'Update' in request.form:
+            id=request.form['id']
+            newname = request.form['newname']
+            newgenre = Genre(id,newname)
+            updateGenre(app.config['dsn'],id,newgenre)
+            return render_template('genres.html',genres = selectGenre(app.config['dsn']))
 
 
 
