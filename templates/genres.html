@@ -1,0 +1,53 @@
+{% extends "template.html" %}
+{% block title %}Genres{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='groups.css') }}" />
+{% endblock %}
+{% block navbar %}
+
+{% endblock %}
+{% block content %}
+
+<form action="{{ url_for('genres_page') }}" method="POST" role="form">
+    <div class="container">
+        <div class="row">
+        <div class="input-group input-group-lg">
+            <input type="text" name="genrename" class="form-control">
+            <div class="input-group-btn">
+                <button type="submit" name="Add" class="btn btn-default">Create<span></span></button>
+            </div>
+        </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="container">
+    <div class="row col-md-6 col-md-offset-2 custyle">
+    <table class="table table-striped custab">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Genre Name</th>
+            <th class="text-center">Delete</th>
+            <th class="text-center">Update</th>
+        </tr>
+    </thead>
+
+            {% for id, name in genres %}
+            <tr>
+                <td>{{ id }}</td>
+                <td name="name">{{ name }}</td>
+            <form method="POST" role="form">
+                <input type = "hidden" name = "id" value={{ id }}>
+                <td class="text-center"><button href="{{ url_for('genres_page') }}" type="submit" name="Delete" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span>Del</button></td>
+                <td><input type = "text" name = "newname"><button href="{{ url_for('genres_page') }}" type="submit" name="Update" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</button></td>
+        </form>
+            </tr>
+        {% endfor%}
+    </table>
+    </div>
+</div>
+
+{% endblock %}
+
