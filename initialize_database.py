@@ -69,7 +69,7 @@ def create_user_table(cursor):
                 USERID SERIAL PRIMARY KEY,
                 USERNAME VARCHAR(20) UNIQUE NOT NULL,
                 SALT VARCHAR(40) UNIQUE NOT NULL,
-                HASH VARCHAR(44) NOT NULL,
+                HASH VARCHAR(64) NOT NULL,
                 EMAIL VARCHAR(40) NOT NULL,
                 NAME VARCHAR(20) NOT NULL,
                 SURNAME VARCHAR(20) NOT NULL,

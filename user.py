@@ -1,5 +1,6 @@
 import hashlib
 import random
+import crypt
 
 class User:
     def __init__(self, userId, userName, password, salt, hash, email, name, surname, userTypeId):
@@ -14,16 +15,23 @@ class User:
         self.userTypeId = userTypeId
 
 def createRandomSalt():
-    ALPHABET = "0123456789ABCDEFGHJIKLMNOPQRSTUVQXYZabcdefghijklmnopqrstuvwxyz"
-    chars=[]
-    for i in range(10):
-        chars.append(random.choice(ALPHABET))
-    return chars
+    salt = crypt.mksalt(crypt.METHOD_SHA256)
+    return salt[:40]
+    #ALPHABET = "0123456789ABCDEFGHJIKLMNOPQRSTUVQXYZabcdefghijklmnopqrstuvwxyz"
+    #chars=[]
+    #for i in range(10):
+    #    chars.append(random.choice(ALPHABET))
+    #try:
+    #    b = ''.join(chars)
+    #except AttributeError:
+    #    import string
+    #    b = string.join(chars,'')
+    #return b
 
 def createHash(salt,password):
-    hash_object = hashlib.sha1(password.join(salt).encode())
-    hex_dig = hash_object.hexdigest()
-    return hex_dig
+    hash_object = hashlib.sha256(password.encode() + salt.encode())
+    return hash_object.hexdigest()
+    
 
 def insert_usertype(cursor,type):
     statement = """INSERT INTO USERTYPE (TYPE) VALUES (
