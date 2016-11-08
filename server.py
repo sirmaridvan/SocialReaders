@@ -23,6 +23,8 @@ from Feed import *
 from flask.globals import session
 from Groups import *
 from News import *
+from Members import *
+
 app = Flask(__name__)
 
 @app.route('/dontrunthis')
@@ -431,6 +433,72 @@ def admin_index():
         return redirect(url_for('home_page'))
 ###############################
 
+
+
+
+@app.route('/admin/authors',methods=['GET', 'POST'])
+def authoradmin_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        if request.method == 'GET':
+            return render_template('authoradmin.html',authors = selectAuthor(app.config['dsn']))
+        else:
+            if 'Delete' in request.form:
+                deleteid = request.form['deleteid']
+                deleteAuthor(app.config['dsn'],deleteid)
+                return redirect(url_for('authoradmin_page'))
+            if  'Update' in request.form:
+                updateid = request.form['updateid']
+                return render_template('authorupdate.html')
+            
+    else:
+        return render_template('home_page.html')
+    
+    
+    
+@app.route('/admin/authorsAdd',methods=['GET', 'POST'])
+def authorAdd_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        if request.method == 'GET':
+            return render_template('authoradd.html')
+        else:
+            if 'Add' in request.form:
+                name = request.form['name']
+                lastname = request.form['lastname']
+                birthyear = request.form['birthyear']
+                nationality = request.form['nationality']
+                penname = request.form['penname']
+                newauthor = Author(None,name,lastname,birthyear,nationality,penname)
+                insertAuthor(app.config['dsn'],newauthor)
+                return redirect(url_for('authoradmin_page'))
+        return render_template('authoradd.html')    
+    else:
+        return render_template('home_page.html')
+
+
+
+@app.route('/admin/authorsUpdate',methods=['GET', 'POST'])
+def authorupdate_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        if request.method == 'GET':
+            updateid = request.args.get('updateid')
+            return render_template('authorupdate.html',updateauthor = selectAuthorbyId(app.config['dsn'],updateid))
+        else:
+            if 'Update' in request.form:
+                updateid = request.form['updateid']
+                name = request.form['name']
+                lastname = request.form['lastname']
+                birthyear = request.form['birthyear']
+                nationality = request.form['nationality']
+                penname = request.form['penname']
+                updateauthor = Author(None,name,lastname,birthyear,nationality,penname)
+                updateAuthor(app.config['dsn'],updateid,updateauthor)
+                return redirect(url_for('authoradmin_page'))
+            return render_template('authorupdate.html',updateauthor = selectAuthorbyId(app.config['dsn'],updateid))    
+    else:
+        return render_template('home_page.html')
+
+
+
 @app.route('/authors',methods=['GET', 'POST'])
 def authors_page():
     if 'logged_in' in session and session['logged_in'] == True:
@@ -438,6 +506,8 @@ def authors_page():
             return render_template('authors.html', authors = selectAuthor(app.config['dsn']))
     else:
         return redirect(url_for('home_page'))
+    
+    
     
 @app.route('/groups',methods=['GET', 'POST'])
 def groups_page():
@@ -460,8 +530,19 @@ def groups_page():
                 newgroup = Group(id,newname)
                 updateGroup(app.config['dsn'],id,newgroup)
                 return render_template('groups.html',groups = selectGroup(app.config['dsn']))
+            if 'Join' in request.form:
+                groupid=request.form['id']
+                memberid = session['userId']
+                members = selectMember(app.config['dsn'],memberid,groupid)
+                if members is None:
+                    insert_member(app.config['dsn'],memberid,groupid)
+                return render_template('groups.html',groups = selectGroup(app.config['dsn']))
     else:
         return redirect(url_for('home_page'))
+
+
+
+
 
 @app.route('/genres',methods=['GET', 'POST'])
 def genres_page():
