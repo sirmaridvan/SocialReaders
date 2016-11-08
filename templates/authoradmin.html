@@ -1,5 +1,5 @@
 {% extends "admin_template.html" %}
-{% block title %}Admin Panel - Books{% endblock %}
+{% block title %}Admin Panel - Authors{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='users.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
@@ -39,17 +39,17 @@
             			{% for id, name, lastname, birthdate, nationality, penname in authors %}
 							<tr>
 								<td align="center">
-									<form action="{{ url_for('bookUpdate_page')}}" method="get" style="float: left;">
-										<button type="submit" name="edit" class="btn btn-default">
+									<form action="{{ url_for('authoradmin_page')}}" method="get" style="float: left;">
+										<button type="submit" name="Edit" class="btn btn-default">
 											<i class="fa fa-pencil"></i>
 										</button>
-										<input type="hidden" name="id" value="{{bookid}}"/>
+										<input type="hidden" name="id" value="{{ id }}"/>
 									</form>
-									<form action="{{ url_for('books_page')}}" method="post">
-										<button type="submit" name="delete" class="btn btn-danger">
+									<form action="{{ url_for('authoradmin_page')}}" method="post">
+										<button type="submit" name="Delete" class="btn btn-danger" >
 											<i class="glyphicon glyphicon-trash"></i>
 										</button>
-										<input type="hidden" name="deleteid" value="{{bookid}}"/>
+										<input type="hidden" name="deleteid" value="{{ id }}"/>
 									</form>
                          		</td>
 								    <td>{{ name }}</td>

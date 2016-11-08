@@ -428,12 +428,23 @@ def admin_index():
         return redirect(url_for('home_page'))
 ###############################
 
+
+
+
 @app.route('/admin/authors',methods=['GET', 'POST'])
 def authoradmin_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
-        return render_template('authoradmin.html',authors = selectAuthor(app.config['dsn']))
+        if request.method == 'GET':
+            return render_template('authoradmin.html',authors = selectAuthor(app.config['dsn']))
+        else:
+            if 'Delete' in request.form:
+                id = request.form['deleteid']
+                deleteAuthor(app.config['dsn'],id)
+            return redirect(url_for('authoradmin_page'))
     else:
         return render_template('home_page.html')
+    
+    
     
 @app.route('/admin/authorsAdd',methods=['GET', 'POST'])
 def authorAdd_page():
@@ -456,6 +467,7 @@ def authorAdd_page():
 
 
 
+
 @app.route('/authors',methods=['GET', 'POST'])
 def authors_page():
     if 'logged_in' in session and session['logged_in'] == True:
@@ -463,6 +475,8 @@ def authors_page():
             return render_template('authors.html', authors = selectAuthor(app.config['dsn']))
     else:
         return redirect(url_for('home_page'))
+    
+    
     
 @app.route('/groups',methods=['GET', 'POST'])
 def groups_page():
@@ -494,6 +508,10 @@ def groups_page():
                 return render_template('groups.html',groups = selectGroup(app.config['dsn']))
     else:
         return redirect(url_for('home_page'))
+
+
+
+
 
 @app.route('/genres',methods=['GET', 'POST'])
 def genres_page():
