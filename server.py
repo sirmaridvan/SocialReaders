@@ -168,13 +168,19 @@ def login_page():
                             session['isAdmin'] = True
                         else:
                             session['isAdmin'] = False
-                    #else:
+                        return redirect(url_for('home_page'))
+                    else:
+                        return render_template('login.html', isAlert = True, alertMessage = 'Username or password is invalid.')
 
                 elif "register-submit" in request.form:
                     salt = createRandomSalt()
                     getUserType(cursor,'User')
                     ((typeid),) = cursor.fetchall()
-                    insert_siteuser(cursor,User(0,request.form['username'], request.form['password'], salt, createHash(salt,request.form['password']),request.form['email'],request.form['name'],request.form['surname'],typeid))
+                    if request.form['password'] == request.form['confırmPassword']:
+                        insert_siteuser(cursor,User(0,request.form['username'], request.form['password'], salt, createHash(salt,request.form['password']),request.form['email'],request.form['name'],request.form['surname'],typeid))
+                        return redirect(url_for('home_page'))
+                    else:
+                        return render_template('login.html', isAlert = True, alertMessage = 'Passwords mismatched.')
             except dbapi2.Error as e:
                 print(e.pgerror)
             finally:
@@ -185,7 +191,6 @@ def login_page():
         finally:
             connection.commit()
             connection.close()
-            return redirect(url_for('home_page'))
     elif 'logged_in' in session and session['logged_in'] == True:
         return redirect(url_for('home_page'))
     else:
