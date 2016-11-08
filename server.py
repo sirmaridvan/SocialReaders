@@ -23,6 +23,8 @@ from Feed import *
 from flask.globals import session
 from Groups import *
 from News import *
+from Members import *
+
 app = Flask(__name__)
 
 @app.route('/dontrunthis')
@@ -454,6 +456,11 @@ def groups_page():
                 newname = request.form['newname']
                 newgroup = Group(id,newname)
                 updateGroup(app.config['dsn'],id,newgroup)
+                return render_template('groups.html',groups = selectGroup(app.config['dsn']))
+            if 'Join' in request.form:
+                groupid=request.form['id']
+                memberid = session['userId']
+                insert_member(app.config['dsn'],memberid,groupid)
                 return render_template('groups.html',groups = selectGroup(app.config['dsn']))
     else:
         return redirect(url_for('home_page'))
