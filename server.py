@@ -428,6 +428,34 @@ def admin_index():
         return redirect(url_for('home_page'))
 ###############################
 
+@app.route('/admin/authors',methods=['GET', 'POST'])
+def authoradmin_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        return render_template('authoradmin.html',authors = selectAuthor(app.config['dsn']))
+    else:
+        return render_template('home_page.html')
+    
+@app.route('/admin/authorsAdd',methods=['GET', 'POST'])
+def authorAdd_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        if request.method == 'GET':
+            return render_template('authoradd.html')
+        else:
+            if 'Add' in request.form:
+                name = request.form['name']
+                lastname = request.form['lastname']
+                birthyear = request.form['birthyear']
+                nationality = request.form['nationality']
+                penname = request.form['penname']
+                newauthor = Author(None,name,lastname,birthyear,nationality,penname)
+                insertAuthor(app.config['dsn'],newauthor)
+                return redirect(url_for('authoradmin_page'))
+        return render_template('authoradd.html')    
+    else:
+        return render_template('home_page.html')
+
+
+
 @app.route('/authors',methods=['GET', 'POST'])
 def authors_page():
     if 'logged_in' in session and session['logged_in'] == True:

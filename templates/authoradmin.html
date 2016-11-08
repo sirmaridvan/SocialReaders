@@ -1,0 +1,88 @@
+{% extends "admin_template.html" %}
+{% block title %}Admin Panel - Books{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='users.css') }}" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-10 col-md-offset-1">
+    	<div class="panel panel-default panel-table">
+        	<div class="panel-heading">
+            	<div class="row">
+              		<div class="col col-xs-6">
+              			<h3 class="panel-title">Authors</h3>
+              		</div>
+              		<div class="col col-xs-6 text-right">
+              			<form action="{{ url_for('authorAdd_page')}}" method="get" id="createNew">
+                			<button type="submit"  form="createNew" class="btn btn-sm btn-primary btn-create">Create New</button>
+               			</form>
+              		</div>
+            	</div>
+          	</div>
+          	<div class="panel-body">
+            	<table class="table table-striped table-bordered table-list">
+              		<thead>
+                 		<tr>
+                     		<th><em class="fa fa-cog"></em></th>
+							<th>Name</th>
+							<th>Last Name</th>
+							<th>Birth Year</th>
+							<th>Nationality</th>
+							<th>Pen Name</th>
+                		</tr>
+              		</thead>
+              		<tbody>
+            			{% for id, name, lastname, birthdate, nationality, penname in authors %}
+							<tr>
+								<td align="center">
+									<form action="{{ url_for('bookUpdate_page')}}" method="get" style="float: left;">
+										<button type="submit" name="edit" class="btn btn-default">
+											<i class="fa fa-pencil"></i>
+										</button>
+										<input type="hidden" name="id" value="{{bookid}}"/>
+									</form>
+									<form action="{{ url_for('books_page')}}" method="post">
+										<button type="submit" name="delete" class="btn btn-danger">
+											<i class="glyphicon glyphicon-trash"></i>
+										</button>
+										<input type="hidden" name="deleteid" value="{{bookid}}"/>
+									</form>
+                         		</td>
+								    <td>{{ name }}</td>
+                                                                    <td>{{ lastname }}</td>
+                                                                    <td>{{ birthdate }}</td>
+                                                                    <td>{{ nationality }}</td>
+                                                                    <td>{{ penname }}</td>
+							</tr>
+						{% endfor %}
+            		</tbody>
+            	</table>
+
+          	</div>
+          	<div class="panel-footer">
+            	<div class="row">
+              		<div class="col col-xs-4">Page 1 of 5</div>
+             		<div class="col col-xs-8">
+                		<ul class="pagination hidden-xs pull-right">
+	                  		<li><a href="#">1</a></li>
+	                  		<li><a href="#">2</a></li>
+	                  		<li><a href="#">3</a></li>
+	                  		<li><a href="#">4</a></li>
+	                  		<li><a href="#">5</a></li>
+                		</ul>
+                		<ul class="pagination visible-xs pull-right">
+                    		<li><a href="#">«</a></li>
+                    		<li><a href="#">»</a></li>
+                		</ul>
+              		</div>
+           		</div>
+          	</div>
+        </div>
+	</div>
+</div>
+
+{% endblock %}

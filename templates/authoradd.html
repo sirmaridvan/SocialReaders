@@ -1,0 +1,70 @@
+{% extends "admin_template.html" %}
+{% block title %}Admin Panel - Add Author{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+	<div class="container">
+		<form class="form-horizontal" method="POST">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Add Author</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="name">Name</label>  
+  <div class="col-md-4">
+  <input id="name" name="name" type="text" placeholder="" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="lastname">Lastname</label>  
+  <div class="col-md-4">
+  <input id="lastname" name="lastname" type="text" placeholder="" class="form-control input-md" equired="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="birthyear">Birth Year</label>  
+  <div class="col-md-4">
+  <input id="birthyear" name="birthyear" type="text" placeholder="" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="nationality">Nationality</label>  
+  <div class="col-md-4">
+  <input id="nationality" name="nationality" type="text" placeholder="" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="penname">Pen Name</label>  
+  <div class="col-md-4">
+  <input id="penname" name="penname" type="text" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Button (Double) -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="Add"></label>
+  <div class="col-md-8">
+    <button id="Add" name="Add" class="btn btn-success">Add</button>
+    <button id="Cancel" name="Cancel" class="btn btn-danger">Cancel</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+	</div>
+{% endblock %}
