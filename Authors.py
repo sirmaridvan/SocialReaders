@@ -11,7 +11,7 @@ class Author:
 
 author1 = Author(None,"Ernest","Hemingway",1899,"American",None)
 author2 = Author(None,"Samuel","Clemens",1835,"American","Mark Twain")
-author3 = Author(None,"Metehan","Gültekin",1995,"Turkish",None)
+author3 = Author(None,"Metehan","Gültekin",1994,"Turkish",None)
 author4 = Author(None,"İlay","Köksal",1995,"Turkish",None)
 
 
@@ -41,18 +41,28 @@ def selectAuthorbyLastName(dsn,lastname):
         authors = cursor.fetchall()
         return authors
         cursor.close()
+        
+        
+def selectAuthorbyId(dsn,selectid):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """SELECT * FROM AUTHORS WHERE ID = %s"""
+        cursor.execute(statement,[selectid])
+        authors = cursor.fetchall()
+        return authors
+        cursor.close()        
+        
 
-
-def deleteAuthor(dsn,id):
+def deleteAuthor(dsn,deleteid):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """ DELETE FROM AUTHORS WHERE ID = %s"""
-        cursor.execute(statement,(id))
+        cursor.execute(statement,(deleteid))
         cursor.close()
 
-def updateAuthor(dsn,id,newauthor):
+def updateAuthor(dsn,updateid,newauthor):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
-        statement = """ UPDATE AUTHORS SET NAME = %s LASTNAME = %s BIRTHDAY = %s NATIONALITY = %s PENNAME = %s WHERE ID = %s"""
-        cursor.execute(statement,(newauthor.name,newauthor.lastname,newauthor.birthdate,newauthor.nationality,newauthor.penname,id))
+        statement = """ UPDATE AUTHORS SET NAME = %s, LASTNAME = %s, BIRTHDATE = %s, NATIONALITY = %s, PENNAME = %s WHERE ID = %s"""
+        cursor.execute(statement,(newauthor.name,newauthor.lastname,newauthor.birthdate,newauthor.nationality,newauthor.penname,updateid))
         cursor.close()

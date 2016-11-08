@@ -438,9 +438,13 @@ def authoradmin_page():
             return render_template('authoradmin.html',authors = selectAuthor(app.config['dsn']))
         else:
             if 'Delete' in request.form:
-                id = request.form['deleteid']
-                deleteAuthor(app.config['dsn'],id)
-            return redirect(url_for('authoradmin_page'))
+                deleteid = request.form['deleteid']
+                deleteAuthor(app.config['dsn'],deleteid)
+                return redirect(url_for('authoradmin_page'))
+            if  'Update' in request.form:
+                updateid = request.form['updateid']
+                return render_template('authorupdate.html')
+            
     else:
         return render_template('home_page.html')
     
@@ -465,6 +469,28 @@ def authorAdd_page():
     else:
         return render_template('home_page.html')
 
+
+
+@app.route('/admin/authorsUpdate',methods=['GET', 'POST'])
+def authorupdate_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        if request.method == 'GET':
+            updateid = request.args.get('updateid')
+            return render_template('authorupdate.html',updateauthor = selectAuthorbyId(app.config['dsn'],updateid))
+        else:
+            if 'Update' in request.form:
+                updateid = request.form['updateid']
+                name = request.form['name']
+                lastname = request.form['lastname']
+                birthyear = request.form['birthyear']
+                nationality = request.form['nationality']
+                penname = request.form['penname']
+                updateauthor = Author(None,name,lastname,birthyear,nationality,penname)
+                updateAuthor(app.config['dsn'],updateid,updateauthor)
+                return redirect(url_for('authoradmin_page'))
+            return render_template('authorupdate.html',updateauthor = selectAuthorbyId(app.config['dsn'],updateid))    
+    else:
+        return render_template('home_page.html')
 
 
 

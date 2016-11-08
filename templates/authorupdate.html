@@ -1,0 +1,72 @@
+{% extends "admin_template.html" %}
+{% block title %}Admin Panel - Update Author{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+	<div class="container">
+		<form class="form-horizontal" method="POST">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Update Author</legend>
+
+<!-- Text input-->
+{% for id, name, lastname, birthdate, nationality, penname in updateauthor %}
+<div class="form-group">
+  <label class="col-md-4 control-label" for="name">Name</label>  
+  <div class="col-md-4">
+  <input id="name" name="name" type="text" value={{ name }} placeholder="" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="lastname">Lastname</label>  
+  <div class="col-md-4"> 
+  <input id="lastname" name="lastname" type="text" value={{ lastname }}  placeholder="" class="form-control input-md" equired="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="birthyear">Birth Year</label>  
+  <div class="col-md-4">
+  <input id="birthyear" name="birthyear" type="text" value={{ birthdate }} placeholder="" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="nationality">Nationality</label>  
+  <div class="col-md-4">
+  <input id="nationality" name="nationality" type="text" value= {{ nationality }}  placeholder="" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="penname">Pen Name</label>  
+  <div class="col-md-4">
+  <input id="penname" name="penname" type="text" value="" placeholder="insert the penname if exists" class="form-control input-md">
+    
+  </div>
+</div>
+
+<input name ="updateid" type="hidden" value = {{ id }}>
+<!-- Button (Double) -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="Update"></label>
+  <div class="col-md-8">
+    <button id="Add" name="Update" class="btn btn-success">Update</button>
+    <button id="Cancel" name="Cancel" class="btn btn-danger">Cancel</button>
+  </div>
+</div>
+{% endfor %}
+</fieldset>
+</form>
+	</div>
+{% endblock %}

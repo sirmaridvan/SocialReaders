@@ -39,13 +39,13 @@
             			{% for id, name, lastname, birthdate, nationality, penname in authors %}
 							<tr>
 								<td align="center">
-									<form action="{{ url_for('authoradmin_page')}}" method="get" style="float: left;">
-										<button type="submit" name="Edit" class="btn btn-default">
+									<form  action="{{ url_for('authorupdate_page')}}" method="get" style="float: left;">
+										<button type="submit" name="Update" class="btn btn-default">
 											<i class="fa fa-pencil"></i>
 										</button>
-										<input type="hidden" name="id" value="{{ id }}"/>
+										<input type="hidden" name="updateid" value="{{ id }}"/>
 									</form>
-									<form action="{{ url_for('authoradmin_page')}}" method="post">
+									<form  method="post">
 										<button type="submit" name="Delete" class="btn btn-danger" >
 											<i class="glyphicon glyphicon-trash"></i>
 										</button>
