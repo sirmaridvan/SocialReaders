@@ -460,7 +460,9 @@ def groups_page():
             if 'Join' in request.form:
                 groupid=request.form['id']
                 memberid = session['userId']
-                insert_member(app.config['dsn'],memberid,groupid)
+                members = selectMember(app.config['dsn'],memberid,groupid)
+                if members is None:
+                    insert_member(app.config['dsn'],memberid,groupid)
                 return render_template('groups.html',groups = selectGroup(app.config['dsn']))
     else:
         return redirect(url_for('home_page'))
