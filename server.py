@@ -159,7 +159,10 @@ def login_page():
                 if "login-submit" in request.form:
                     username = request.form['username']
                     getUser(cursor, username)
-                    ((userid,salt,hash,usertypeid),) =  cursor.fetchall()
+                    if cursor.rowcount > 0:
+                        ((userid,salt,hash,usertypeid),) =  cursor.fetchall()
+                    else:
+                        return render_template('login.html', isAlert = True, alertMessage = 'Username or password is invalid.')
                     password = request.form['password']
                     createdHash = createHash(salt,password)
                     if hash == createdHash:
@@ -178,7 +181,7 @@ def login_page():
                     salt = createRandomSalt()
                     getUserType(cursor,'User')
                     ((typeid),) = cursor.fetchall()
-                    if request.form['password'] == request.form['confırmPassword']:
+                    if request.form['password'] == request.form['confirm-password']:
                         insert_siteuser(cursor,User(0,request.form['username'], request.form['password'], salt, createHash(salt,request.form['password']),request.form['email'],request.form['name'],request.form['surname'],typeid))
                         return redirect(url_for('home_page'))
                     else:
@@ -196,7 +199,7 @@ def login_page():
     elif 'logged_in' in session and session['logged_in'] == True:
         return redirect(url_for('home_page'))
     else:
-        return render_template('login.html')
+        return render_template('login.html',isAlert = False, alertMessage = '')
     
 @app.route('/logout')
 def logout_page():
@@ -262,6 +265,10 @@ def userAdd_page():
                         user = User(0,request.form['username'],request.form['password'],salt,hash,request.form['email'],request.form['name'],request.form['surname'],request.form['usertypeid'])
                         insert_siteuser(cursor,user)
                         return redirect(url_for('users_page'))
+                else:
+                    getAllUserTypes(cursor)
+                    mUserTypes = cursor.fetchall()
+                    return render_template('useradd.html',userTypes = mUserTypes)
             except dbapi2.Error as e:
                     print(e.pgerror)
             finally:
@@ -272,7 +279,6 @@ def userAdd_page():
         finally:
             connection.commit()
             connection.close()
-        return render_template('useradd.html')
     else:
         return redirect(url_for('home_page'))
     
@@ -288,7 +294,9 @@ def userUpdate_page():
                     getUserById(cursor,userid)
                     ((id,username,salt,hash,email,name,surname,usertypeid),) = cursor.fetchall()
                     mUser = User(id,username,"",salt,hash,email,name,surname,usertypeid)
-                    return render_template('userupdate.html',user = mUser)
+                    getAllUserTypes(cursor)
+                    mUserTypes = cursor.fetchall()
+                    return render_template('userupdate.html',user = mUser, userTypes = mUserTypes)
                 elif request.method == 'POST':
                     if 'update' in request.form:
                         user = User(request.form['userid'],request.form['username'],request.form['password'],request.form['salt'],createHash(request.form['salt'],request.form['password']), request.form['email'],request.form['name'],request.form['surname'],request.form['usertypeid'])

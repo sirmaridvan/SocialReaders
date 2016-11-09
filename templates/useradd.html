@@ -56,9 +56,13 @@
 
 				<!-- Text input-->
 				<div class="form-group">
-				  <label class="col-md-4 control-label" for="usertypeid">USERTYPEID</label>
+				  <label class="col-md-4 control-label" for="usertypeid">USERTYPE</label>
 				  <div class="col-md-4">
-				  <input id="usertypeid" name="usertypeid" value="" type="text" placeholder="" class="form-control input-md" required="">
+	  			  		 <select class="selectpicker" data-size="2" name="usertypeid">
+			  		    	{% for id, type in userTypes %}
+						      <option value={{id}} {% if type == 'User' %}selected="selected"{% endif %} >{{type}}</option>
+			  		    	{% endfor %}
+					  	</select>
 				  </div>
 				</div>
 				<div class="form-group">

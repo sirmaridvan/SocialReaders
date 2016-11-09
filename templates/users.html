@@ -56,7 +56,7 @@
 								<td>{{name}}</td>
 								<td>{{surname}}</td>
 								<td>{{email}}</td>
-								<td><input type="checkbox" checked={{usertypeid}} class="checkthis" /></td>
+								<td><input type="checkbox" class="checkthis" {% if usertypeid == 1 %}checked{% endif %} disabled="disabled"/></td>
 							</tr>
 						{% endfor %}
             		</tbody>

@@ -14,7 +14,6 @@
 
 	<link rel="stylesheet" href="{{ url_for('static', filename='template.css') }}" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="{{ url_for('static', filename='tab_menu.css') }}" />
     {% block head %}{% endblock %}
 </head>
 <body>
@@ -24,17 +23,18 @@
 	            <div class="container">
 	                <div class="navbar-header">
 	                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-	                    <span class="sr-only">Toggle navigation</span>
-	                    <span class="icon-bar"></span>
-	                    <span class="icon-bar"></span>
-	                    <span class="icon-bar"></span>
+		                    <span class="sr-only">Toggle navigation</span>
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
 	                    </button>
-	                            <a href={{url_for('home_page')}} class="btn btn-info btn-lg">
-						        	<span class="glyphicon glyphicon-book"></span> SocialReaders
-						        </a>
+                        <a href={{url_for('home_page')}} class="btn btn-info btn-lg">
+				        	<span class="glyphicon glyphicon-book"></span> SocialReaders
+				        </a>
 	                </div>
 	                <div id="navbar" class="navbar-collapse collapse">
 						<ul class="nav navbar-nav">
+							{% if session.logged_in %}
 		                        <li><a href={{url_for('book_page')}}>Books</a></li>
 		                        <li><a href={{url_for('authors_page')}}>Authors</a></li>
 		                        <li><a href={{url_for('news_page')}}>News</a></li>
@@ -52,16 +52,18 @@
 		                                <li><a href="{{ url_for('book_page') }}">Book</a></li>
 		                            </ul>
 		                        </li>
-		                    </ul>
-		                    <ul class="nav navbar-nav pull-right">
-		                    	{% if session.logged_in %}
+							{% endif %}
+						</ul>
+	                    <ul class="nav navbar-nav pull-right">
+	                    	{% if session.logged_in %}
+	                    		<li class=""><a href="">Welcome, {{ session.username }}</a></li>
 		                        <li class=""><a href={{url_for('profile_page')}}>Profile</a></li>
 		                        <li class=""><a href={{url_for('logout_page')}}>Log Out</a></li>
-		                        {% else %}
+	                        {% else %}
 		                        <li class=""><a href={{url_for('login_page')}}>Login</a></li>
 		                        <li class=""><a href={{url_for('login_page')}}>Register</a></li>
-		                        {% endif %}
-		                    </ul>
+	                        {% endif %}
+	                    </ul>
 	                </div>
 	            </div>
 	        </nav>
