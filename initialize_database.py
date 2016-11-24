@@ -29,6 +29,12 @@ def dropUserTable(cursor):
                 """
     cursor.execute(statement)
     
+def dropFollowerTable(cursor):
+    statement = """
+                DROP TABLE IF EXISTS FOLLOWER CASCADE;
+                """
+    cursor.execute(statement)
+    
 def create_usertype_table(cursor):
     statement = """CREATE TABLE USERTYPE (
                 ID SERIAL PRIMARY KEY,
@@ -73,7 +79,15 @@ def create_user_table(cursor):
                 EMAIL VARCHAR(40) NOT NULL,
                 NAME VARCHAR(20) NOT NULL,
                 SURNAME VARCHAR(20) NOT NULL,
-                USERTYPEID INTEGER REFERENCES USERTYPE(ID) ON UPDATE CASCADE
+                USERTYPEID INTEGER REFERENCES USERTYPE(ID) ON DELETE RESTRICT ON UPDATE CASCADE
+                )"""
+    cursor.execute(statement)
+    
+def create_user_follower_table(cursor):
+    statement = """CREATE TABLE FOLLOWER(
+                FOLLOWERUSERID INTEGER REFERENCES SITEUSER(USERID) ON DELETE RESTRICT ON UPDATE CASCADE,
+                FOLLOWINGUSERID INTEGER REFERENCES SITEUSER(USERID) ON DELETE RESTRICT ON UPDATE CASCADE,
+                PRIMARY KEY{FOLLOWERUSERID,FOLLOWINDUSERID}
                 )"""
     cursor.execute(statement)
 

@@ -13,7 +13,7 @@
 	        <a href="mail-compose.html" class="btn btn-danger btn-block btn-compose-email">Compose Email</a>
 	        <ul class="nav nav-pills nav-stacked nav-email shadow mb-20">
 	            <li class="active">
-	                <a href="#mail-inbox.html">
+	                <a href="{{ url_for('messages_page')}}">
 	                    <i class="fa fa-inbox"></i> Inbox  <span class="label pull-right">7</span>
 	                </a>
 	            </li>
@@ -101,6 +101,7 @@
 	                              <li class="list-group-item"><i class="fa fa-envelope"></i> john@example.com</li>
 	                           </ul>
 	                        </div>
+	                        <button data-toggle="modal" data-target="#squarespaceModal" class="btn btn-primary center-block">Follow</button>
 	                     </div>
 	                  </div>
 	               </div>
@@ -255,6 +256,163 @@
 	
 	    </div>
 	</div>
+	<!-- line modal -->
+	<div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+				<h3 class="modal-title" id="lineModalLabel">Followers</h3>
+			</div>
+			<div class="modal-body">	
+	            <!-- content goes here -->
+	            <div class="row">
+				    <div class="col-md-6">
+				        <div class="well well-white mini-profile-widget"> 
+				            <div class="image-container">
+				                <img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="avatar img-responsive" alt="avatar">
+				            </div>   
+				            <div class="details">
+				                <h4>John Doe</h4>
+				                <hr> 
+				                <div>Lives in Miami, Florida</div>
+				                <div class="mg-top-10">32 Followers | 120 Following | 18 Posts</div>
+				                <p class="mg-top-20"> 
+				                    <a href="javascript:void(0);" class="btn btn-blue">
+				                        <i class="fa fa-facebook fa-fw"></i>
+				                    </a>
+				                    <a href="javascript:void(0);" class="btn btn-info">
+				                        <i class="fa fa-twitter fa-fw"></i>
+				                    </a>
+				                    <a href="javascript:void(0);" class="btn btn-red">
+				                        <i class="fa fa-google-plus fa-fw"></i>
+				                    </a>
+				                </p>
+				            </div> 
+				        </div>
+				    </div>
+				    <div class="col-md-6">
+				        <div class="well well-white mini-profile-widget"> 
+				            <div class="image-container">
+				                <img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="avatar img-responsive" alt="avatar">
+				            </div>   
+				            <div class="details">
+				                <h4>John Doe</h4>
+				                <hr> 
+				                <div>Lives in Miami, Florida</div>
+				                <div class="mg-top-10">32 Followers | 120 Following | 18 Posts</div>
+				                <p class="mg-top-20"> 
+				                    <a href="javascript:void(0);" class="btn btn-blue">
+				                        <i class="fa fa-facebook fa-fw"></i>
+				                    </a>
+				                    <a href="javascript:void(0);" class="btn btn-info">
+				                        <i class="fa fa-twitter fa-fw"></i>
+				                    </a>
+				                    <a href="javascript:void(0);" class="btn btn-red">
+				                        <i class="fa fa-google-plus fa-fw"></i>
+				                    </a>
+				                </p>
+				            </div> 
+				        </div>
+				    </div>
+				    <div class="col-md-6">
+				        <div class="well well-white mini-profile-widget"> 
+				            <div class="image-container">
+				                <img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="avatar img-responsive" alt="avatar">
+				            </div>   
+				            <div class="details">
+				                <h4>John Doe</h4>
+				                <hr> 
+				                <div>Lives in Miami, Florida</div>
+				                <div class="mg-top-10">32 Followers | 120 Following | 18 Posts</div>
+				                <p class="mg-top-20"> 
+				                    <a href="javascript:void(0);" class="btn btn-blue">
+				                        <i class="fa fa-facebook fa-fw"></i>
+				                    </a>
+				                    <a href="javascript:void(0);" class="btn btn-info">
+				                        <i class="fa fa-twitter fa-fw"></i>
+				                    </a>
+				                    <a href="javascript:void(0);" class="btn btn-red">
+				                        <i class="fa fa-google-plus fa-fw"></i>
+				                    </a>
+				                </p>
+				            </div> 
+				        </div>
+				    </div>
+				</div>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	 </div>
 </div>
+
+<script>
+	$(function () {
+	    $('.button-checkbox').each(function () {
+	
+	        // Settings
+	        var $widget = $(this),
+	            $button = $widget.find('button'),
+	            $checkbox = $widget.find('input:checkbox'),
+	            color = $button.data('color'),
+	            settings = {
+	                on: {
+	                    icon: 'glyphicon glyphicon-check'
+	                },
+	                off: {
+	                    icon: 'glyphicon glyphicon-unchecked'
+	                }
+	            };
+	
+	        // Event Handlers
+	        $button.on('click', function () {
+	            $checkbox.prop('checked', !$checkbox.is(':checked'));
+	            $checkbox.triggerHandler('change');
+	            updateDisplay();
+	        });
+	        $checkbox.on('change', function () {
+	            updateDisplay();
+	        });
+	
+	        // Actions
+	        function updateDisplay() {
+	            var isChecked = $checkbox.is(':checked');
+	
+	            // Set the button's state
+	            $button.data('state', (isChecked) ? "on" : "off");
+	
+	            // Set the button's icon
+	            $button.find('.state-icon')
+	                .removeClass()
+	                .addClass('state-icon ' + settings[$button.data('state')].icon);
+	
+	            // Update the button's color
+	            if (isChecked) {
+	                $button
+	                    .removeClass('btn-default')
+	                    .addClass('btn-' + color + ' active');
+	            }
+	            else {
+	                $button
+	                    .removeClass('btn-' + color + ' active')
+	                    .addClass('btn-default');
+	            }
+	        }
+	
+	        // Initialization
+	        function init() {
+	
+	            updateDisplay();
+	
+	            // Inject the icon if applicable
+	            if ($button.find('.state-icon').length == 0) {
+	                $button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
+	            }
+	        }
+	        init();
+	    });
+	});
+</script>
 {% endblock %}
 

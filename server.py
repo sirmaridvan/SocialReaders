@@ -315,6 +315,28 @@ def userUpdate_page():
         return render_template('userupdate.html')
     else:
         return redirect(url_for('home_page'))
+    
+@app.route('/messages',methods=['GET', 'POST'])
+def messages_page():
+    if 'logged_in' in session and session['logged_in'] == True:
+        connection = dbapi2.connect(app.config['dsn'])
+        try:
+            cursor =connection.cursor()
+            try:
+                a = 5
+            except dbapi2.Error as e:
+                    print(e.pgerror)
+            finally:
+                    cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
+        return render_template('messages.html')
+    else:
+        return redirect(url_for('home_page'))
 ##############
 
 #Emre's Part
