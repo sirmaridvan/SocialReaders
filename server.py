@@ -432,11 +432,7 @@ def update_post_page():
                     cursor.execute(statement,{'userid':userid})
                     return render_template('updatePost.html',post=cursor)
                 if request.method == 'POST':
-                    text = request.form['text']
-                    userid = request.form['userid']
-                    date=datetime.datetime.now()
-                    statement = """UPDATE BLOGS SET TEXT=%(text)s, DATE=%(date)s WHERE (ID = %(userid)s)"""
-                    cursor.execute(statement,{'text':text,'date':date,'userid':userid})
+                    updatePost(cursor,request.form['text'],request.form['userid'],datetime.datetime.now())
                     return redirect(url_for('blogs_page'))
             except dbapi2.Error as e:
                 print(e.pgerror)
