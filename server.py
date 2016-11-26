@@ -24,6 +24,7 @@ from flask.globals import session
 from Groups import *
 from News import *
 from Members import *
+from message import *
 
 app = Flask(__name__)
 
@@ -34,10 +35,12 @@ def initialize():
     try:
         cursor =connection.cursor()
         try:
+            dropUserMessagesTable(cursor)
             dropUserTable(cursor)
             dropUserTypeTable(cursor)
             create_usertype_table(cursor)
             create_user_table(cursor)
+            create_user_message_table(cursor)
             insert_usertype(cursor,'Admin')
             insert_usertype(cursor,'User')
             salt1 = createRandomSalt()
@@ -213,7 +216,26 @@ def logout_page():
 @app.route('/profile', methods=['GET', 'POST'])
 def profile_page():
     if 'logged_in' in session and session['logged_in'] == True:
-        return render_template('profile.html')
+        connection = dbapi2.connect(app.config['dsn'])
+        try:
+            cursor =connection.cursor()
+            try:
+                getReceivedMessages(cursor,session['userId'])
+                if cursor.rowcount > 9:
+                    messageCount = '9+'
+                else:
+                    messageCount = str(cursor.rowcount)
+                return render_template('profile.html', unreadMessageCount = messageCount)
+            except dbapi2.Error as e:
+                print(e.pgerror)
+            finally:
+                cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
     else:
         return redirect(url_for('home_page'))
     
@@ -319,22 +341,61 @@ def userUpdate_page():
 @app.route('/messages',methods=['GET', 'POST'])
 def messages_page():
     if 'logged_in' in session and session['logged_in'] == True:
-        connection = dbapi2.connect(app.config['dsn'])
-        try:
-            cursor =connection.cursor()
+        if request.method == 'GET':
+            connection = dbapi2.connect(app.config['dsn'])
             try:
-                a = 5
+                cursor =connection.cursor()
+                try:
+                    getReceivedMessages(cursor,session['userId'])
+                    mReceivedMessages = cursor.fetchall()
+    
+                    getSentMessages(cursor,session['userId'])
+                    mSentMessages = cursor.fetchall()
+                    return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
+                except dbapi2.Error as e:
+                        print(e.pgerror)
+                finally:
+                        cursor.close()
             except dbapi2.Error as e:
-                    print(e.pgerror)
+                print(e.pgerror)
+                connection.rollback()
             finally:
-                    cursor.close()
-        except dbapi2.Error as e:
-            print(e.pgerror)
-            connection.rollback()
-        finally:
-            connection.commit()
-            connection.close()
-        return render_template('messages.html')
+                connection.commit()
+                connection.close()
+            return render_template('messages.html')
+        elif 'sendMessage' in request.form:
+            connection = dbapi2.connect(app.config['dsn'])
+            try:
+                cursor =connection.cursor()
+                try:
+                    getUser(cursor,request.form['receiverUserName'])
+                    if cursor.rowcount > 0:
+                        ((receiver),) = cursor.fetchall()
+                        message = Message(0,session['userId'],receiver[0],request.form['message'],False)
+                        insertUserMessage(cursor,message)
+                        getReceivedMessages(cursor,session['userId'])
+                        mReceivedMessages = cursor.fetchall()
+                        getSentMessages(cursor,session['userId'])
+                        mSentMessages = cursor.fetchall()
+                        return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
+                    else:
+                        getReceivedMessages(cursor,session['userId'])
+                        mReceivedMessages = cursor.fetchall()
+        
+                        getSentMessages(cursor,session['userId'])
+                        mSentMessages = cursor.fetchall()
+                        return render_template('messages.html', isAlert = True, alertMessage = 'Could not find specified user.',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
+                except dbapi2.Error as e:
+                        print(e.pgerror)
+                finally:
+                        cursor.close()
+            except dbapi2.Error as e:
+                print(e.pgerror)
+                connection.rollback()
+            finally:
+                connection.commit()
+                connection.close()
+            return render_template('messages.html')
     else:
         return redirect(url_for('home_page'))
 ##############

@@ -30,12 +30,6 @@
                 <li><a href="#sent-mail" role="tab" data-toggle="tab">Sent mail</a>
 
                 </li>
-                <li><a href="#draft" role="tab" data-toggle="tab">Draft</a>
-
-                </li>
-                <li><a href="#trash" role="tab" data-toggle="tab">Trash</a>
-
-                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -44,7 +38,14 @@
 </nav>
 
 
-
+{% if isAlert == True %}
+	<div class="container">
+		<div class="alert alert-danger">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			<span><strong>Notice: </strong> {{ alertMessage }}</span>
+		</div>
+	</div>
+{% endif %}
 
 <div class="tab-content">
   <div class="tab-pane active" id="inbox">
@@ -57,72 +58,37 @@
                    <input type="search" placeholder="Search Mail" class="form-control mail-search" />
                    
                    <ul class="mail-list">
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">You have ten more subscriptions click her...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
+                   		{% for messageid, senderid, receiverid, text, isread, senderusername in receivedMessages %}
+	                       <li {% if isread == False %}style="background-color:#DBF9FF;" {% endif %} >
+	                           <a href="">
+	                               <span class="mail-sender">{{ senderusername }}</span>
+	                               <span class="mail-message-preview">{{ text }}</span>
+	                           </a>
+	                       </li>
+						{% endfor %}
                    </ul>
                </div>
            </div>
        </div>
       
   </div>
-  <div class="tab-pane" id="compose">
-      
-      <div class="container">
-    <div class="content-container clearfix">
-        <h1 class="content-title">Compose</h1>
-        <div class="col-md-12">
-            <div class="form-group">
-                <input id="tokenfield" type="text" class="form-control" placeholder="To" />
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Cc" />
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Bcc" />
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Subject" />
-            </div>
-            <textarea class="form-control" placeholder="message"></textarea>
-            <div class="btn-send">
-            <button class="btn btn-success btn-lg"><span class="glyphicon glyphicon-send"></span> Send</button>
-            </div>
-        </div>
-    </div>
-</div>
+<div class="tab-pane" id="compose">
+  	<div class="container">
+   		<div class="content-container clearfix">
+	        <h1 class="content-title">Compose</h1>
+	        <div class="col-md-12">
+	            <form action="{{url_for('messages_page')}}" method="post">
+	            	<div class="form-group">
+		                <input id="receiverUserName" name="receiverUserName" type="text" class="form-control" placeholder="To" />
+		            </div>
+		            <textarea  id="message" name="message" class="form-control" placeholder="Message"></textarea>
+		            <div class="btn-send">
+		            	<button name="sendMessage" type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-send"></span> Send</button>
+		            </div>
+	            </form>
+	        </div>
+	    </div>
+	</div>
       
   </div>
   <div class="tab-pane" id="sent-mail">
@@ -135,143 +101,14 @@
                    <input type="search" placeholder="Search Mail" class="form-control mail-search" />
                    
                    <ul class="mail-list">
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">You have ten more subscriptions click her...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
-                   </ul>
-               </div>
-           </div>
-       </div>
-      
-  </div>
-  <div class="tab-pane" id="draft">
-      
-      <div class="container">
-           <div class="content-container clearfix">
-               <div class="col-md-12">
-                   <h1 class="content-title">Draft</h1>
-                   
-                   <input type="search" placeholder="Search Mail" class="form-control mail-search" />
-                   
-                   <ul class="mail-list">
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">You have ten more subscriptions click her...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
-                   </ul>
-               </div>
-           </div>
-       </div>
-      
-  </div>
-  <div class="tab-pane" id="trash">
-      
-      <div class="container">
-           <div class="content-container clearfix">
-               <div class="col-md-12">
-                   <h1 class="content-title">Trash</h1>
-                   
-                   <input type="search" placeholder="Search Mail" class="form-control mail-search" />
-                   
-                   <ul class="mail-list">
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">You have ten more subscriptions click her...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
-                       <li>
-                           <a href="">
-                               <span class="mail-sender">You Tube</span>
-                               <span class="mail-subject">New subscribers!</span>
-                               <span class="mail-message-preview">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil eveniet ipsum nisi? Eaque odio quae debitis saepe explicabo alias sit tenetur animi...</span>
-                           </a>
-                       </li>
+                   		{% for messageid, senderid, receiverid, text, isread, receiverusername in sentMessages %}
+	                       <li>
+	                           <a href="">
+	                               <span class="mail-sender">{{ receiverusername }}</span>
+	                               <span class="mail-message-preview">{{ text }}</span>
+	                           </a>
+	                       </li>
+                       	{% endfor %}
                    </ul>
                </div>
            </div>

@@ -17,6 +17,8 @@ def drop_tables(cursor):
                 """
     cursor.execute(statement)
 
+##Elif's drop operations###
+
 def dropUserTypeTable(cursor):
     statement = """
                 DROP TABLE IF EXISTS USERTYPE CASCADE;
@@ -35,12 +37,11 @@ def dropFollowerTable(cursor):
                 """
     cursor.execute(statement)
     
-def create_usertype_table(cursor):
-    statement = """CREATE TABLE USERTYPE (
-                ID SERIAL PRIMARY KEY,
-                TYPE VARCHAR(8) NOT NULL
-                )"""
-    cursor.execute(statement);
+def dropUserMessagesTable(cursor):
+    statement = """
+                DROP TABLE IF EXISTS USERMESSAGE CASCADE;
+                """
+    cursor.execute(statement)
 
 def create_blogs_table(cursor):
     statement = """CREATE TABLE IF NOT EXISTS BLOGS (
@@ -70,6 +71,13 @@ def create_feeds_table(cursor):
                 )"""
     cursor.execute(statement);
 
+def create_usertype_table(cursor):
+    statement = """CREATE TABLE USERTYPE (
+                ID SERIAL PRIMARY KEY,
+                TYPE VARCHAR(8) NOT NULL
+                )"""
+    cursor.execute(statement);
+
 def create_user_table(cursor):
     statement = """CREATE TABLE SITEUSER (
                 USERID SERIAL PRIMARY KEY,
@@ -90,7 +98,17 @@ def create_user_follower_table(cursor):
                 PRIMARY KEY{FOLLOWERUSERID,FOLLOWINDUSERID}
                 )"""
     cursor.execute(statement)
-
+    
+def create_user_message_table(cursor):
+    statement = """CREATE TABLE USERMESSAGE (
+                MESSAGEID SERIAL PRIMARY KEY,
+                SENDERID INTEGER REFERENCES SITEUSER(USERID) ON DELETE RESTRICT ON UPDATE CASCADE,
+                RECEIVERID INTEGER REFERENCES SITEUSER(USERID) ON DELETE RESTRICT ON UPDATE CASCADE,
+                TEXT VARCHAR(200) NOT NULL,
+                ISREAD BOOLEAN NOT NULL
+                )"""
+    cursor.execute(statement)
+                
 ''' Author table '''
 
 def create_author_table(dsn):
@@ -106,10 +124,9 @@ def create_author_table(dsn):
         )"""
         cursor.execute(statement)
         cursor.close()
+        
 
 ''' Groups Table '''
-
-
 
 def create_groups_table(dsn):
     with dbapi2.connect(dsn) as connection:

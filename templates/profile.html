@@ -14,7 +14,7 @@
 	        <ul class="nav nav-pills nav-stacked nav-email shadow mb-20">
 	            <li class="active">
 	                <a href="{{ url_for('messages_page')}}">
-	                    <i class="fa fa-inbox"></i> Inbox  <span class="label pull-right">7</span>
+	                    <i class="fa fa-inbox"></i> Inbox  <span class="label pull-right">{{ unreadMessageCount }}</span>
 	                </a>
 	            </li>
 	            <li>

@@ -45,8 +45,7 @@ def insert_siteuser(cursor,user):
                 )"""
     cursor.execute(statement,(user.userName,user.salt, user.hash, user.email, 
                               user.name, user.surname, user.userTypeId));
-
-
+                              
 def getAllUserTypes(cursor):
     statement = """SELECT * FROM USERTYPE"""
     cursor.execute(statement)

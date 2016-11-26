@@ -56,8 +56,10 @@
 						</ul>
 	                    <ul class="nav navbar-nav pull-right">
 	                    	{% if session.logged_in %}
-	                    		<li class=""><a href=""><span class="glyphicon glyphicon-user"></span> {{ session.username }}</a></li>
-		                        <li class=""><a href={{url_for('profile_page')}}>Profile</a></li>
+	                    		{% if session.isAdmin %}
+	                    			<li class=""><a href="{{url_for('admin_index')}}">Admin Panel</a></li>
+	                    		{% endif %}
+	                    		<li class=""><a href="{{url_for('profile_page')}}"><span class="glyphicon glyphicon-user"></span> {{ session.username }}</a></li>
 		                        <li class=""><a href={{url_for('logout_page')}}>Log Out</a></li>
 	                        {% else %}
 		                        <li class=""><a href={{url_for('login_page')}}>Login</a></li>
