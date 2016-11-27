@@ -28,7 +28,6 @@
                     </a>
                 </li>
                 <li><a href="#sent-mail" role="tab" data-toggle="tab">Sent mail</a>
-
                 </li>
             </ul>
         </div>
@@ -102,11 +101,21 @@
                    
                    <ul class="mail-list">
                    		{% for messageid, senderid, receiverid, text, isread, receiverusername in sentMessages %}
-	                       <li>
-	                           <a href="">
-	                               <span class="mail-sender">{{ receiverusername }}</span>
-	                               <span class="mail-message-preview">{{ text }}</span>
-	                           </a>
+	                       	<li>
+                           		<div class="row">
+                           			<div class="col-sm-12">
+		                               	<span class="mail-sender">{{ receiverusername }}</span>
+		                               	<span class="mail-message-preview">{{ text }}</span>
+		                           	</div>
+		                           	<div class="col-sm-2">
+		                           		<form action="{{url_for('messages_page')}}" method="post">
+		                           			<input type="hidden" name="mid" value="{{messageid}}" />
+		                           			<button type="submit" name="delete" class="btn btn-danger">
+												<i class="glyphicon glyphicon-trash"></i>
+									   		</button>
+		                           		</form>
+		                           </div>
+                           		</div>
 	                       </li>
                        	{% endfor %}
                    </ul>

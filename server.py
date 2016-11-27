@@ -396,6 +396,32 @@ def messages_page():
                 connection.commit()
                 connection.close()
             return render_template('messages.html')
+        elif 'delete' in request.form:
+            connection = dbapi2.connect(app.config['dsn'])
+            try:
+                cursor =connection.cursor()
+                try:
+                    messageId = request.form['mid']
+                    
+                    deleteUserMessage(cursor,messageId)
+                    
+                    getReceivedMessages(cursor,session['userId'])
+                    mReceivedMessages = cursor.fetchall()
+    
+                    getSentMessages(cursor,session['userId'])
+                    mSentMessages = cursor.fetchall()
+                    return render_template('messages.html', isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
+                except dbapi2.Error as e:
+                        print(e.pgerror)
+                finally:
+                        cursor.close()
+            except dbapi2.Error as e:
+                print(e.pgerror)
+                connection.rollback()
+            finally:
+                connection.commit()
+                connection.close()
+            return render_template('messages.html')
     else:
         return redirect(url_for('home_page'))
 ##############
