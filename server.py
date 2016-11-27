@@ -30,7 +30,7 @@ app = Flask(__name__)
 
 @app.route('/dontrunthis')
 def initialize():
-    
+
     connection = dbapi2.connect(app.config['dsn'])
     try:
         cursor =connection.cursor()
@@ -62,7 +62,7 @@ def initialize():
     finally:
         connection.commit()
         connection.close()
-    
+
     connection = dbapi2.connect(app.config['dsn'])
     try:
         cursor =connection.cursor()
@@ -104,7 +104,7 @@ def initialize():
             #insert_news(cursor,newBest)
             job=Job(0,datetime.date.today(),"Veritabanı uzmanı","En az 5 yıl tecrübeli")
             insert_job(cursor,job)
-            feed=Feed(0,datetime.date.today(),createRandomUserName(),"Beğeni")
+            feed=Feed(0,datetime.date.today(),"asdasdas","Beğeni")
             insert_feed(cursor,feed)
             newBest = News("Best authors are voted! There is also one Turkish in top 50",2016,"Best authers")
             #insert_news(news1)
@@ -203,7 +203,7 @@ def login_page():
         return redirect(url_for('home_page'))
     else:
         return render_template('login.html',isAlert = False, alertMessage = '')
-    
+
 @app.route('/logout')
 def logout_page():
     if 'logged_in' in session and session['logged_in'] == True:
@@ -211,7 +211,7 @@ def logout_page():
         session['isAdmin'] = False
         session['username'] = ''
         session['userId'] = 0
-    return redirect(url_for('home_page'))   
+    return redirect(url_for('home_page'))
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile_page():
@@ -238,7 +238,7 @@ def profile_page():
             connection.close()
     else:
         return redirect(url_for('home_page'))
-    
+
 @app.route('/admin/users',methods=['GET', 'POST'])
 def users_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -249,7 +249,7 @@ def users_page():
                 if request.method == 'POST':
                     if "edit" in request.form:
                         userid = request.form['editid']
-    
+
                     elif "delete" in request.form:
                         userid = request.form['deleteid']
                         deleteUser(cursor,str(userid))
@@ -272,7 +272,7 @@ def users_page():
             connection.close()
     else:
         return redirect(url_for('home_page'))
-    
+
 @app.route('/admin/useradd',methods=['GET', 'POST'])
 def userAdd_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -303,7 +303,7 @@ def userAdd_page():
             connection.close()
     else:
         return redirect(url_for('home_page'))
-    
+
 @app.route('/admin/userupdate',methods=['GET', 'POST'])
 def userUpdate_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -337,7 +337,7 @@ def userUpdate_page():
         return render_template('userupdate.html')
     else:
         return redirect(url_for('home_page'))
-    
+
 @app.route('/messages',methods=['GET', 'POST'])
 def messages_page():
     if 'logged_in' in session and session['logged_in'] == True:
@@ -348,7 +348,7 @@ def messages_page():
                 try:
                     getReceivedMessages(cursor,session['userId'])
                     mReceivedMessages = cursor.fetchall()
-    
+
                     getSentMessages(cursor,session['userId'])
                     mSentMessages = cursor.fetchall()
                     return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
@@ -381,7 +381,7 @@ def messages_page():
                     else:
                         getReceivedMessages(cursor,session['userId'])
                         mReceivedMessages = cursor.fetchall()
-        
+
                         getSentMessages(cursor,session['userId'])
                         mSentMessages = cursor.fetchall()
                         return render_template('messages.html', isAlert = True, alertMessage = 'Could not find specified user.',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
@@ -432,7 +432,7 @@ def messages_page():
 #Metehan's Part
 ##############
 
-#Omer's Part 
+#Omer's Part
 ##############
 
 @app.route('/')
@@ -444,7 +444,7 @@ def home_page():
         ##Kullanici giris yapmamis. Burada baska tipte bir anasayfa olacak
         now = datetime.datetime.now()
         return render_template('home.html', current_time=now.ctime())
-    
+
 @app.route('/updatePost', methods=['GET', 'POST'])
 def update_post_page():
     if 'logged_in' in session and session['logged_in'] == True:
@@ -458,11 +458,7 @@ def update_post_page():
                     cursor.execute(statement,{'userid':userid})
                     return render_template('updatePost.html',post=cursor)
                 if request.method == 'POST':
-                    text = request.form['text']
-                    userid = request.form['userid']
-                    date=datetime.datetime.now()
-                    statement = """UPDATE BLOGS SET TEXT=%(text)s, DATE=%(date)s WHERE (ID = %(userid)s)"""
-                    cursor.execute(statement,{'text':text,'date':date,'userid':userid})
+                    updatePost(cursor,request.form['text'],request.form['userid'],datetime.datetime.now())
                     return redirect(url_for('blogs_page'))
             except dbapi2.Error as e:
                 print(e.pgerror)
@@ -474,11 +470,11 @@ def update_post_page():
         finally:
             connection.commit()
             connection.close()
-    
+
         return render_template('updatePost.html')
     else:
         redirect(url_for('home_page'))
-        
+
 @app.route('/blogs', methods=['GET', 'POST'])
 def blogs_page():
     if 'logged_in' in session and session['logged_in'] == True:
@@ -487,14 +483,12 @@ def blogs_page():
             cursor =connection.cursor()
             try:
                 if request.method == 'GET':
-                    statement = """SELECT ID,USERNAME,DATE,HEADER,TEXT FROM BLOGS"""
-                    cursor.execute(statement)
+                    getAllPosts(cursor)
                     return render_template('blogs.html', blogs = cursor)
                 if request.method == 'POST':
                     if "delete" in request.form:
-                        userid = request.form['deleteid']
-                        statement = """DELETE FROM BLOGS WHERE (ID = %(userid)s)"""
-                        cursor.execute(statement,{'userid':userid})
+                        id = request.form['deleteid']
+                        deletePost(cursor,id)
                         return redirect(url_for('blogs_page'))
             except dbapi2.Error as e:
                 print(e.pgerror)
@@ -515,11 +509,12 @@ def write_post_page():
     if 'logged_in' in session and session['logged_in'] == True:
         if request.method == 'POST':
             if "submit" in request.form:
-                userName = createRandomUserName()
+
+                userId=session['userId']
                 date=datetime.datetime.now()
                 header="header"
                 text = request.form['text']
-                blogPost = BlogPost(0,userName,datetime.date.today(),header,text);
+                blogPost = BlogPost(0,userId,datetime.date.today(),header,text);
                 connection = dbapi2.connect(app.config['dsn'])
                 try:
                     cursor =connection.cursor()
@@ -566,12 +561,12 @@ def authoradmin_page():
             if  'Update' in request.form:
                 updateid = request.form['updateid']
                 return render_template('authorupdate.html')
-            
+
     else:
         return render_template('home_page.html')
-    
-    
-    
+
+
+
 @app.route('/admin/authorsAdd',methods=['GET', 'POST'])
 def authorAdd_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -587,7 +582,7 @@ def authorAdd_page():
                 newauthor = Author(None,name,lastname,birthyear,nationality,penname)
                 insertAuthor(app.config['dsn'],newauthor)
                 return redirect(url_for('authoradmin_page'))
-        return render_template('authoradd.html')    
+        return render_template('authoradd.html')
     else:
         return render_template('home_page.html')
 
@@ -610,7 +605,7 @@ def authorupdate_page():
                 updateauthor = Author(None,name,lastname,birthyear,nationality,penname)
                 updateAuthor(app.config['dsn'],updateid,updateauthor)
                 return redirect(url_for('authoradmin_page'))
-            return render_template('authorupdate.html',updateauthor = selectAuthorbyId(app.config['dsn'],updateid))    
+            return render_template('authorupdate.html',updateauthor = selectAuthorbyId(app.config['dsn'],updateid))
     else:
         return render_template('home_page.html')
 
@@ -623,9 +618,9 @@ def authors_page():
             return render_template('authors.html', authors = selectAuthor(app.config['dsn']))
     else:
         return redirect(url_for('home_page'))
-    
-    
-    
+
+
+
 @app.route('/groups',methods=['GET', 'POST'])
 def groups_page():
     if 'logged_in' in session and session['logged_in'] == True:
@@ -684,21 +679,21 @@ def genres_page():
                 return render_template('genres.html',genres = selectGenre(app.config['dsn']))
     else:
         return redirect(url_for('home_page'))
-    
+
 @app.route('/news')
 def news_page():
     if 'logged_in' in session and session['logged_in'] == True:
         return render_template('news.html')
     else:
         return redirect(url_for('home_page'))
-    
+
 @app.route('/bookpage')
 def book_page():
     if 'logged_in' in session and session['logged_in'] == True:
         return render_template('bookpage.html')
     else:
         return redirect(url_for('home_page'))
-    
+
 
 
 @app.route('/admin/books',methods=['GET', 'POST'])
@@ -711,7 +706,7 @@ def books_page():
                 if request.method == 'POST':
                     if "edit" in request.form:
                         bookid = request.form['editid']
-    
+
                     elif "delete" in request.form:
                         bookid = request.form['deleteid']
                         delete_book(cursor,bookid)

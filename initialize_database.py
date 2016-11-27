@@ -30,13 +30,13 @@ def dropUserTable(cursor):
                 DROP TABLE IF EXISTS SITEUSER CASCADE;
                 """
     cursor.execute(statement)
-    
+
 def dropFollowerTable(cursor):
     statement = """
                 DROP TABLE IF EXISTS FOLLOWER CASCADE;
                 """
     cursor.execute(statement)
-    
+
 def dropUserMessagesTable(cursor):
     statement = """
                 DROP TABLE IF EXISTS USERMESSAGE CASCADE;
@@ -45,8 +45,8 @@ def dropUserMessagesTable(cursor):
 
 def create_blogs_table(cursor):
     statement = """CREATE TABLE IF NOT EXISTS BLOGS (
-                ID SERIAL PRIMARY KEY,
-                USERNAME VARCHAR(20) NOT NULL,
+                ID SERIAL PRIMARY KEY ,
+                USERID INTEGER REFERENCES SITEUSER (USERID),
                 DATE DATE NOT NULL DEFAULT CURRENT_DATE,
                 HEADER VARCHAR(20) NOT NULL,
                 TEXT TEXT NOT NULL
@@ -90,7 +90,7 @@ def create_user_table(cursor):
                 USERTYPEID INTEGER REFERENCES USERTYPE(ID) ON DELETE RESTRICT ON UPDATE CASCADE
                 )"""
     cursor.execute(statement)
-    
+
 def create_user_follower_table(cursor):
     statement = """CREATE TABLE FOLLOWER(
                 FOLLOWERUSERID INTEGER REFERENCES SITEUSER(USERID) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -98,7 +98,7 @@ def create_user_follower_table(cursor):
                 PRIMARY KEY{FOLLOWERUSERID,FOLLOWINDUSERID}
                 )"""
     cursor.execute(statement)
-    
+
 def create_user_message_table(cursor):
     statement = """CREATE TABLE USERMESSAGE (
                 MESSAGEID SERIAL PRIMARY KEY,
@@ -108,7 +108,7 @@ def create_user_message_table(cursor):
                 ISREAD BOOLEAN NOT NULL
                 )"""
     cursor.execute(statement)
-                
+
 ''' Author table '''
 
 def create_author_table(dsn):
@@ -124,7 +124,7 @@ def create_author_table(dsn):
         )"""
         cursor.execute(statement)
         cursor.close()
-        
+
 
 ''' Groups Table '''
 
