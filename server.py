@@ -1,6 +1,7 @@
 ﻿import datetime
 import os
 import json
+import ctypes  # An included library with Python install.
 import re
 import psycopg2 as dbapi2
 
@@ -19,6 +20,7 @@ from Genres import *
 from Quotes import *
 from BlogPost import *
 from Job import *
+from FeedType import *
 from Feed import *
 from flask.globals import session
 from Groups import *
@@ -72,6 +74,7 @@ def initialize():
             create_blogs_table(cursor)
             create_jobs_table(cursor)
             create_feeds_table(cursor)
+            create_feedtypes_table(cursor)
             create_genre_table(app.config['dsn'])
             create_book_table(cursor)
             create_quote_table(cursor)
@@ -130,6 +133,13 @@ def initialize():
 
             insert_quote(cursor, quote1)
             insert_quote(cursor, quote2)
+
+            feedtype=FeedType(0,'adlı kitabı beğendi')
+            insert_feedtype(cursor,feedtype)
+            feedtype=FeedType(0,'adlı kitabı önerdi')
+            insert_feedtype(cursor,feedtype)
+            feedtype=FeedType(0,'adlı kitaba yorum yaptı')
+            insert_feedtype(cursor,feedtype)
 
         except dbapi2.Error as e:
             print(e.pgerror)
@@ -538,9 +548,13 @@ def update_post_page():
             try:
                 if request.method == 'GET':
                     userid = request.args.get('userid')
-                    statement = """SELECT ID, HEADER,TEXT FROM BLOGS WHERE (ID=%(userid)s)"""
-                    cursor.execute(statement,{'userid':userid})
-                    return render_template('updatePost.html',post=cursor)
+                    if session['userId']==int(userid):
+                        id = request.args.get('id')
+                        statement = """SELECT ID, HEADER,TEXT FROM BLOGS WHERE (ID=%(id)s)"""
+                        cursor.execute(statement,{'id':id})
+                        return render_template('updatePost.html',post=cursor)
+                    else:
+                        return redirect(url_for('blogs_page'))
                 if request.method == 'POST':
                     updatePost(cursor,request.form['text'],request.form['userid'],datetime.datetime.now())
                     return redirect(url_for('blogs_page'))
@@ -572,8 +586,12 @@ def blogs_page():
                 if request.method == 'POST':
                     if "delete" in request.form:
                         id = request.form['deleteid']
-                        deletePost(cursor,id)
-                        return redirect(url_for('blogs_page'))
+                        userid = request.form['userid']
+                        if session['userId']==int(userid):
+                            deletePost(cursor,id)
+                            return redirect(url_for('blogs_page'))
+                        else:
+                            return redirect(url_for('blogs_page'))
             except dbapi2.Error as e:
                 print(e.pgerror)
             finally:
