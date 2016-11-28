@@ -1,0 +1,19 @@
+{% extends "template.html" %}
+{% block title %}Blogs{% endblock %}
+{% block head %}
+{% endblock %}
+{% block navbar %}
+{% endblock %}
+{% block content %}
+<div class="container">
+	<div class="row">
+            	<form id="register-form" action={{url_for('describe_job_page')}} method="post" role="form">
+                    <div class="form-group">
+		                <input type="text" id="header" name="header" class="input-block-level" placeholder="Header">
+		                <textarea rows="3" id="description" name="description" class="input-block-level" placeholder="Description"></textarea>
+                    </div>
+                    <button type="submit" name="submit" id="submit" value="submit" class="btn btn-primary"><i class="fa fa-reply"></i> Submit</button>
+                </form>
+	</div>
+</div>
+{% endblock %}

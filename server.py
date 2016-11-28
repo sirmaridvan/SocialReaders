@@ -100,12 +100,6 @@ def initialize():
     try:
         cursor =connection.cursor()
         try:
-
-            #insert_news(cursor,newBest)
-            job=Job(0,datetime.date.today(),"Veritabanı uzmanı","En az 5 yıl tecrübeli")
-            insert_job(cursor,job)
-            feed=Feed(0,datetime.date.today(),"asdasdas","Beğeni")
-            insert_feed(cursor,feed)
             newBest = News("Best authors are voted! There is also one Turkish in top 50",2016,"Best authers")
             #insert_news(news1)
             insert_group(app.config['dsn'],group1)
@@ -402,12 +396,12 @@ def messages_page():
                 cursor =connection.cursor()
                 try:
                     messageId = request.form['mid']
-                    
+
                     deleteUserMessage(cursor,messageId)
-                    
+
                     getReceivedMessages(cursor,session['userId'])
                     mReceivedMessages = cursor.fetchall()
-    
+
                     getSentMessages(cursor,session['userId'])
                     mSentMessages = cursor.fetchall()
                     return render_template('messages.html', isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
@@ -444,6 +438,92 @@ def home_page():
         ##Kullanici giris yapmamis. Burada baska tipte bir anasayfa olacak
         now = datetime.datetime.now()
         return render_template('home.html', current_time=now.ctime())
+@app.route('/jobs', methods=['GET', 'POST'])
+def jobs_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        connection = dbapi2.connect(app.config['dsn'])
+        try:
+            cursor =connection.cursor()
+            try:
+                if request.method == 'GET':
+                    getAllJobs(cursor)
+                    return render_template('jobs.html', jobs = cursor)
+                if request.method == 'POST':
+                    if "delete" in request.form:
+                        id = request.form['deleteid']
+                        deleteJob(cursor,id)
+                        return redirect(url_for('jobs_page'))
+            except dbapi2.Error as e:
+                print(e.pgerror)
+            finally:
+                cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
+        return render_template('jobs.html')
+    else:
+        return redirect(url_for('home_page'))
+@app.route('/describeJob', methods=['GET', 'POST'])
+def describe_job_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        if request.method == 'POST':
+            if "submit" in request.form:
+                userId=session['userId']
+                date=datetime.datetime.now()
+                header=request.form['header']
+                description = request.form['description']
+                job = Job(0,userId,datetime.date.today(),header,description);
+                connection = dbapi2.connect(app.config['dsn'])
+                try:
+                    cursor =connection.cursor()
+                    try:
+                      insertJob(cursor,job)
+                    except dbapi2.Error as e:
+                        print(e.pgerror)
+                    finally:
+                        cursor.close()
+                except dbapi2.Error as e:
+                    print(e.pgerror)
+                    connection.rollback()
+                finally:
+                    connection.commit()
+                    connection.close()
+                return redirect(url_for('jobs_page'))
+        return render_template('describeJob.html')
+    else:
+        return redirect(url_for('home_page'))
+@app.route('/updateJob', methods=['GET', 'POST'])
+def update_job_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        connection = dbapi2.connect(app.config['dsn'])
+        try:
+            cursor =connection.cursor()
+            try:
+                if request.method == 'GET':
+                    userid = request.args.get('userid')
+                    statement = """SELECT ID, HEADER,DESCRIPTION FROM JOBS WHERE (ID=%(userid)s)"""
+                    cursor.execute(statement,{'userid':userid})
+                    return render_template('updateJob.html',job=cursor)
+                if request.method == 'POST':
+                    updateJob(cursor,request.form['header'],request.form['description'],request.form['userid'],datetime.datetime.now())
+                    return redirect(url_for('jobs_page'))
+            except dbapi2.Error as e:
+                print(e.pgerror)
+            finally:
+                cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
+
+        return render_template('updateJob.html')
+    else:
+        redirect(url_for('home_page'))
 
 @app.route('/updatePost', methods=['GET', 'POST'])
 def update_post_page():

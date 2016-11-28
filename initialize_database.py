@@ -56,6 +56,7 @@ def create_blogs_table(cursor):
 def create_jobs_table(cursor):
     statement = """CREATE TABLE IF NOT EXISTS JOBS (
                 ID SERIAL PRIMARY KEY,
+                USERID INTEGER REFERENCES SITEUSER (USERID),
                 DATE DATE NOT NULL DEFAULT CURRENT_DATE,
                 HEADER VARCHAR(20) NOT NULL,
                 DESCRIPTION TEXT NOT NULL
