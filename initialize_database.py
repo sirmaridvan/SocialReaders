@@ -6,6 +6,7 @@ def drop_tables(cursor):
                 DROP TABLE IF EXISTS BLOGS CASCADE;
                 DROP TABLE IF EXISTS JOBS CASCADE;
                 DROP TABLE IF EXISTS FEEDS CASCADE;
+                DROP TABLE IF EXISTS FEEDTYPES CASCADE;
                 DROP TABLE IF EXISTS GROUPS CASCADE;
                 DROP TABLE IF EXISTS MEMBERS CASCADE;
                 DROP TABLE IF EXISTS NEWS CASCADE;
@@ -63,12 +64,21 @@ def create_jobs_table(cursor):
                 )"""
     cursor.execute(statement);
 
+
+def create_feedtypes_table(cursor):
+    statement = """CREATE TABLE IF NOT EXISTS FEEDTYPES (
+                ID PRIMARY KEY,
+                TYPE TEXT NOT NULL
+                )"""
+    cursor.execute(statement);
+
 def create_feeds_table(cursor):
     statement = """CREATE TABLE IF NOT EXISTS FEEDS (
                 ID SERIAL PRIMARY KEY,
                 DATE DATE NOT NULL DEFAULT CURRENT_DATE,
-                USERNAME VARCHAR(20) UNIQUE NOT NULL,
-                DESCRIPTION TEXT NOT NULL
+                USERID INTEGER REFERENCES SITEUSER (USERID),
+                BOOKID INTEGER REFERENCES BOOKS (BOOKID),
+                TYPEID INTEGER REFERENCES FEEDTYPES (ID)
                 )"""
     cursor.execute(statement);
 

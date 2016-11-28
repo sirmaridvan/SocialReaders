@@ -20,6 +20,7 @@ from Genres import *
 from Quotes import *
 from BlogPost import *
 from Job import *
+from FeedType import *
 from Feed import *
 from flask.globals import session
 from Groups import *
@@ -72,6 +73,7 @@ def initialize():
             create_blogs_table(cursor)
             create_jobs_table(cursor)
             create_feeds_table(cursor)
+            create_feedtypes_table(cursor)
             create_genre_table(app.config['dsn'])
             create_book_table(cursor)
             create_quote_table(cursor)
@@ -127,6 +129,13 @@ def initialize():
 
             insert_quote(cursor, quote1)
             insert_quote(cursor, quote2)
+
+            feedtype=FeedType(0,'adlı kitabı beğendi')
+            insert_feedtype(cursor,feedtype)
+            feedtype=FeedType(0,'adlı kitabı önerdi')
+            insert_feedtype(cursor,feedtype)
+            feedtype=FeedType(0,'adlı kitaba yorum yaptı')
+            insert_feedtype(cursor,feedtype)
 
         except dbapi2.Error as e:
             print(e.pgerror)
