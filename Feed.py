@@ -11,3 +11,7 @@ def insert_feed(cursor,feed):
                 %s, %s, %s, %s
                 )"""
     cursor.execute(statement,(feed.date,feed.userId,feed.bookId,feed.typeId));
+def get_all_feeds(cursor):
+    statement = """SELECT FEEDS.DATE, SITEUSER.USERNAME, BOOKS.TITLE, FEEDTYPES.TYPE FROM FEEDS, SITEUSER, BOOKS, FEEDTYPES
+                    WHERE (FEEDS.USERID=SITEUSER.USERID) AND (FEEDS.BOOKID=BOOKS.BOOKID) AND (FEEDS.TYPEID=FEEDTYPES.ID) """
+    cursor.execute(statement);
