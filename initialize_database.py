@@ -14,6 +14,7 @@ def drop_tables(cursor):
                 DROP TABLE IF EXISTS QUOTES CASCADE;
                 DROP TABLE IF EXISTS AUTHORS CASCADE;
                 DROP TABLE IF EXISTS GENRES CASCADE;
+                DROP TABLE IF EXISTS GROUPCOMMENTS CASCADE;
                 """
     cursor.execute(statement)
 
@@ -160,6 +161,17 @@ def create_members_table(dsn):
         cursor.execute(statement)
         cursor.close()
 
+def create_groupcomments_table(dsn):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """CREATE TABLE IF NOT EXISTS GROUPCOMMENTS (
+            COMMENTID SERIAL PRIMARY KEY,
+            COMMENTER INTEGER REFERENCES SITEUSER (USERID),
+            GROUPCOMMENTED INTEGER REFERENCES GROUPS (ID),
+            COMMENT VARCHAR(255) 
+        )"""
+        cursor.execute(statement)
+        cursor.close()
 
 
 ''' Book Table'''

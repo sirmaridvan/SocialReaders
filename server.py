@@ -25,6 +25,7 @@ from Groups import *
 from News import *
 from Members import *
 from message import *
+from Groupcomments import *
 
 app = Flask(__name__)
 
@@ -88,13 +89,16 @@ def initialize():
 
 
     create_groups_table(app.config['dsn'])
+    insert_group(app.config['dsn'],group1)
     create_members_table(app.config['dsn'])
-    create_author_table(app.config['dsn']);
+    create_author_table(app.config['dsn'])
+    create_groupcomments_table(app.config['dsn'])
     insertAuthor(app.config['dsn'],author1)
     insertAuthor(app.config['dsn'],author2)
     insertAuthor(app.config['dsn'],author3)
     insertAuthor(app.config['dsn'],author4)
-
+    insertcomment(app.config['dsn'],comment1)
+    insertcomment(app.config['dsn'],comment2)
 
     connection = dbapi2.connect(app.config['dsn'])
     try:
@@ -102,7 +106,7 @@ def initialize():
         try:
             newBest = News("Best authors are voted! There is also one Turkish in top 50",2016,"Best authers")
             #insert_news(news1)
-            insert_group(app.config['dsn'],group1)
+            
             #insert_member(1,1)
 
 
@@ -729,10 +733,21 @@ def groups_page():
                 if members is None:
                     insert_member(app.config['dsn'],memberid,groupid)
                 return render_template('groups.html',groups = selectGroup(app.config['dsn']))
+            if 'Visit' in request.form:
+                groupid=request.form['id']
+                session["group"] = groupid
+                return redirect(url_for('grouppage_page'));
+                
     else:
         return redirect(url_for('home_page'))
 
-
+@app.route('/grouppage',methods=['GET', 'POST'])
+def grouppage_page():
+    if 'logged_in' in session and session['logged_in'] == True:
+        groupid = session["group"]; 
+        return render_template('grouppage.html',comments = selectcomments(app.config['dsn'],groupid),membernames = getmembersbyjoin(app.config['dsn'],groupid))
+    else:
+        return redirect(url_for('home_page'))
 
 
 

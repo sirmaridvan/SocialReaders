@@ -23,7 +23,7 @@
 
 
 <div class="container">
-    <div class="row col-md-6 col-md-offset-2 custyle">
+    <div class="row col-md-7 col-md-offset-2 custyle">
     <table class="table table-striped custab">
     <thead>
         <tr>
@@ -41,8 +41,10 @@
             <form method="POST" role="form">
                 <input type = "hidden" name = "id" value={{ id }}>
                 <td class="text-center"><button href="{{ url_for('groups_page') }}" type="submit" name="Delete" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span>Del</button></td>
-                <td><input type = "text" name = "newname"><button href="{{ url_for('groups_page') }}" type="submit" name="Update" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</button></td>
+                <td><input type = "text" name = "newname">
+                <button href="{{ url_for('groups_page') }}" type="submit" name="Update" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</button></td>
                 <td><button href="{{ url_for('groups_page') }}" type="submit" name="Join" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-edit"></span> Join</button></td>
+                <td><button type="submit" name="Visit" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-edit"></span>Visit</button></td>
             </form>
         
             </tr>

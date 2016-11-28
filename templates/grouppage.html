@@ -1,0 +1,56 @@
+{% extends "template.html" %}
+{% block title %}Group{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='grouppage.css') }}" />
+{% endblock %}
+{% block navbar %}
+
+{% endblock %}
+{% block content %}
+
+    <div class="wrapper">
+        <table id="acrylic">
+            <thead>
+                <tr>
+                    <th>Members</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for username in membernames %}
+                <tr>
+                    <td>{{ username }}</td>
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+
+<div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                  <div class="page-header">
+                    <h1><small class="pull-right">45 comments</small> Comments </h1>
+                  </div> 
+                   <div class="comments-list">
+          
+         			 {% for username,comment in comments %}
+         			 <div class="media">
+                           <p class="pull-right"><small>Past</small></p>
+                            <div class="media-body">
+                                
+                              <h4 class="media-heading user_name"> {{username}} </h4>
+                              {{comment}}
+                              
+                              <p><small><a href="">Like</a> - <a href="">Share</a></small></p>
+                            </div>
+                          </div>
+                      {% endfor %}
+                   </div>
+                   
+                       
+                  
+                </div>
+            </div>
+        </div>
+{% endblock %}
