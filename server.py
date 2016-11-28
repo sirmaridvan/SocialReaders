@@ -1,6 +1,7 @@
 ﻿import datetime
 import os
 import json
+import ctypes  # An included library with Python install.
 import re
 import psycopg2 as dbapi2
 
@@ -534,9 +535,13 @@ def update_post_page():
             try:
                 if request.method == 'GET':
                     userid = request.args.get('userid')
-                    statement = """SELECT ID, HEADER,TEXT FROM BLOGS WHERE (ID=%(userid)s)"""
-                    cursor.execute(statement,{'userid':userid})
-                    return render_template('updatePost.html',post=cursor)
+                    if session['userId']==int(userid):
+                        id = request.args.get('id')
+                        statement = """SELECT ID, HEADER,TEXT FROM BLOGS WHERE (ID=%(id)s)"""
+                        cursor.execute(statement,{'id':id})
+                        return render_template('updatePost.html',post=cursor)
+                    else:
+                        return redirect(url_for('blogs_page'))
                 if request.method == 'POST':
                     updatePost(cursor,request.form['text'],request.form['userid'],datetime.datetime.now())
                     return redirect(url_for('blogs_page'))
@@ -568,8 +573,12 @@ def blogs_page():
                 if request.method == 'POST':
                     if "delete" in request.form:
                         id = request.form['deleteid']
-                        deletePost(cursor,id)
-                        return redirect(url_for('blogs_page'))
+                        userid = request.form['userid']
+                        if session['userId']==int(userid):
+                            deletePost(cursor,id)
+                            return redirect(url_for('blogs_page'))
+                        else:
+                            return redirect(url_for('blogs_page'))
             except dbapi2.Error as e:
                 print(e.pgerror)
             finally:

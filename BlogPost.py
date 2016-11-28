@@ -19,7 +19,7 @@ def getPost(cursor,id):
     cursor.execute(statement, {'id':id})
 
 def getAllPosts(cursor):
-    statement = """SELECT ID,USERNAME,DATE,HEADER,TEXT FROM BLOGS,SITEUSER WHERE (BLOGS.USERID=SITEUSER.USERID)"""
+    statement = """SELECT ID,BLOGS.USERID,USERNAME,DATE,HEADER,TEXT FROM BLOGS,SITEUSER WHERE (BLOGS.USERID=SITEUSER.USERID)"""
     cursor.execute(statement)
 def deletePost(cursor,id):
      statement = """DELETE FROM BLOGS WHERE (ID = %(id)s)"""
@@ -27,3 +27,6 @@ def deletePost(cursor,id):
 def updatePost(cursor,text,id,date):
     statement = """UPDATE BLOGS SET TEXT=%(text)s, DATE=%(date)s WHERE (ID = %(id)s)"""
     cursor.execute(statement,{'text':text,'date':date,'id':id})
+def getUserIdFromId(cursor,id):
+    statement = """SELECT USERID FROM BLOGS WHERE (ID = %(id)s)"""
+    cursor.execute(statement,{'id':id})
