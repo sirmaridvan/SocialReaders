@@ -75,8 +75,8 @@ def initialize():
             create_jobs_table(cursor)
             create_feeds_table(cursor)
             create_feedtypes_table(cursor)
-            create_genre_table(app.config['dsn'])
             create_book_table(cursor)
+            create_genre_table(app.config['dsn'])
             create_quote_table(cursor)
             create_news_table(cursor)
         except dbapi2.Error as e:
@@ -118,15 +118,17 @@ def initialize():
             '''insert_genre function returns with "not all arguments converted during string formatting"
             needs to be resolved'''
             genre1 = Genre(0, "Novel")
-            #insert_genre(cursor,genre1)
+            insert_genre(app.config['dsn'],genre1)
             genre2 = Genre(0, "Satire")
-            #insert_genre(cursor,genre2)
+            insert_genre(app.config['dsn'],genre2)
 
             book1 = Book(0, "The Sun Also Rises", 1926, 1, 1)
             book2 = Book(0, "Adventures of Hucleberry Finn", 1884, 2, 2)
 
-            insert_book(cursor, book1)
-            insert_book(cursor, book2)
+
+
+            insert_book(app.config['dsn'], book1)
+            insert_book(app.config['dsn'], book2)
 
             quote1 = Quote(0, "you can't get away from yourself by moving from one place to another.", 1, 1)
             quote2 = Quote(0, "All right, then, I'll go to hell.", 2, 2)
@@ -134,12 +136,12 @@ def initialize():
             insert_quote(cursor, quote1)
             insert_quote(cursor, quote2)
 
-            feedtype=FeedType(0,'adlı kitabı beğendi')
-            insert_feedtype(cursor,feedtype)
-            feedtype=FeedType(0,'adlı kitabı önerdi')
-            insert_feedtype(cursor,feedtype)
-            feedtype=FeedType(0,'adlı kitaba yorum yaptı')
-            insert_feedtype(cursor,feedtype)
+#             feedtype=FeedType(0,'adlı kitabı beğendi')
+#             insert_feedtype(cursor,feedtype)
+#             feedtype=FeedType(0,'adlı kitabı önerdi')
+#             insert_feedtype(cursor,feedtype)
+#             feedtype=FeedType(0,'adlı kitaba yorum yaptı')
+#             insert_feedtype(cursor,feedtype)
 
         except dbapi2.Error as e:
             print(e.pgerror)
@@ -869,10 +871,24 @@ def genres_page():
         return redirect(url_for('home_page'))
 
 
-@app.route('/bookpage')
+@app.route('/bookpage', methods=['GET', 'POST'])
 def book_page():
     if 'logged_in' in session and session['logged_in'] == True:
-        return render_template('bookpage.html')
+        if request.method == 'GET':
+            return render_template('bookpage.html',books = selectBook(app.config['dsn']))
+        else:
+            if 'Add' in request.form:
+                title = request.form['title']
+                year = request.form['year']
+                author_id = request.form['author_id']
+                genre_id = request.form['genre_id']
+                book = Book(None, title, year, author_id, genre_id)
+                insert_book(app.config['dsn'],book)
+                return render_template('bookpage.html',books = selectBook(app.config['dsn']))
+            if 'Delete' in request.form:
+                id=request.form['id']
+                deleteBook(app.config['dsn'],id)
+                return render_template('bookpage.html',books = selectBook(app.config['dsn']))
     else:
         return redirect(url_for('home_page'))
 
@@ -881,34 +897,11 @@ def book_page():
 @app.route('/admin/books',methods=['GET', 'POST'])
 def books_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
-        connection = dbapi2.connect(app.config['dsn'])
         try:
-            cursor =connection.cursor()
-            try:
-                if request.method == 'POST':
-                    if "edit" in request.form:
-                        bookid = request.form['editid']
+            return render_template('bookadmin.html', books = selectBook(app.config['dsn']))
 
-                    elif "delete" in request.form:
-                        bookid = request.form['deleteid']
-                        delete_book(cursor,bookid)
-                    select_books(cursor)
-                    mBooks = cursor.fetchall()
-                    return render_template('bookadmin.html',books=mBooks)
-                else:
-                    select_books(cursor)
-                    mBooks = cursor.fetchall()
-                    return render_template('bookadmin.html',books=mBooks)
-            except dbapi2.Error as e:
-                print(e.pgerror)
-            finally:
-                cursor.close()
         except dbapi2.Error as e:
             print(e.pgerror)
-            connection.rollback()
-        finally:
-            connection.commit()
-            connection.close()
     else:
         return redirect(url_for('home_page'))
 @app.route('/admin/bookadd',methods=['GET', 'POST'])
@@ -916,17 +909,14 @@ def bookAdd_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
         connection = dbapi2.connect(app.config['dsn'])
         try:
-            cursor =connection.cursor()
             try:
                 if request.method == 'POST':
                     if "add" in request.form:
                         book = Book(0,request.form['title'],request.form['year'],request.form['author_id'],request.form['genre_id'])
-                        insert_book(cursor,book)
+                        insert_book(app.config['dsn'],book)
                         return redirect(url_for('books_page'))
             except dbapi2.Error as e:
                     print(e.pgerror)
-            finally:
-                    cursor.close()
         except dbapi2.Error as e:
             print(e.pgerror)
             connection.rollback()
@@ -941,11 +931,10 @@ def bookUpdate_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
         connection = dbapi2.connect(app.config['dsn'])
         try:
-            cursor =connection.cursor()
             try:
                 if request.method == 'GET':
                     bookid = request.args.get('id')
-                    select_bookid(cursor,bookid)
+                    selectBookbyID(app.config['dsn'],bookid)
                     ((bookid, title, year, author_id, genre_id),) = cursor.fetchall()
                     mBook = Book(bookid,title,year, author_id, genre_id)
                     return render_template('bookupdate.html',book = mBook)
@@ -956,8 +945,6 @@ def bookUpdate_page():
                     return redirect(url_for('books_page'))
             except dbapi2.Error as e:
                     print(e.pgerror)
-            finally:
-                    cursor.close()
         except dbapi2.Error as e:
             print(e.pgerror)
             connection.rollback()

@@ -1,28 +1,58 @@
 {% extends "template.html" %}
-{% block title %} 1984 - George Orwell {% endblock %}
+{% block title %}Books{% endblock %}
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='groups.css') }}" />
 {% endblock %}
 {% block navbar %}
 
-
 {% endblock %}
 {% block content %}
-<div class="row">
-					        <div class="col-sm-3">
-					            <img src="static/book_covers/1984_orwell.jpg" hspace="50" style="width:170px;height:300px;">
-					        </div>
-					        <div class="col-sm-9">
-					            <div class="tab-content">
-					                <div role="tabpanel" class="tab-pane fade in active" id="vtab1">
-					                    <h2>1984</h2>
-					                    <h3>George Orwell</h3>
-					                    <p>The year 1984 has come and gone, but George Orwell's prophetic, nightmarish vision in 1949 of the world we were becoming is timelier than ever. 1984 is still the great modern classic of "negative utopia" -a startlingly original and haunting novel that creates an imaginary world that is completely convincing, from the first sentence to the last four words. No one can deny the novel's hold on the imaginations of whole generations, or the power of its admonitions -a power that seems to grow, not lessen, with the passage of time.</p>
-					                </div>
-					            </div>
-					        </div>
-					    </div>
+
+<form action="{{ url_for('book_page') }}" method="POST" role="form">
+    <div class="container">
+        <div class="row">
+        <div class="input-group input-group-lg">
+            <input type="text" name="title" class="form-control" placeholder="TITLE">
+            <input type="text" name="year" class="form-control" placeholder="YEAR">
+            <input type="text" name="author_id" class="form-control" placeholder="AUTHOR">
+            <input type="text" name="genre_id" class="form-control" placeholder="GENRE">
+            <div class="input-group-btn">
+                <button type="submit" name="Add" class="btn btn-default">Create<span></span></button>
+            </div>
+        </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="container">
+    <div class="row col-md-6 col-md-offset-2 custyle">
+    <table class="table table-striped custab">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Year</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th class="text-center">Delete</th>
+        </tr>
+    </thead>
+
+            {% for id, title, year, author_id, genre_id in books %}
+            <tr>
+                <td name="title">{{ title }}</td>
+                <td name="year">{{ year }}</td>
+                <td name="author_id">{{ author_id }}</td>
+                <td name="genre_id">{{ genre_id }}</td>
+            <form method="POST" role="form">
+                <input type = "hidden" name = "id" value={{ id }}>
+                <td class="text-center"><button href="{{ url_for('book_page') }}" type="submit" name="Delete" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span>Del</button></td>
+        </form>
+            </tr>
+        {% endfor%}
+    </table>
+    </div>
+</div>
+
 {% endblock %}
-
-
-
 

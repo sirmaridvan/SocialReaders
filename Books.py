@@ -1,56 +1,87 @@
+import psycopg2 as dbapi2
+
 class Book:
-    def __init__(self, bookid, title, year, author_id, genre_id):
-        self.bookid = bookid
+    def __init__(self, id, title, year, author_id, genre_id):
+        self.id = id
         self.title= title
         self.year=year
         self.author_id=author_id
         self.genre_id=genre_id
 
-def insert_book(cursor, book):
+def insert_book(dsn, book):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
         statement = """INSERT INTO BOOKS (TITLE,YEAR,AUTHORID,GENREID) VALUES (
                 %s, %s, %s, %s
                 )"""
-        cursor.execute(statement,(book.title, book.year, book.author_id, book.genre_id))
+        cursor.execute(statement,(book.title, book.year, book.author_id, book.genre_id,))
+        cursor.close()
 
 
-def select_books(cursor):
-        statement = """SELECT * FROM BOOKS ORDER BY BOOKID ASC"""
-        cursor.execute(statement)
-
-def select_bookid(cursor, bookid):
-        statement = """SELECT * FROM BOOKS WHERE BOOKID = %s"""
+def selectBook(dsn):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """SELECT * FROM BOOKS ORDER BY ID ASC"""
         cursor.execute(statement)
         books = cursor.fetchall()
         return books
+        cursor.close()
 
-def select_booktitle(cursor, title):
+def selectBookbyID(dsn, id):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """SELECT * FROM BOOKS WHERE ID = %s"""
+        cursor.execute(statement,(id,))
+        books = cursor.fetchall()
+        return books
+        cursor.close()
+
+def selectBookbyTitle(dsn, title):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
         statement = """SELECT * FROM BOOKS WHERE TITLE = %s"""
-        cursor.execute(statement)
+        cursor.execute(statement,(title,))
         books = cursor.fetchall()
         return books
+        cursor.close()
 
-def select_bookyear(cursor, year):
+def selectBookbyYear(dsn, year):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
         statement = """SELECT * FROM BOOKS WHERE YEAR = %s"""
-        cursor.execute(statement)
+        cursor.execute(statement,(year,))
         books = cursor.fetchall()
         return books
+        cursor.close()
 
-def select_bookauthorid(cursor, author_id):
+def selectBookbyAuthor(dsn, author_id):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
         statement = """SELECT * FROM BOOKS WHERE AUTHORID = %s"""
-        cursor.execute(statement)
+        cursor.execute(statement,(author_id,))
         books = cursor.fetchall()
         return books
+        cursor.close()
 
-def select_bookgenreid(cursor, genre_id):
+def selectBookbyGenre(dsn, genre_id):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
         statement = """SELECT * FROM BOOKS WHERE GENREID = %s"""
-        cursor.execute(statement)
+        cursor.execute(statement,(genre_id,))
         books = cursor.fetchall()
         return books
+        cursor.close()
 
-def delete_book(cursor, bookid):
-        statement = """DELETE FROM BOOKS WHERE BOOKID = %s """
-        cursor.execute(statement)
+def deleteBook(dsn, id):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """DELETE FROM BOOKS WHERE ID = %s """
+        cursor.execute(statement,(id,))
+        cursor.close()
 
-def update_book(cursor, bookid):
-        statement = """ UPDATE BOOKS SET TITLE = %s YEAR = %s AUTHORID = %s GENREID = %s WHERE BOOKID = %s """
-        cursor.execute(statement)
+def updateBook(dsn, id, newbook):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """ UPDATE BOOKS SET TITLE = %s YEAR = %s AUTHORID = %s GENREID = %s WHERE ID = %s """
+        cursor.execute(statement,(newbook.title, newbook.year, newbook.author_id, newbook.genre_id, id,))
+        cursor.close()
