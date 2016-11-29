@@ -38,12 +38,12 @@
         </tr>
     </thead>
 
-            {% for id, title, year, author_id, genre_id in books %}
+            {% for id, title, year, author, genre in books %}
             <tr>
                 <td name="title">{{ title }}</td>
                 <td name="year">{{ year }}</td>
-                <td name="author_id">{{ author_id }}</td>
-                <td name="genre_id">{{ genre_id }}</td>
+                <td name="author_id">{{ author }}</td>
+                <td name="genre_id">{{ genre }}</td>
             <form method="POST" role="form">
                 <input type = "hidden" name = "id" value={{ id }}>
                 <td class="text-center"><button href="{{ url_for('book_page') }}" type="submit" name="Delete" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span>Del</button></td>
