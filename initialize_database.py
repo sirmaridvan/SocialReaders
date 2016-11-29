@@ -178,7 +178,7 @@ def create_groupcomments_table(dsn):
             COMMENTID SERIAL PRIMARY KEY,
             COMMENTER INTEGER REFERENCES SITEUSER (USERID),
             GROUPCOMMENTED INTEGER REFERENCES GROUPS (ID),
-            COMMENT VARCHAR(255) 
+            COMMENT VARCHAR(255)
         )"""
         cursor.execute(statement)
         cursor.close()
@@ -188,14 +188,13 @@ def create_groupcomments_table(dsn):
 
 def create_book_table(cursor):
     statement = """CREATE TABLE IF NOT EXISTS BOOKS (
-                BOOKID SERIAL PRIMARY KEY,
+                ID SERIAL PRIMARY KEY,
                 TITLE VARCHAR(40) NOT NULL,
                 YEAR NUMERIC(4) NOT NULL,
-                AUTHORID NUMERIC(4) NOT NULL,
-                ID NUMERIC(4) NOT NULL
+                AUTHORID INTEGER REFERENCES AUTHORS (ID),
+                GENREID INTEGER REFERENCES GENRES (ID)
                 )"""
     cursor.execute(statement)
-
 
 
 
