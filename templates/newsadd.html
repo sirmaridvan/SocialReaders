@@ -1,0 +1,19 @@
+{% extends "template.html" %}
+{% block title %}Blogs{% endblock %}
+{% block head %}
+{% endblock %}
+{% block navbar %}
+{% endblock %}
+{% block content %}
+<div class="container">
+	<div class="row">
+            	<form id="register-form" action={{url_for('newsadd_page')}} method="post" role="form">
+                    <div class="form-group">
+		                <input type="text" id="headline" name="newsheader" class="input-block-level" placeholder="News Headline">
+		                <textarea rows="3" id="description" name="newstext" class="input-block-level" placeholder="News Text"></textarea>
+                    </div>
+                    <button type="submit" name="submit" id="submit" value="submit" class="btn btn-primary"><i class="fa fa-reply"></i> Submit</button>
+                </form>
+	</div>
+</div>
+{% endblock %}

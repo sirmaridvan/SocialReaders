@@ -1,64 +1,42 @@
 ﻿{% extends "template.html" %}
-{% block title %}News{% endblock %}
-{% block navbar %}
-<ul class="nav navbar-nav">
-	<li class=" dropdown">
-	    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Books <span class="caret"></span></a>
-	    <ul class="dropdown-menu">
-	        <li class=" dropdown">
-	            <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">New Releases</a>
-	        </li>
-	        <li><a href="#">Popular</a></li>
-	    </ul>
-	</li>
-	<li><a href="#">Profile</a></li>
-	<li class=" dropdown"><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Authors<span class="caret"></span></a>
-	    <ul class="dropdown-menu">
-	        <li><a href="#">View Authors</a></li>
-	    </ul>
-	</li>
-   </ul>
-   <ul class="nav navbar-nav pull-right">
-       <li class=""><a href={{url_for('news_page')}}>News</a></li>
-   </ul>
+{% block title %}Blogs{% endblock %}
+{% block head %}
 {% endblock %}
-
+{% block navbar %}
+{% endblock %}
 {% block content %}
-
-<div class="row">
-
-					        <div class="col-sm-9">
-
-
-					            <div class="container">
-
-    <div class="row">
-        <div class="col-sm-3">
-            <a href="#" class="nav-tabs-dropdown btn btn-block btn-primary">Tabs</a>
-            <ul id="nav-tabs-wrapper" class="nav nav-tabs nav-pills nav-stacked well">
-              <li class="active"><a href="#vtab1" data-toggle="tab">Harry Potter Book Release</a></li>
-              <li><a href="#vtab2" data-toggle="tab">Frankfurt Book Fair</a></li>
-            </ul>
-        </div>
-        <div class="col-sm-9">
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade in active" id="vtab1">
-                    <h3>Harry Potter and the Cursed Child</h3>
-                    <p>Harry Potter and the Cursed Child released on 31th July 2016</p>
-
-
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="vtab2">
-                    <h3>Frankfurt Book Fair</h3>
-                    <p> Frankfurt Book Fair will take place from 19 to 23 October 2016</p>
-                </div>
-            </div>
-        </div>
-					        </div>
-					    </div>
-	            </div>
-	        </nav>
-	    </div>
-	</div>
-
+<div class="container">
+<a href={{url_for('newsadd_page')}} ><button type="newsadd"  name="say" id="submit" value="process" class="btn btn-primary"><i class="fa fa-reply"></i> Write news</button></a>
+{% for id,newsheadline, newstext, newsheader in news %}
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css"/>
+  <div class="well">
+      <div class="media">
+  		<div class="media-body">
+    		<h2 class="media-heading">{{header}}</h2>
+    		<h4 class="media-heading">{{description}}</h4>
+          <p class="text-right">{{name}}</p>
+          {{text}}
+          <ul class="list-inline list-unstyled">
+  			<li><span><i class="glyphicon glyphicon-calendar"></i>{{date}}</span></li>
+            <li>
+            <!-- Use Font Awesome http://fortawesome.github.io/Font-Awesome/ -->
+              <span><i><form action="{{ url_for('news_page')}}" method="post" style="float: left;">
+					<button type="submit" name="delete" class="btn btn-danger">
+						<i class="glyphicon glyphicon-trash"></i>
+					</button>
+					<input type="hidden" name="deleteid" value="{{id}}"/>
+				</form></span>
+              <span><i><form action="{{ url_for('update_job_page')}}" method="get" style="float: left;">
+					<button type="submit" name="edit" class="btn btn-default">
+						<i class="fa fa-pencil"></i>
+					</button>
+					<input type="hidden" name="userid" value="{{id}}"/>
+				</form></i></span>
+            </li>
+			</ul>
+       </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
 {% endblock %}
