@@ -845,21 +845,32 @@ def genres_page():
 @app.route('/bookpage', methods=['GET', 'POST'])
 def book_page():
     if 'logged_in' in session and session['logged_in'] == True:
+        connection = dbapi2.connect(app.config['dsn'])
+        cursor =connection.cursor()
         if request.method == 'GET':
-            return render_template('bookpage.html',books = selectBook(app.config['dsn']))
+            return render_template('bookpage.html',books = selectBookwithJoin(app.config['dsn']))
         else:
             if 'Add' in request.form:
                 title = request.form['title']
                 year = request.form['year']
-                author_id = request.form['author_id']
-                genre_id = request.form['genre_id']
-                book = Book(None, title, year, author_id, genre_id)
+                author_text = request.form['author_id']
+                genre_text = request.form['genre_id']
+                statement = """SELECT ID FROM GENRES WHERE NAME = %s"""
+                cursor.execute(statement,(genre_text,))
+                genre_id = cursor.fetchall()
+
+                statement = """SELECT ID FROM AUTHORS WHERE NAME = %s"""
+                cursor.execute(statement,(author_text,))
+                author_id = cursor.fetchall()
+
+                book = Book(None, title, year, author_id[0], genre_id[0])
+
                 insert_book(app.config['dsn'],book)
-                return render_template('bookpage.html',books = selectBook(app.config['dsn']))
+                return render_template('bookpage.html',books = selectBookwithJoin(app.config['dsn']))
             if 'Delete' in request.form:
                 id=request.form['id']
                 deleteBook(app.config['dsn'],id)
-                return render_template('bookpage.html',books = selectBook(app.config['dsn']))
+                return render_template('bookpage.html',books = selectBookwithJoin(app.config['dsn']))
     else:
         return redirect(url_for('home_page'))
 
