@@ -1,5 +1,5 @@
 ﻿{% extends "template.html" %}
-{% block title %}Blogs{% endblock %}
+{% block title %}News{% endblock %}
 {% block head %}
 {% endblock %}
 {% block navbar %}
@@ -26,7 +26,7 @@
 					</button>
 					<input type="hidden" name="deleteid" value="{{id}}"/>
 				</form></span>
-              <span><i><form action="{{ url_for('update_job_page')}}" method="get" style="float: left;">
+              <span><i><form action="{{ url_for('news_page')}}" method="get" style="float: left;">
 					<button type="submit" name="edit" class="btn btn-default">
 						<i class="fa fa-pencil"></i>
 					</button>

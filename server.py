@@ -713,7 +713,7 @@ def authorupdate_page():
     else:
         return render_template('home_page.html')
 
-
+		
 @app.route('/news',methods=['GET', 'POST'])
 def news_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -723,11 +723,11 @@ def news_page():
             try:
                 if request.method == 'GET':
                     select_newsdate(cursor)
-                    return render_template('jobs.html', jobs = cursor)
+                    return render_template('news.html', news = cursor)
                 if request.method == 'POST':
                     if "delete" in request.form:
                         id = request.form['deleteid']
-                        deleteJob(cursor,id)
+                        delete_news(cursor,id)
                         return redirect(url_for('news_page'))
             except dbapi2.Error as e:
                 print(e.pgerror)
@@ -758,6 +758,35 @@ def newsadd_page():
         return render_template('newsadd.html')
     else:
         return render_template('home_page.html')
+
+@app.route('/updatenews', methods=['GET', 'POST'])
+def update_news_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        connection = dbapi2.connect(app.config['dsn'])
+        try:
+            cursor =connection.cursor()
+            try:
+                if request.method == 'GET':
+                    newsdate = request.args.get('newsheadline')
+                    statement = """SELECT * FROM NEWS WHERE (newsdate=%(newsdate)s)"""
+                    cursor.execute(statement,{'newsheadline':newsheadline})
+                    return render_template('updatenews.html',news=cursor)
+                if request.method == 'POST':
+                    return redirect(url_for('jobs_page'))
+            except dbapi2.Error as e:
+                print(e.pgerror)
+            finally:
+                cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
+
+        return render_template('updateJob.html')
+    else:
+        redirect(url_for('home_page'))
 
 
 
