@@ -21,7 +21,7 @@ def deleteUserMessage(cursor,messageid):
     cursor.execute(statement,{'messageid':messageid})
     
 def changeMessageReadStatus(cursor,messageid, isread):
-    statement = """UPDATE USERMESSAGE SET isRead=%(isread)s,
+    statement = """UPDATE USERMESSAGE SET isRead=%(isread)s
                 WHERE (MESSAGEID = %(messageid)s)"""   
     cursor.execute(statement,{'messageid':messageid, 'isread':str(isread)})
                 

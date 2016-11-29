@@ -59,10 +59,22 @@
                    <ul class="mail-list">
                    		{% for messageid, senderid, receiverid, text, isread, senderusername in receivedMessages %}
 	                       <li {% if isread == False %}style="background-color:#DBF9FF;" {% endif %} >
-	                           <a href="">
-	                               <span class="mail-sender">{{ senderusername }}</span>
-	                               <span class="mail-message-preview">{{ text }}</span>
-	                           </a>
+	                           <a href="{{url_for('messages_page', messageId = messageid)}}">
+            		            	<div class="row">
+	                           			<div class="col-sm-12">
+			                               	<span class="mail-sender">{{ senderusername }}</span>
+			                               	<span class="mail-message-preview">{{ text }}</span>
+			                           	</div>
+			                           	<div class="col-sm-2">
+			                           		<form action="{{url_for('messages_page')}}" method="post">
+			                           			<input type="hidden" name="mid" value="{{messageid}}" />
+			                           			<button type="submit" name="delete" class="btn btn-danger">
+													<i class="glyphicon glyphicon-trash"></i>
+										   		</button>
+			                           		</form>
+			                           </div>
+	                           		</div>
+	                       		</a>
 	                       </li>
 						{% endfor %}
                    </ul>
@@ -102,20 +114,22 @@
                    <ul class="mail-list">
                    		{% for messageid, senderid, receiverid, text, isread, receiverusername in sentMessages %}
 	                       	<li>
-                           		<div class="row">
-                           			<div class="col-sm-12">
-		                               	<span class="mail-sender">{{ receiverusername }}</span>
-		                               	<span class="mail-message-preview">{{ text }}</span>
-		                           	</div>
-		                           	<div class="col-sm-2">
-		                           		<form action="{{url_for('messages_page')}}" method="post">
-		                           			<input type="hidden" name="mid" value="{{messageid}}" />
-		                           			<button type="submit" name="delete" class="btn btn-danger">
-												<i class="glyphicon glyphicon-trash"></i>
-									   		</button>
-		                           		</form>
-		                           </div>
-                           		</div>
+	                       		<a href="{{url_for('messages_page', messageId = messageid)}}">
+            		            	<div class="row">
+	                           			<div class="col-sm-12">
+			                               	<span class="mail-sender">{{ receiverusername }}</span>
+			                               	<span class="mail-message-preview">{{ text }}</span>
+			                           	</div>
+			                           	<div class="col-sm-2">
+			                           		<form action="{{url_for('messages_page')}}" method="post">
+			                           			<input type="hidden" name="mid" value="{{messageid}}" />
+			                           			<button type="submit" name="delete" class="btn btn-danger">
+													<i class="glyphicon glyphicon-trash"></i>
+										   		</button>
+			                           		</form>
+			                           </div>
+	                           		</div>
+	                       		</a>
 	                       </li>
                        	{% endfor %}
                    </ul>

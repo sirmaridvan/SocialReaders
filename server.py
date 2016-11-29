@@ -349,30 +349,53 @@ def userUpdate_page():
         return redirect(url_for('home_page'))
 
 @app.route('/messages',methods=['GET', 'POST'])
-def messages_page():
+@app.route('/messages/<int:messageId>', methods=['GET','POST'])
+def messages_page(messageId = 0):
     if 'logged_in' in session and session['logged_in'] == True:
         if request.method == 'GET':
-            connection = dbapi2.connect(app.config['dsn'])
-            try:
-                cursor =connection.cursor()
+            if messageId != 0:
+                connection = dbapi2.connect(app.config['dsn'])
                 try:
-                    getReceivedMessages(cursor,session['userId'])
-                    mReceivedMessages = cursor.fetchall()
-
-                    getSentMessages(cursor,session['userId'])
-                    mSentMessages = cursor.fetchall()
-                    return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
+                    cursor =connection.cursor()
+                    try:
+                        changeMessageReadStatus(cursor,messageId,True)
+                        getReceivedMessages(cursor,session['userId'])
+                        mReceivedMessages = cursor.fetchall()
+    
+                        getSentMessages(cursor,session['userId'])
+                        mSentMessages = cursor.fetchall()
+                        return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
+                    except dbapi2.Error as e:
+                            print(e.pgerror)
+                    finally:
+                            cursor.close()
                 except dbapi2.Error as e:
-                        print(e.pgerror)
+                    print(e.pgerror)
+                    connection.rollback()
                 finally:
-                        cursor.close()
-            except dbapi2.Error as e:
-                print(e.pgerror)
-                connection.rollback()
-            finally:
-                connection.commit()
-                connection.close()
-            return render_template('messages.html')
+                    connection.commit()
+                    connection.close()
+            else:
+                connection = dbapi2.connect(app.config['dsn'])
+                try:
+                    cursor =connection.cursor()
+                    try:
+                        getReceivedMessages(cursor,session['userId'])
+                        mReceivedMessages = cursor.fetchall()
+    
+                        getSentMessages(cursor,session['userId'])
+                        mSentMessages = cursor.fetchall()
+                        return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
+                    except dbapi2.Error as e:
+                            print(e.pgerror)
+                    finally:
+                            cursor.close()
+                except dbapi2.Error as e:
+                    print(e.pgerror)
+                    connection.rollback()
+                finally:
+                    connection.commit()
+                    connection.close()
         elif 'sendMessage' in request.form:
             connection = dbapi2.connect(app.config['dsn'])
             try:
@@ -432,8 +455,11 @@ def messages_page():
                 connection.commit()
                 connection.close()
             return render_template('messages.html')
+        
     else:
         return redirect(url_for('home_page'))
+    
+        
 ##############
 
 #Emre's Part
