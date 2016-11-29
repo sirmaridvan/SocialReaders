@@ -35,20 +35,20 @@
                 		</tr>
               		</thead>
               		<tbody>
-            			{% for bookid, title, year, author_id, genre_id in books %}
+            			{% for id, title, year, author_id, genre_id in books %}
 							<tr>
 								<td align="center">
 									<form action="{{ url_for('bookUpdate_page')}}" method="get" style="float: left;">
 										<button type="submit" name="edit" class="btn btn-default">
 											<i class="fa fa-pencil"></i>
 										</button>
-										<input type="hidden" name="id" value="{{bookid}}"/>
+										<input type="hidden" name="id" value="{{id}}"/>
 									</form>
 									<form action="{{ url_for('books_page')}}" method="post">
 										<button type="submit" name="delete" class="btn btn-danger">
 											<i class="glyphicon glyphicon-trash"></i>
 										</button>
-										<input type="hidden" name="deleteid" value="{{bookid}}"/>
+										<input type="hidden" name="deleteid" value="{{id}}"/>
 									</form>
                          		</td>
 								<td>{{title}}</td>
