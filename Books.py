@@ -27,6 +27,16 @@ def selectBook(dsn):
         return books
         cursor.close()
 
+def selectBookwithJoin(dsn):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """SELECT TB.ID, TB.TITLE, TB.YEAR, AUTHORS.NAME AS AUTHOR, TB.NAME AS GENRE FROM (SELECT BOOKS.ID, BOOKS.TITLE, BOOKS.YEAR, BOOKS.AUTHORID, GENRES.NAME FROM BOOKS INNER JOIN GENRES ON GENRES.ID=BOOKS.GENREID)TB INNER JOIN AUTHORS ON AUTHORS.ID=TB.AUTHORID"""
+        cursor.execute(statement)
+        books = cursor.fetchall()
+        return books
+        cursor.close()
+
+
 def selectBookbyID(dsn, id):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
