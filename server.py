@@ -109,7 +109,7 @@ def initialize():
         try:
             newBest = News("Best authors are voted! There is also one Turkish in top 50",2016,"Best authers")
             #insert_news(news1)
-            
+
             #insert_member(1,1)
 
 
@@ -712,6 +712,52 @@ def authorupdate_page():
         return render_template('home_page.html')
 
 
+@app.route('/news',methods=['GET', 'POST'])
+def news_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        connection = dbapi2.connect(app.config['dsn'])
+        try:
+            cursor =connection.cursor()
+            try:
+                if request.method == 'GET':
+                    select_newsdate(cursor)
+                    return render_template('jobs.html', jobs = cursor)
+                if request.method == 'POST':
+                    if "delete" in request.form:
+                        id = request.form['deleteid']
+                        deleteJob(cursor,id)
+                        return redirect(url_for('news_page'))
+            except dbapi2.Error as e:
+                print(e.pgerror)
+            finally:
+                cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
+        return render_template('news.html')
+    else:
+        return redirect(url_for('home_page'))
+@app.route('/newsAdd',methods=['GET', 'POST'])
+def newsadd_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        if request.method == 'GET':
+            return render_template('newsadd.html')
+        else:
+            if 'Add' in request.form:
+                newsheadline = request.form['headline']
+                newstext = request.form['text']
+                newsdate = request.form['date']
+                newnews = News(newstext,newsdate,newsheadline)
+                insert_news(app.config['dsn'],newnews)
+                return redirect(url_for('newsadmin_page'))
+        return render_template('newsadd.html')
+    else:
+        return render_template('home_page.html')
+
+
 
 @app.route('/authors',methods=['GET', 'POST'])
 def authors_page():
@@ -755,14 +801,14 @@ def groups_page():
                 groupid=request.form['id']
                 session["group"] = groupid
                 return redirect(url_for('grouppage_page'));
-                
+
     else:
         return redirect(url_for('home_page'))
 
 @app.route('/grouppage',methods=['GET', 'POST'])
 def grouppage_page():
     if 'logged_in' in session and session['logged_in'] == True:
-        groupid = session["group"]; 
+        groupid = session["group"];
         return render_template('grouppage.html',comments = selectcomments(app.config['dsn'],groupid),membernames = getmembersbyjoin(app.config['dsn'],groupid))
     else:
         return redirect(url_for('home_page'))
@@ -793,12 +839,6 @@ def genres_page():
     else:
         return redirect(url_for('home_page'))
 
-@app.route('/news')
-def news_page():
-    if 'logged_in' in session and session['logged_in'] == True:
-        return render_template('news.html')
-    else:
-        return redirect(url_for('home_page'))
 
 @app.route('/bookpage')
 def book_page():
