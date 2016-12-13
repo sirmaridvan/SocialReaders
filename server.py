@@ -90,7 +90,7 @@ def initialize():
         connection.commit()
         connection.close()
 
-
+    dropgroupandauthortables(app.config['dsn'])
     create_groups_table(app.config['dsn'])
     insert_group(app.config['dsn'],group1)
     create_members_table(app.config['dsn'])

@@ -7,10 +7,6 @@ def drop_tables(cursor):
                 DROP TABLE IF EXISTS JOBS CASCADE;
                 DROP TABLE IF EXISTS FEEDS CASCADE;
                 DROP TABLE IF EXISTS FEEDTYPES CASCADE;
-                DROP TABLE IF EXISTS GROUPS CASCADE;
-                DROP TABLE IF EXISTS MEMBERS CASCADE;
-                DROP TABLE IF EXISTS GROUPCOMMENTS CASCADE;
-                DROP TABLE IF EXISTS AUTHORS CASCADE;
                 DROP TABLE IF EXISTS NEWS CASCADE;
                 DROP TABLE IF EXISTS S CASCADE;
                 DROP TABLE IF EXISTS BOOKS CASCADE;
@@ -18,6 +14,20 @@ def drop_tables(cursor):
                 DROP TABLE IF EXISTS GENRES CASCADE;
                 """
     cursor.execute(statement)
+
+def dropgroupandauthortables(dsn):
+        with dbapi2.connect(dsn) as connection:
+            cursor = connection.cursor()
+            statement = """ 
+                DROP TABLE IF EXISTS GROUPS CASCADE;
+                DROP TABLE IF EXISTS MEMBERS CASCADE;
+                DROP TABLE IF EXISTS GROUPCOMMENTS CASCADE;
+                DROP TABLE IF EXISTS AUTHORS CASCADE;
+                """
+            cursor.execute(statement)
+            cursor.close()
+    
+
 
 ##Elif's drop operations###
 
@@ -165,8 +175,8 @@ def create_members_table(dsn):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """CREATE TABLE IF NOT EXISTS MEMBERS (
-            GROUPUSER INTEGER REFERENCES SITEUSER (USERID),
-            GROUPID INTEGER REFERENCES GROUPS (ID)
+            GROUPUSER INTEGER REFERENCES SITEUSER (USERID) ON DELETE CASCADE,
+            GROUPID INTEGER REFERENCES GROUPS (ID) ON DELETE CASCADE
         )"""
         cursor.execute(statement)
         cursor.close()
