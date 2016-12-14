@@ -30,7 +30,7 @@ def selectGroupbyName(dsn,name):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """SELECT * FROM GROUPS WHERE NAME = %s"""
-        cursor.execute(statement,(name))
+        cursor.execute(statement,(name,))
         groups = cursor.fetchall()
         return groups
         cursor.close()
@@ -39,8 +39,8 @@ def selectGroupbyName(dsn,name):
 def deleteGroup(dsn,id):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
-        statement = """ DELETE FROM GROUPS WHERE ID = %s"""
-        cursor.execute(statement,(id))
+        statement = """ DELETE FROM GROUPS WHERE ID = %s """
+        cursor.execute(statement,(id,))
         cursor.close()
 
 def updateGroup(dsn,id,newgroup):

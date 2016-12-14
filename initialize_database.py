@@ -7,17 +7,27 @@ def drop_tables(cursor):
                 DROP TABLE IF EXISTS JOBS CASCADE;
                 DROP TABLE IF EXISTS FEEDS CASCADE;
                 DROP TABLE IF EXISTS FEEDTYPES CASCADE;
-                DROP TABLE IF EXISTS GROUPS CASCADE;
-                DROP TABLE IF EXISTS MEMBERS CASCADE;
                 DROP TABLE IF EXISTS NEWS CASCADE;
                 DROP TABLE IF EXISTS S CASCADE;
                 DROP TABLE IF EXISTS BOOKS CASCADE;
                 DROP TABLE IF EXISTS QUOTES CASCADE;
-                DROP TABLE IF EXISTS AUTHORS CASCADE;
                 DROP TABLE IF EXISTS GENRES CASCADE;
-                DROP TABLE IF EXISTS GROUPCOMMENTS CASCADE;
                 """
     cursor.execute(statement)
+
+def dropgroupandauthortables(dsn):
+        with dbapi2.connect(dsn) as connection:
+            cursor = connection.cursor()
+            statement = """ 
+                DROP TABLE IF EXISTS GROUPS CASCADE;
+                DROP TABLE IF EXISTS MEMBERS CASCADE;
+                DROP TABLE IF EXISTS GROUPCOMMENTS CASCADE;
+                DROP TABLE IF EXISTS AUTHORS CASCADE;
+                """
+            cursor.execute(statement)
+            cursor.close()
+    
+
 
 ##Elif's drop operations###
 
@@ -132,7 +142,9 @@ def create_author_table(dsn):
             LASTNAME VARCHAR(50) NOT NULL,
             BIRTHDATE NUMERIC(4) NOT NULL,
             NATIONALITY VARCHAR(50) NOT NULL,
-            PENNAME VARCHAR(50)
+            PENNAME VARCHAR(50),
+            DESCRIPTION VARCHAR(255),
+            PICTURE VARCHAR(255) 
         )"""
         cursor.execute(statement)
         cursor.close()
@@ -144,7 +156,7 @@ def create_groups_table(dsn):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """ CREATE TABLE IF NOT EXISTS GROUPS (
-            ID SERIAL PRIMARY KEY,
+            ID SERIAL PRIMARY KEY ,
             NAME VARCHAR(50) NOT NULL
         )"""
         cursor.execute(statement)
@@ -165,8 +177,8 @@ def create_members_table(dsn):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """CREATE TABLE IF NOT EXISTS MEMBERS (
-            GROUPUSER INTEGER REFERENCES SITEUSER (USERID),
-            GROUPID INTEGER REFERENCES GROUPS (ID)
+            GROUPUSER INTEGER REFERENCES SITEUSER (USERID) ON DELETE CASCADE,
+            GROUPID INTEGER REFERENCES GROUPS (ID) ON DELETE CASCADE
         )"""
         cursor.execute(statement)
         cursor.close()
@@ -176,8 +188,8 @@ def create_groupcomments_table(dsn):
         cursor = connection.cursor()
         statement = """CREATE TABLE IF NOT EXISTS GROUPCOMMENTS (
             COMMENTID SERIAL PRIMARY KEY,
-            COMMENTER INTEGER REFERENCES SITEUSER (USERID),
-            GROUPCOMMENTED INTEGER REFERENCES GROUPS (ID),
+            COMMENTER INTEGER REFERENCES SITEUSER (USERID) ON DELETE CASCADE,
+            GROUPCOMMENTED INTEGER REFERENCES GROUPS (ID) ON DELETE CASCADE,
             COMMENT VARCHAR(255)
         )"""
         cursor.execute(statement)

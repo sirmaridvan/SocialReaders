@@ -28,7 +28,7 @@ def getmembersbyjoin(dsn,groupid):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
         statement = """ SELECT USERNAME FROM SITEUSER, MEMBERS WHERE (SITEUSER.USERID = MEMBERS.GROUPUSER) AND (GROUPID = %s)"""
-        cursor.execute(statement,(groupid))
+        cursor.execute(statement,(groupid,))
         members = cursor.fetchall()
         return members
         cursor.close()

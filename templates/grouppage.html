@@ -27,22 +27,28 @@
 
 
 <div class="container">
-            <div class="row">
-                <div class="col-md-8">
-                  <div class="page-header">
-                    <h1><small class="pull-right"></small> Comments </h1>
-                  </div> 
-                   <div class="comments-list">
-          
-         			 {% for username,comment in comments %}
-         			 <div class="media">
-                           <p class="pull-right"><small>Past</small></p>
+	<div class="row">
+		<div class="col-md-8">
+			<div class="page-header">
+            	<h1><small class="pull-right"></small> Comments </h1>
+                  	</div> 
+                   		<div class="comments-list">
+         			 	{% for id,username,comment in comments %}
+         			 		<div class="media">
+                          		<p class="pull-right"><small>Past</small></p>
                             <div class="media-body">
                                 
                               <h4 class="media-heading user_name"> {{username}} </h4>
-                              {{comment}}
                               
-                              <p><small><a href="">Like</a> - <a href="">Share</a></small></p>
+                            	<div class="comment-content">
+								{{comment}}
+								</div>
+								
+                              	<form method="POST">
+                              		<input type = "hidden" name = "commentid" value = {{ id }}>
+                              		<button type="submit" name="Delete" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-edit"></span>Delete</button>
+                              	</form>
+                              	
                             </div>
                           </div>
                       {% endfor %}
@@ -53,4 +59,29 @@
                 </div>
             </div>
         </div>
+        
+        
+        
+
+<div class="container">
+
+	<div class="row">
+	</div>
+    
+    <div class="row">
+    
+    <div class="col-md-6">
+    	<div class="widget-area no-padding blank">
+			<div class="status-upload">
+				<form method="POST">
+					<textarea placeholder="What do you feel about this group?" name="comment" ></textarea>
+					<button type="submit" name="Add" class="btn btn-success green"><i class="fa fa-share"></i> Share</button>
+				</form>
+			</div><!-- Status Upload  -->
+		</div><!-- Widget Area -->
+	</div>
+        
+    </div>
+</div>
+     
 {% endblock %}

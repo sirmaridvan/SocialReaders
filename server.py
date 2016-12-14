@@ -93,7 +93,7 @@ def initialize():
         connection.commit()
         connection.close()
 
-
+    dropgroupandauthortables(app.config['dsn'])
     create_groups_table(app.config['dsn'])
     insert_group(app.config['dsn'],group1)
     create_members_table(app.config['dsn'])
@@ -870,8 +870,27 @@ def groups_page():
 @app.route('/grouppage',methods=['GET', 'POST'])
 def grouppage_page():
     if 'logged_in' in session and session['logged_in'] == True:
-        groupid = session["group"];
-        return render_template('grouppage.html',comments = selectcomments(app.config['dsn'],groupid),membernames = getmembersbyjoin(app.config['dsn'],groupid))
+        if request.method == 'GET':
+            groupid = session["group"];
+            return render_template('grouppage.html',comments = selectcomments(app.config['dsn'],groupid),membernames = getmembersbyjoin(app.config['dsn'],groupid))
+            
+        else:
+            if 'Add' in request.form:
+                comment=request.form["comment"]
+                userid =session["userId"]
+                groupid = session["group"];
+                newcomment = Comment(userid,groupid,comment)
+                insertcomment(app.config['dsn'],newcomment)
+            if 'Delete' in request.form:
+                userid =session["userId"]
+                commentid = request.form["commentid"]
+                ownerid = getcommenterbycommentid(app.config['dsn'],commentid)
+                print (userid)
+                print (ownerid[0])
+                if userid == (ownerid[0]):
+                    deletecommentbyid(app.config['dsn'],commentid)
+            groupid = session["group"];
+            return render_template('grouppage.html',comments = selectcomments(app.config['dsn'],groupid),membernames = getmembersbyjoin(app.config['dsn'],groupid))   
     else:
         return redirect(url_for('home_page'))
 

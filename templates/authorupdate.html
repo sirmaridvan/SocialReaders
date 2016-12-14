@@ -11,7 +11,7 @@
 <legend>Update Author</legend>
 
 <!-- Text input-->
-{% for id, name, lastname, birthdate, nationality, penname in updateauthor %}
+{% for id, name, lastname, birthdate, nationality, penname,description,picture  in updateauthor %}
 <div class="form-group">
   <label class="col-md-4 control-label" for="name">Name</label>  
   <div class="col-md-4">
@@ -52,6 +52,24 @@
   <label class="col-md-4 control-label" for="penname">Pen Name</label>  
   <div class="col-md-4">
   <input id="penname" name="penname" type="text" value="" placeholder="insert the penname if exists" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="description">Description</label>  
+  <div class="col-md-4">
+  <input id="description" name="description" type="text" value="" placeholder="insert the description if exists" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="picture">Picture Link</label>  
+  <div class="col-md-4">
+  <input id="picture" name="picture" type="text" value="" placeholder="insert the picture if exists" class="form-control input-md">
     
   </div>
 </div>

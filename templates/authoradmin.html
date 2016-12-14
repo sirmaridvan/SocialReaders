@@ -36,7 +36,7 @@
                 		</tr>
               		</thead>
               		<tbody>
-            			{% for id, name, lastname, birthdate, nationality, penname in authors %}
+            			{% for id, name, lastname, birthdate, nationality, penname,description,picture in authors %}
 							<tr>
 								<td align="center">
 									<form  action="{{ url_for('authorupdate_page')}}" method="get" style="float: left;">
