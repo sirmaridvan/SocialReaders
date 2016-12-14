@@ -142,7 +142,9 @@ def create_author_table(dsn):
             LASTNAME VARCHAR(50) NOT NULL,
             BIRTHDATE NUMERIC(4) NOT NULL,
             NATIONALITY VARCHAR(50) NOT NULL,
-            PENNAME VARCHAR(50)
+            PENNAME VARCHAR(50),
+            DESCRIPTION VARCHAR(255),
+            PICTURE VARCHAR(255) 
         )"""
         cursor.execute(statement)
         cursor.close()
