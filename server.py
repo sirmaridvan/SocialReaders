@@ -27,6 +27,7 @@ from Groups import *
 from News import *
 from Members import *
 from message import *
+from follow import *
 from Groupcomments import *
 
 app = Flask(__name__)
@@ -38,12 +39,14 @@ def initialize():
     try:
         cursor =connection.cursor()
         try:
+            dropFollowerTable(cursor)
             dropUserMessagesTable(cursor)
             dropUserTable(cursor)
             dropUserTypeTable(cursor)
             create_usertype_table(cursor)
             create_user_table(cursor)
             create_user_message_table(cursor)
+            create_user_follower_table(cursor)
             insert_usertype(cursor,'Admin')
             insert_usertype(cursor,'User')
             salt1 = createRandomSalt()
@@ -230,12 +233,15 @@ def profile_page():
         try:
             cursor =connection.cursor()
             try:
-                getReceivedMessages(cursor,session['userId'])
-                if cursor.rowcount > 9:
-                    messageCount = '9+'
-                else:
-                    messageCount = str(cursor.rowcount)
-                return render_template('profile.html', unreadMessageCount = messageCount)
+                getUserById(cursor,session['userId'])
+                mUser = cursor.fetchone()
+                getUserFollowings(cursor,session['userId'])
+                mFollowingCount = cursor.rowcount
+                mFollowings = cursor.fetchall()
+                getUserFollowers(cursor,session['userId'])
+                mFollowerCount = cursor.rowcount
+                mFollowers = cursor.fetchall()
+                return render_template('profile.html',user = mUser, followingCount = mFollowingCount, followerCount = mFollowerCount, followers = mFollowers,  followings = mFollowings, isFollowed = True)
             except dbapi2.Error as e:
                 print(e.pgerror)
             finally:
@@ -459,7 +465,6 @@ def messages_page(messageId = 0):
     else:
         return redirect(url_for('home_page'))
     
-        
 ##############
 
 #Emre's Part

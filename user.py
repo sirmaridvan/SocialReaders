@@ -17,16 +17,6 @@ class User:
 def createRandomSalt():
     salt = crypt.mksalt(crypt.METHOD_SHA256)
     return salt[:40]
-    #ALPHABET = "0123456789ABCDEFGHJIKLMNOPQRSTUVQXYZabcdefghijklmnopqrstuvwxyz"
-    #chars=[]
-    #for i in range(10):
-    #    chars.append(random.choice(ALPHABET))
-    #try:
-    #    b = ''.join(chars)
-    #except AttributeError:
-    #    import string
-    #    b = string.join(chars,'')
-    #return b
 
 def createHash(salt,password):
     hash_object = hashlib.sha256(password.encode() + salt.encode())

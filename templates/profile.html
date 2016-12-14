@@ -2,417 +2,226 @@
 {% block title %}Profile{% endblock %}
 {% block head %}
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='template.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
-<!-- nav bar -->
 <div class="container">
-	<div class="row">
-	    <div class="col-sm-3">
-	        <a href="mail-compose.html" class="btn btn-danger btn-block btn-compose-email">Compose Email</a>
-	        <ul class="nav nav-pills nav-stacked nav-email shadow mb-20">
-	            <li class="active">
-	                <a href="{{ url_for('messages_page')}}">
-	                    <i class="fa fa-inbox"></i> Inbox  <span class="label pull-right">{{ unreadMessageCount }}</span>
-	                </a>
-	            </li>
-	            <li>
-	                <a href="#mail-compose.html"><i class="fa fa-envelope-o"></i> Send Mail</a>
-	            </li>
-	            <li>
-	                <a href="#"><i class="fa fa-certificate"></i> Important</a>
-	            </li>
-	            <li>
-	                <a href="#">
-	                    <i class="fa fa-file-text-o"></i> Drafts <span class="label label-info pull-right inbox-notification">35</span>
-	                </a>
-	            </li>
-	            <li><a href="#"> <i class="fa fa-trash-o"></i> Trash</a></li>
-	        </ul><!-- /.nav -->
-	
-	        <h5 class="nav-email-subtitle">More</h5>
-	        <ul class="nav nav-pills nav-stacked nav-email mb-20 rounded shadow">
-	            <li>
-	                <a href="#">
-	                    <i class="fa fa-folder-open"></i> Promotions  <span class="label label-danger pull-right">3</span>
-	                </a>
-	            </li>
-	            <li>
-	                <a href="#">
-	                    <i class="fa fa-folder-open"></i> Job list
-	                </a>
-	            </li>
-	            <li>
-	                <a href="#">
-	                    <i class="fa fa-folder-open"></i> Backup
-	                </a>
-	            </li>
-	        </ul><!-- /.nav -->
-	    </div>
-	    <div class="col-sm-9">
-	        
-	        <!-- resumt -->
-	        <div class="panel panel-default">
-	               <div class="panel-heading resume-heading">
-	                  <div class="row">
-	                     <div class="col-lg-12">
-	                        <div class="col-xs-12 col-sm-4">
-	                           <figure>
-	                              <img class="img-circle img-responsive" alt="" src="http://placehold.it/300x300">
-	                           </figure>
-	                           <div class="row">
-	                              <div class="col-xs-12 social-btns">
-	                                 <div class="col-xs-3 col-md-1 col-lg-1 social-btn-holder">
-	                                    <a href="#" class="btn btn-social btn-block btn-google">
-	                                    <i class="fa fa-google"></i> </a>
-	                                 </div>
-	                                 <div class="col-xs-3 col-md-1 col-lg-1 social-btn-holder">
-	                                    <a href="#" class="btn btn-social btn-block btn-facebook">
-	                                    <i class="fa fa-facebook"></i> </a>
-	                                 </div>
-	                                 <div class="col-xs-3 col-md-1 col-lg-1 social-btn-holder">
-	                                    <a href="#" class="btn btn-social btn-block btn-twitter">
-	                                    <i class="fa fa-twitter"></i> </a>
-	                                 </div>
-	                                 <div class="col-xs-3 col-md-1 col-lg-1 social-btn-holder">
-	                                    <a href="#" class="btn btn-social btn-block btn-linkedin">
-	                                    <i class="fa fa-linkedin"></i> </a>
-	                                 </div>
-	                                 <div class="col-xs-3 col-md-1 col-lg-1 social-btn-holder">
-	                                    <a href="#" class="btn btn-social btn-block btn-github">
-	                                    <i class="fa fa-github"></i> </a>
-	                                 </div>
-	                                 <div class="col-xs-3 col-md-1 col-lg-1 social-btn-holder">
-	                                    <a href="#" class="btn btn-social btn-block btn-stackoverflow">
-	                                    <i class="fa fa-stack-overflow"></i> </a>
-	                                 </div>
-	                              </div>
-	                              
-	                              
-	                           </div>
-	                        </div>
-	                        <div class="col-xs-12 col-sm-8">
-	                           <ul class="list-group">
-	                              <li class="list-group-item">John Doe</li>
-	                              <li class="list-group-item">Software Engineer</li>
-	                              <li class="list-group-item">Google Inc. </li>
-	                              <li class="list-group-item"><i class="fa fa-phone"></i> 000-000-0000 </li>
-	                              <li class="list-group-item"><i class="fa fa-envelope"></i> john@example.com</li>
-	                           </ul>
-	                        </div>
-	                        <button data-toggle="modal" data-target="#squarespaceModal" class="btn btn-primary center-block">Follow</button>
-	                     </div>
-	                  </div>
-	               </div>
-	               <div class="bs-callout bs-callout-danger">
-	                  <h4>Summary</h4>
-	                  <p>
-	                     Lorem ipsum dolor sit amet, ea vel prima adhuc, scripta liberavisse ea quo, te vel vidit mollis complectitur. Quis verear mel ne. Munere vituperata vis cu, 
-	                     te pri duis timeam scaevola, nam postea diceret ne. Cum ex quod aliquip mediocritatem, mei habemus persecuti mediocritatem ei.
-	                  </p>
-	                  <p>
-	                     Odio recteque expetenda eum ea, cu atqui maiestatis cum. Te eum nibh laoreet, case nostrud nusquam an vis. 
-	                     Clita debitis apeirian et sit, integre iudicabit elaboraret duo ex. Nihil causae adipisci id eos.
-	                  </p>
-	               </div>
-	               <div class="bs-callout bs-callout-danger">
-	                  <h4>Research Interests</h4>
-	                  <p>
-	                     Software Engineering, Machine Learning, Image Processing,
-	                     Computer Vision, Artificial Neural Networks, Data Science,
-	                     Evolutionary Algorithms.
-	                  </p>
-	               </div>
-	               <div class="bs-callout bs-callout-danger">
-	                  <h4>Prior Experiences</h4>
-	                  <ul class="list-group">
-	                     <a class="list-group-item inactive-link" href="#">
-	                        <h4 class="list-group-item-heading">
-	                           Software Engineer at Twitter
-	                        </h4>
-	                        <p class="list-group-item-text">
-	                           Lorem ipsum dolor sit amet, ea vel prima adhuc, scripta liberavisse ea quo, te vel vidit mollis complectitur. Quis verear mel ne. Munere vituperata vis cu, 
-	                           te pri duis timeam scaevola, nam postea diceret ne. Cum ex quod aliquip mediocritatem, mei habemus persecuti mediocritatem ei.
-	                        </p>
-	                     </a>
-	                     <a class="list-group-item inactive-link" href="#">
-	                        <h4 class="list-group-item-heading">Software Engineer at LinkedIn</h4>
-	                        <p class="list-group-item-text">
-	                           Lorem ipsum dolor sit amet, ea vel prima adhuc, scripta liberavisse ea quo, te vel vidit mollis complectitur. 
-	                           Quis verear mel ne. Munere vituperata vis cu, te pri duis timeam scaevola, 
-	                           nam postea diceret ne. Cum ex quod aliquip mediocritatem, mei habemus persecuti mediocritatem ei.
-	                        </p>
-	                        <ul>
-	                           <li>
-	                              Lorem ipsum dolor sit amet, ea vel prima adhuc, scripta liberavisse ea quo, te vel vidit mollis complectitur. 
-	                              Quis verear mel ne. Munere vituperata vis cu, te pri duis timeam scaevola, 
-	                              nam postea diceret ne. Cum ex quod aliquip mediocritatem, mei habemus persecuti mediocritatem ei.
-	                           </li>
-	                           <li>
-	                              Lorem ipsum dolor sit amet, ea vel prima adhuc, scripta liberavisse ea quo, te vel vidit mollis complectitur. 
-	                              Quis verear mel ne. Munere vituperata vis cu, te pri duis timeam scaevola, 
-	                              nam postea diceret ne. Cum ex quod aliquip mediocritatem, mei habemus persecuti mediocritatem ei.
-	                           </li>
-	                        </ul>
-	                        <p></p>
-	                     </a>
-	                  </ul>
-	               </div>
-	               <div class="bs-callout bs-callout-danger">
-	                  <h4>Key Expertise</h4>
-	                  <ul class="list-group">
-	                     <li class="list-group-item"> Lorem ipsum dolor sit amet, ea vel prima adhuc </li>
-	                     <li class="list-group-item"> Lorem ipsum dolor sit amet, ea vel prima adhuc</li>
-	                     <li class="list-group-item"> Lorem ipsum dolor sit amet, ea vel prima adhuc</li>
-	                     <li class="list-group-item"> Lorem ipsum dolor sit amet, ea vel prima adhuc</li>
-	                     <li class="list-group-item">Lorem ipsum dolor sit amet, ea vel prima adhuc</li>
-	                     <li class="list-group-item"> Lorem ipsum dolor sit amet, ea vel prima adhuc</li>
-	                  </ul>
-	               </div>
-	               <div class="bs-callout bs-callout-danger">
-	                  <h4>Language and Platform Skills</h4>
-	                  <ul class="list-group">
-	                     <a class="list-group-item inactive-link" href="#">
-	                        <div class="progress">
-	                           <div data-placement="top" style="width: 80%;" 
-	                              aria-valuemax="100" aria-valuemin="0" aria-valuenow="80" role="progressbar" class="progress-bar progress-bar-success">
-	                              <span class="sr-only">80%</span>
-	                              <span class="progress-type">Java/ JavaEE/ Spring Framework </span>
-	                           </div>
-	                        </div>
-	                        <div class="progress">
-	                           <div data-placement="top" style="width: 70%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="1" role="progressbar" class="progress-bar progress-bar-success">
-	                              <span class="sr-only">70%</span>
-	                              <span class="progress-type">PHP/ Lamp Stack</span>
-	                           </div>
-	                        </div>
-	                        <div class="progress">
-	                           <div data-placement="top" style="width: 70%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="1" role="progressbar" class="progress-bar progress-bar-success">
-	                              <span class="sr-only">70%</span>
-	                              <span class="progress-type">JavaScript/ NodeJS/ MEAN stack </span>
-	                           </div>
-	                        </div>
-	                        <div class="progress">
-	                           <div data-placement="top" style="width: 65%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="1" role="progressbar" class="progress-bar progress-bar-warning">
-	                              <span class="sr-only">65%</span>
-	                              <span class="progress-type">Python/ Numpy/ Scipy</span>
-	                           </div>
-	                        </div>
-	                        <div class="progress">
-	                           <div data-placement="top" style="width: 60%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" class="progress-bar progress-bar-warning">
-	                              <span class="sr-only">60%</span>
-	                              <span class="progress-type">C</span>
-	                           </div>
-	                        </div>
-	                        <div class="progress">
-	                           <div data-placement="top" style="width: 50%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="50" role="progressbar" class="progress-bar progress-bar-warning">
-	                              <span class="sr-only">50%</span>
-	                              <span class="progress-type">C++</span>
-	                           </div>
-	                        </div>
-	                        <div class="progress">
-	                           <div data-placement="top" style="width: 10%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="50" role="progressbar" class="progress-bar progress-bar-danger">
-	                              <span class="sr-only">10%</span>
-	                              <span class="progress-type">Go</span>
-	                           </div>
-	                        </div>
-	                        <div class="progress-meter">
-	                           <div style="width: 25%;" class="meter meter-left"><span class="meter-text">I suck</span></div>
-	                           <div style="width: 25%;" class="meter meter-left"><span class="meter-text">I know little</span></div>
-	                           <div style="width: 30%;" class="meter meter-right"><span class="meter-text">I'm a guru</span></div>
-	                           <div style="width: 20%;" class="meter meter-right"><span class="meter-text">I''m good</span></div>
-	                        </div>
-	                     </a>
-	                  </ul>
-	               </div>
-	               <div class="bs-callout bs-callout-danger">
-	                  <h4>Education</h4>
-	                  <table class="table table-striped table-responsive ">
-	                     <thead>
-	                        <tr>
-	                           <th>Degree</th>
-	                           <th>Graduation Year</th>
-	                           <th>CGPA</th>
-	                        </tr>
-	                     </thead>
-	                     <tbody>
-	                        <tr>
-	                           <td>Masters in Computer Science and Engineering</td>
-	                           <td>2014</td>
-	                           <td> 3.50 </td>
-	                        </tr>
-	                        <tr>
-	                           <td>BSc. in Computer Science and Engineering</td>
-	                           <td>2011</td>
-	                           <td> 3.25 </td>
-	                        </tr>
-	                     </tbody>
-	                  </table>
-	               </div>
-	            </div>
-	         </div>
-	        <!-- resume -->
-	
-	    </div>
-	</div>
-	<!-- line modal -->
-	<div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-				<h3 class="modal-title" id="lineModalLabel">Followers</h3>
-			</div>
-			<div class="modal-body">	
-	            <!-- content goes here -->
-	            <div class="row">
-				    <div class="col-md-6">
-				        <div class="well well-white mini-profile-widget"> 
-				            <div class="image-container">
-				                <img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="avatar img-responsive" alt="avatar">
-				            </div>   
-				            <div class="details">
-				                <h4>John Doe</h4>
-				                <hr> 
-				                <div>Lives in Miami, Florida</div>
-				                <div class="mg-top-10">32 Followers | 120 Following | 18 Posts</div>
-				                <p class="mg-top-20"> 
-				                    <a href="javascript:void(0);" class="btn btn-blue">
-				                        <i class="fa fa-facebook fa-fw"></i>
-				                    </a>
-				                    <a href="javascript:void(0);" class="btn btn-info">
-				                        <i class="fa fa-twitter fa-fw"></i>
-				                    </a>
-				                    <a href="javascript:void(0);" class="btn btn-red">
-				                        <i class="fa fa-google-plus fa-fw"></i>
-				                    </a>
-				                </p>
-				            </div> 
-				        </div>
-				    </div>
-				    <div class="col-md-6">
-				        <div class="well well-white mini-profile-widget"> 
-				            <div class="image-container">
-				                <img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="avatar img-responsive" alt="avatar">
-				            </div>   
-				            <div class="details">
-				                <h4>John Doe</h4>
-				                <hr> 
-				                <div>Lives in Miami, Florida</div>
-				                <div class="mg-top-10">32 Followers | 120 Following | 18 Posts</div>
-				                <p class="mg-top-20"> 
-				                    <a href="javascript:void(0);" class="btn btn-blue">
-				                        <i class="fa fa-facebook fa-fw"></i>
-				                    </a>
-				                    <a href="javascript:void(0);" class="btn btn-info">
-				                        <i class="fa fa-twitter fa-fw"></i>
-				                    </a>
-				                    <a href="javascript:void(0);" class="btn btn-red">
-				                        <i class="fa fa-google-plus fa-fw"></i>
-				                    </a>
-				                </p>
-				            </div> 
-				        </div>
-				    </div>
-				    <div class="col-md-6">
-				        <div class="well well-white mini-profile-widget"> 
-				            <div class="image-container">
-				                <img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="avatar img-responsive" alt="avatar">
-				            </div>   
-				            <div class="details">
-				                <h4>John Doe</h4>
-				                <hr> 
-				                <div>Lives in Miami, Florida</div>
-				                <div class="mg-top-10">32 Followers | 120 Following | 18 Posts</div>
-				                <p class="mg-top-20"> 
-				                    <a href="javascript:void(0);" class="btn btn-blue">
-				                        <i class="fa fa-facebook fa-fw"></i>
-				                    </a>
-				                    <a href="javascript:void(0);" class="btn btn-info">
-				                        <i class="fa fa-twitter fa-fw"></i>
-				                    </a>
-				                    <a href="javascript:void(0);" class="btn btn-red">
-				                        <i class="fa fa-google-plus fa-fw"></i>
-				                    </a>
-				                </p>
-				            </div> 
-				        </div>
-				    </div>
-				</div>
-			</div>
-			<div class="modal-footer">
-			</div>
-		</div>
-	 </div>
+    <div class="user-profile">
+        <div class="profile-header-background"><img src="http://demo.thedevelovers.com/dashboard/queenadmin-1.2/assets/img/city.jpg" alt="Profile Header Background"></div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-info-left">
+                    <div class="text-center">
+                        <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="Avatar" class="avatar img-circle">
+                        <h2>{{user[5]}} {{user[6]}}</h2>
+                    </div>
+                    {% if user[0] != session.userId %}
+                    <div class="action-buttons">
+                        <div class="row">
+                            {% if isFollowed %}
+                            	<div class="col-xs-6">
+                                	<button type="button" class="btn btn-sm btn-danger pull-right"><i class="fa fa-close-round"></i> Unfollow</button>
+                            	</div>
+                            {% else %}
+                            	<div class="col-xs-6">
+                            		<button type="button" class="btn btn-sm btn-default pull-right"><i class="fa fa-plus"></i> Follow</button>
+                            	</div>
+                            {% endif %}
+                            <div class="col-xs-6">
+                                <a href="#" class="btn btn-primary btn-block"><i class="fa fa-android-mail"></i> Message</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="section">
+                        <h3>About Me</h3>
+                        <p>Energistically administrate 24/7 portals and enabled catalysts for change. Objectively revolutionize client-centered e-commerce via covalent scenarios. Continually envisioneer.</p>
+                    </div>
+                    <div class="section">
+                        <h3>Statistics</h3>
+                        <p><span class="badge">{{followingCount}}</span> Following</p>
+                        <p><span class="badge">{{followerCount}}</span> Followers</p>
+                        <p><span class="badge">620</span> Likes</p>
+                    </div>
+                    <div class="section">
+                        <h3>Social</h3>
+                        <ul class="list-unstyled list-social">
+                            <li><a href="#"><i class="fa fa-twitter"></i> @{{user[1]}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="profile-info-right">
+                    <ul class="nav nav-pills nav-pills-custom-minimal custom-minimal-bottom">
+                        <li class="active"><a href="#activities" data-toggle="tab">ACTIVITIES</a></li>
+                        <li><a href="#followers" data-toggle="tab">FOLLOWERS</a></li>
+                        <li><a href="#following" data-toggle="tab">FOLLOWING</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <!-- activities -->
+                        <div class="tab-pane fade in active" id="activities">
+                            <div class="media activity-item">
+                                <a href="#" class="pull-left">
+                                    <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="Avatar" class="media-object avatar">
+                                </a>
+                                <div class="media-body">
+                                    <p class="activity-title"><a href="#">Antonius</a> started following <a href="#">Jack Bay</a> <small class="text-muted">- 2m ago</small></p>
+                                    <small class="text-muted">Today 08:30 am - 02.05.2014</small>
+                                </div>
+                                <div class="btn-group pull-right activity-actions">
+                                    <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-th"></i>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <li><a href="#">I don't want to see this</a></li>
+                                        <li><a href="#">Unfollow Antonius</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Get Notification</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="media activity-item">
+                                <a href="#" class="pull-left">
+                                    <img src="http://bootdey.com/img/Content/avatar/avatar2.png" alt="Avatar" class="media-object avatar">
+                                </a>
+                                <div class="media-body">
+                                    <p class="activity-title"><a href="#">Jane Doe</a> likes <a href="#">Jack Bay</a> <small class="text-muted">- 36m ago</small></p>
+                                    <small class="text-muted">Today 07:23 am - 02.05.2014</small>
+                                </div>
+                                <div class="btn-group pull-right activity-actions">
+                                    <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-th"></i>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <li><a href="#">I don't want to see this</a></li>
+                                        <li><a href="#">Unfollow Jane Doe</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Get Notification</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="media activity-item">
+                                <a href="#" class="pull-left">
+                                    <img src="http://bootdey.com/img/Content/avatar/avatar3.png" alt="Avatar" class="media-object avatar">
+                                </a>
+                                <div class="media-body">
+                                    <p class="activity-title"><a href="#">Michael</a> posted something for <a href="#">Jack Bay</a> <small class="text-muted">- 1h ago</small></p>
+                                    <small class="text-muted">Today 07:23 am - 02.05.2014</small>
+                                    <div class="activity-attachment">
+                                        <div class="well well-sm">
+                                            Professionally evolve corporate services without ethical leadership. Proactively re-engineer client-focused infrastructures before alternative potentialities. Competently predominate just in time e-tailers for leveraged solutions. Intrinsicly initiate end-to-end collaboration and idea-sharing after 24/365 ROI. Rapidiously.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="btn-group pull-right activity-actions">
+                                    <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-th"></i>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <li><a href="#">I don't want to see this</a></li>
+                                        <li><a href="#">Unfollow Michael</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Get Notification</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="media activity-item">
+                                <a href="#" class="pull-left">
+                                    <img src="http://bootdey.com/img/Content/avatar/avatar5.png" alt="Avatar" class="media-object avatar">
+                                </a>
+                                <div class="media-body">
+                                    <p class="activity-title"><a href="#">Jack Bay</a> has uploaded two photos <small class="text-muted">- Yesterday</small></p>
+                                    <small class="text-muted">Yesterday 06:42 pm - 01.05.2014</small>
+                                    <div class="activity-attachment">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <a href="#" class="thumbnail">
+                                                    <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="Uploaded photo">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="btn-group pull-right activity-actions">
+                                    <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-th"></i>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <li><a href="#">I don't want to see this</a></li>
+                                        <li><a href="#">Unfollow Jack Bay</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Get Notification</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="media activity-item">
+                                <a href="#" class="pull-left">
+                                    <img src="http://bootdey.com/img/Content/avatar/avatar6.png" alt="Avatar" class="media-object avatar">
+                                </a>
+                                <div class="media-body">
+                                    <p class="activity-title"><a href="#">Jack Bay</a> has changed his profile picture <small class="text-muted">- 2 days ago</small></p>
+                                    <small class="text-muted">2 days ago 05:42 pm - 30.04.2014</small>
+                                    <div class="activity-attachment">
+                                        <a href="#" class="thumbnail">
+                                            <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="Uploaded photo">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="btn-group pull-right activity-actions">
+                                    <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-th"></i>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <li><a href="#">I don't want to see this</a></li>
+                                        <li><a href="#">Unfollow Jack Bay</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Get Notification</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-default center-block"><i class="fa fa-refresh"></i> Load more activities</button>
+                        </div>
+                        <!-- end activities -->
+                        <!-- followers -->
+                        <div class="tab-pane fade" id="followers">
+                            {% for followeruserid, followerusername, followername, followersurname in followers %}
+	                            <div class="media user-follower">
+	                                <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="User Avatar" class="media-object pull-left">
+	                                <div class="media-body">
+	                                    <a href="#">{{followername}} {{followersurname}}<br><span class="text-muted username">@{{followerusername}}</span></a>
+	                                    <button type="button" class="btn btn-sm btn-toggle-following pull-right"><i class="fa fa-checkmark-round"></i> <span>Following</span></button>
+	                                </div>
+	                            </div>
+                            {% endfor %}
+                        </div>
+                        <!-- end followers -->
+                        <!-- following -->
+                        <div class="tab-pane fade" id="following">
+	                        {% for followinguserid, followingusername, followingname, followingsurname in followings %}
+	                            <div class="media user-following">
+	                                <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="User Avatar" class="media-object pull-left">
+	                                <div class="media-body">
+	                                    <a href="#">{{followingname}} {{followingsurname}}<br><span class="text-muted username">@{{followingusername}}</span></a>
+	                                    <button type="button" class="btn btn-sm btn-danger pull-right"><i class="fa fa-close-round"></i> Unfollow</button>
+	                                </div>
+	                            </div>
+	                        {% endfor %}
+                        </div>
+                        <!-- end following -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<script>
-	$(function () {
-	    $('.button-checkbox').each(function () {
-	
-	        // Settings
-	        var $widget = $(this),
-	            $button = $widget.find('button'),
-	            $checkbox = $widget.find('input:checkbox'),
-	            color = $button.data('color'),
-	            settings = {
-	                on: {
-	                    icon: 'glyphicon glyphicon-check'
-	                },
-	                off: {
-	                    icon: 'glyphicon glyphicon-unchecked'
-	                }
-	            };
-	
-	        // Event Handlers
-	        $button.on('click', function () {
-	            $checkbox.prop('checked', !$checkbox.is(':checked'));
-	            $checkbox.triggerHandler('change');
-	            updateDisplay();
-	        });
-	        $checkbox.on('change', function () {
-	            updateDisplay();
-	        });
-	
-	        // Actions
-	        function updateDisplay() {
-	            var isChecked = $checkbox.is(':checked');
-	
-	            // Set the button's state
-	            $button.data('state', (isChecked) ? "on" : "off");
-	
-	            // Set the button's icon
-	            $button.find('.state-icon')
-	                .removeClass()
-	                .addClass('state-icon ' + settings[$button.data('state')].icon);
-	
-	            // Update the button's color
-	            if (isChecked) {
-	                $button
-	                    .removeClass('btn-default')
-	                    .addClass('btn-' + color + ' active');
-	            }
-	            else {
-	                $button
-	                    .removeClass('btn-' + color + ' active')
-	                    .addClass('btn-default');
-	            }
-	        }
-	
-	        // Initialization
-	        function init() {
-	
-	            updateDisplay();
-	
-	            // Inject the icon if applicable
-	            if ($button.find('.state-icon').length == 0) {
-	                $button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
-	            }
-	        }
-	        init();
-	    });
-	});
-</script>
 {% endblock %}
 
