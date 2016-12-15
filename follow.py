@@ -2,19 +2,19 @@ import hashlib
 import random
 import crypt
 
-class Follower:
+class Follow:
     def __init__(self, followeruserid, followinguserid):
         self.followeruserid = followeruserid
         self.followinguserid = followinguserid
 
-def follow(cursor,follow):
+def follow(cursor,followeruserid,followinguserid):
     statement = """INSERT INTO FOLLOWER (FOLLOWERUSERID, FOLLOWINGUSERID) VALUES (
                 %(followeruserid)s, %(followinguserid)s
                 )"""
-    cursor.execute(statement,{'followeruserid':follow.followeruserid,'followinguserid':follow.followinguserid});
+    cursor.execute(statement,{'followeruserid':followeruserid,'followinguserid':followinguserid});
 
-def unfollow(cursor,followinguserid, followeruserid):
-    statement = """DELETE FROM FOLLOWER WHERE (FOLLOWINGUSERID = %(followinguserid)s) AND (FOLLOWERUSERID = %(followeruserid))"""
+def unfollow(cursor,followeruserid, followinguserid):
+    statement = """DELETE FROM FOLLOWER WHERE (FOLLOWINGUSERID = %(followinguserid)s AND FOLLOWERUSERID = %(followeruserid)s)"""
     cursor.execute(statement,{'followinguserid':followinguserid,'followeruserid':followeruserid})
                 
 def getUserFollowings(cursor,userid):

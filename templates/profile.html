@@ -1,10 +1,61 @@
 {% extends "template.html" %}
 {% block title %}Profile{% endblock %}
 {% block head %}
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='template.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" />
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+
+<script type="text/javascript">
+var followFunc = function(event) {
+	$.getJSON($SCRIPT_ROOT + '/_follow', {
+		followid:$(event.parentNode).find('input[name=userid]').first().val()
+	}, function(data) {
+		if(data.result == true) {
+			$(event).attr("name","unfollow-button");
+			$(event).removeClass("btn-success");
+			$(event).addClass("btn-danger");
+			$(event).text('Unfollow');
+			$(event).unbind('click');
+			$(event).bind('click',function(event) {
+				unfollowFunc(event.target);
+			});
+		} else {
+			alert('Error');
+		}
+	});
+};
+
+var unfollowFunc = function(event) {
+	$.getJSON($SCRIPT_ROOT + '/_unfollow', {
+		followid:$(event.parentNode).find('input[name=userid]').first().val()
+	}, function(data) {
+		if(data.result == true) {
+			$(event).attr("name","follow-button");
+			$(event).removeClass("btn-danger");
+			$(event).addClass("btn-success");
+			$(event).text('Follow');
+			$(event).unbind('click');
+			$(event).bind('click',function(event) {
+				followFunc(event.target);
+			});
+		} else {
+		}
+	});
+};
+$(document).ready(function() {
+	$('button[name^=unfollow-button]').bind('click',function(event) {
+		unfollowFunc(event.target);
+	});
+	$('button[name^=follow-button]').bind('click',function(event) {
+		followFunc(event);
+	});
+});
+</script>
+
 {% endblock %}
 {% block content %}
 <div class="container">
@@ -22,11 +73,13 @@
                         <div class="row">
                             {% if isFollowed %}
                             	<div class="col-xs-6">
-                                	<button type="button" class="btn btn-sm btn-danger pull-right"><i class="fa fa-close-round"></i> Unfollow</button>
+                                	<button type="button" class="btn btn-danger btn-block" name="unfollow-button"><i class="fa fa-close-round"></i> Unfollow</button>
+                                	<input name="userid" type="hidden" value="{{user[0]}}" />
                             	</div>
                             {% else %}
                             	<div class="col-xs-6">
-                            		<button type="button" class="btn btn-sm btn-default pull-right"><i class="fa fa-plus"></i> Follow</button>
+                            		<button type="button" class="btn btn-success btn-block" name="follow-button"><i class="fa fa-plus"></i> Follow</button>
+                            		<input name="userid" type="hidden" value="{{user[0]}}" />
                             	</div>
                             {% endif %}
                             <div class="col-xs-6">
@@ -210,7 +263,8 @@
 	                                <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="User Avatar" class="media-object pull-left">
 	                                <div class="media-body">
 	                                    <a href="#">{{followingname}} {{followingsurname}}<br><span class="text-muted username">@{{followingusername}}</span></a>
-	                                    <button type="button" class="btn btn-sm btn-danger pull-right"><i class="fa fa-close-round"></i> Unfollow</button>
+	                                    <button type="button" class="btn btn-sm btn-danger pull-right" name="follow-button"><i class="fa fa-close-round"></i> Unfollow</button>
+	                                	<input name="userid" type="hidden" value="{{followinguserid}}" />
 	                                </div>
 	                            </div>
 	                        {% endfor %}
@@ -222,6 +276,5 @@
         </div>
     </div>
 </div>
-
 {% endblock %}
 

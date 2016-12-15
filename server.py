@@ -9,6 +9,7 @@ from flask import Flask
 from flask import redirect
 from flask import request
 from flask import render_template
+from flask import jsonify
 from flask.helpers import url_for
 
 from initialize_database import *
@@ -233,12 +234,15 @@ def profile_page():
         try:
             cursor =connection.cursor()
             try:
-                getUserById(cursor,session['userId'])
+                userId = request.args.get('userid', 0, type=int)
+                if userId == 0:
+                    userId = session['userId']
+                getUserById(cursor,userId)
                 mUser = cursor.fetchone()
-                getUserFollowings(cursor,session['userId'])
+                getUserFollowings(cursor,userId)
                 mFollowingCount = cursor.rowcount
                 mFollowings = cursor.fetchall()
-                getUserFollowers(cursor,session['userId'])
+                getUserFollowers(cursor,userId)
                 mFollowerCount = cursor.rowcount
                 mFollowers = cursor.fetchall()
                 return render_template('profile.html',user = mUser, followingCount = mFollowingCount, followerCount = mFollowerCount, followers = mFollowers,  followings = mFollowings, isFollowed = True)
@@ -255,6 +259,46 @@ def profile_page():
     else:
         return redirect(url_for('home_page'))
 
+@app.route('/_follow')
+def followPage():
+    followid = request.args.get('followid', 0, type=int)
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
+        cursor =connection.cursor()
+        try:
+            follow(cursor,session['userId'],followid)
+            return jsonify(result=True)
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            return jsonify(result=False)
+        finally:
+            cursor.close()
+    except dbapi2.Error as e:
+        return jsonify(result=False)
+    finally:
+        connection.commit()
+        connection.close()
+    return jsonify(result=False)
+@app.route('/_unfollow')
+def unfollowPage():
+    followid = request.args.get('followid', 0, type=int)
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
+        cursor =connection.cursor()
+        try:
+            unfollow(cursor,session['userId'],followid)
+            return jsonify(result=True)
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            return jsonify(result=False)
+        finally:
+            cursor.close()
+    except dbapi2.Error as e:
+        return jsonify(result=False)
+    finally:
+        connection.commit()
+        connection.close()
+    return jsonify(result=False)
 @app.route('/admin/users',methods=['GET', 'POST'])
 def users_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -273,8 +317,12 @@ def users_page():
                     mUsers = cursor.fetchall()
                     return render_template('users.html',users=mUsers)
                 else:
-                    getAllUsers(cursor)
-                    mUsers = cursor.fetchall()
+                    if 'q' in request.args:
+                        searchUsers(cursor,request.args['q'])
+                        mUsers = cursor.fetchall()
+                    else:
+                        getAllUsers(cursor)
+                        mUsers = cursor.fetchall()
                     return render_template('users.html',users=mUsers)
             except dbapi2.Error as e:
                 print(e.pgerror)

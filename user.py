@@ -56,6 +56,11 @@ def getAllUsers(cursor):
     statement = """SELECT USERID,USERNAME,EMAIL,NAME,SURNAME,SALT,USERTYPEID FROM SITEUSER"""
     cursor.execute(statement)
 
+def searchUsers(cursor, text):
+    statement = """SELECT USERID,USERNAME,EMAIL,NAME,SURNAME,SALT,USERTYPEID FROM SITEUSER
+                WHERE (USERNAME LIKE %%%(username)s%%)"""
+    cursor.execute(statement, {'username':text})
+
 def deleteUser(cursor,userid):
     statement = """DELETE FROM SITEUSER WHERE (USERID = %(userid)s)"""
     cursor.execute(statement,{'userid':userid})
