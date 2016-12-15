@@ -249,7 +249,7 @@ $(document).ready(function() {
 	                            <div class="media user-follower">
 	                                <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="User Avatar" class="media-object pull-left">
 	                                <div class="media-body">
-	                                    <a href="#">{{followername}} {{followersurname}}<br><span class="text-muted username">@{{followerusername}}</span></a>
+	                                    <a href="{{url_for("profile_page",userid=followeruserid)}}">{{followername}} {{followersurname}}<br><span class="text-muted username">@{{followerusername}}</span></a>
 	                                    <button type="button" class="btn btn-sm btn-toggle-following pull-right"><i class="fa fa-checkmark-round"></i> <span>Following</span></button>
 	                                </div>
 	                            </div>
@@ -262,7 +262,7 @@ $(document).ready(function() {
 	                            <div class="media user-following">
 	                                <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="User Avatar" class="media-object pull-left">
 	                                <div class="media-body">
-	                                    <a href="#">{{followingname}} {{followingsurname}}<br><span class="text-muted username">@{{followingusername}}</span></a>
+	                                    <a href="{{url_for("profile_page",userid=followinguserid)}}">{{followingname}} {{followingsurname}}<br><span class="text-muted username">@{{followingusername}}</span></a>
 	                                    <button type="button" class="btn btn-sm btn-danger pull-right" name="follow-button"><i class="fa fa-close-round"></i> Unfollow</button>
 	                                	<input name="userid" type="hidden" value="{{followinguserid}}" />
 	                                </div>

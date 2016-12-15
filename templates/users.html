@@ -44,23 +44,23 @@
                 		</tr>
               		</thead>
               		<tbody>
-            			{% for userid, username, email, name, surname, salt,usertypeid in users %}
+            			{% for muserid, username, email, name, surname, salt,usertypeid in users %}
 							<tr>
 								<td align="center">
 									<form action="{{ url_for('userUpdate_page')}}" method="get" style="float: left;">
 										<button type="submit" name="edit" class="btn btn-default">
 											<i class="fa fa-pencil"></i>
 										</button>
-										<input type="hidden" name="id" value="{{userid}}"/>
+										<input type="hidden" name="id" value="{{muserid}}"/>
 									</form>
 									<form action="{{ url_for('users_page')}}" method="post">
 										<button type="submit" name="delete" class="btn btn-danger">
 											<i class="glyphicon glyphicon-trash"></i>
 										</button>
-										<input type="hidden" name="deleteid" value="{{userid}}"/>
+										<input type="hidden" name="deleteid" value="{{muserid}}"/>
 									</form>
                          		</td>
-								<td>{{username}}</td>
+								<td><a href="{{url_for("profile_page",userid = muserid)}}">{{username}}</a></td>
 								<td>{{name}}</td>
 								<td>{{surname}}</td>
 								<td>{{email}}</td>
