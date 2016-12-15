@@ -74,14 +74,29 @@ def initialize():
         cursor =connection.cursor()
         try:
             drop_tables(cursor)
-            create_blogs_table(cursor)
-            create_jobs_table(cursor)
-            create_feeds_table(cursor)
-            create_feedtypes_table(cursor)
             create_book_table(cursor)
             create_genre_table(app.config['dsn'])
             create_quote_table(cursor)
             create_news_table(cursor)
+        except dbapi2.Error as e:
+            print(e.pgerror)
+        finally:
+            cursor.close()
+    except dbapi2.Error as e:
+        print(e.pgerror)
+        connection.rollback()
+    finally:
+        connection.commit()
+        connection.close()
+
+    connection = dbapi2.connect(app.config['dsn'])
+    try:
+        cursor =connection.cursor()
+        try:
+            create_blogs_table(cursor)
+            create_jobs_table(cursor)
+            '''create_feeds_table(cursor)
+            create_feedtypes_table(cursor)'''
         except dbapi2.Error as e:
             print(e.pgerror)
         finally:
@@ -367,7 +382,7 @@ def messages_page(messageId = 0):
                         changeMessageReadStatus(cursor,messageId,True)
                         getReceivedMessages(cursor,session['userId'])
                         mReceivedMessages = cursor.fetchall()
-    
+
                         getSentMessages(cursor,session['userId'])
                         mSentMessages = cursor.fetchall()
                         return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
@@ -388,7 +403,7 @@ def messages_page(messageId = 0):
                     try:
                         getReceivedMessages(cursor,session['userId'])
                         mReceivedMessages = cursor.fetchall()
-    
+
                         getSentMessages(cursor,session['userId'])
                         mSentMessages = cursor.fetchall()
                         return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
@@ -461,10 +476,10 @@ def messages_page(messageId = 0):
                 connection.commit()
                 connection.close()
             return render_template('messages.html')
-        
+
     else:
         return redirect(url_for('home_page'))
-    
+
 ##############
 
 #Emre's Part
@@ -744,7 +759,7 @@ def authorupdate_page():
     else:
         return render_template('home_page.html')
 
-		
+
 @app.route('/news',methods=['GET', 'POST'])
 def news_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -873,7 +888,7 @@ def grouppage_page():
         if request.method == 'GET':
             groupid = session["group"];
             return render_template('grouppage.html',comments = selectcomments(app.config['dsn'],groupid),membernames = getmembersbyjoin(app.config['dsn'],groupid))
-            
+
         else:
             if 'Add' in request.form:
                 comment=request.form["comment"]
@@ -890,7 +905,7 @@ def grouppage_page():
                 if userid == (ownerid[0]):
                     deletecommentbyid(app.config['dsn'],commentid)
             groupid = session["group"];
-            return render_template('grouppage.html',comments = selectcomments(app.config['dsn'],groupid),membernames = getmembersbyjoin(app.config['dsn'],groupid))   
+            return render_template('grouppage.html',comments = selectcomments(app.config['dsn'],groupid),membernames = getmembersbyjoin(app.config['dsn'],groupid))
     else:
         return redirect(url_for('home_page'))
 

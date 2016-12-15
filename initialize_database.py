@@ -18,7 +18,7 @@ def drop_tables(cursor):
 def dropgroupandauthortables(dsn):
         with dbapi2.connect(dsn) as connection:
             cursor = connection.cursor()
-            statement = """ 
+            statement = """
                 DROP TABLE IF EXISTS GROUPS CASCADE;
                 DROP TABLE IF EXISTS MEMBERS CASCADE;
                 DROP TABLE IF EXISTS GROUPCOMMENTS CASCADE;
@@ -26,7 +26,7 @@ def dropgroupandauthortables(dsn):
                 """
             cursor.execute(statement)
             cursor.close()
-    
+
 
 
 ##Elif's drop operations###
@@ -144,7 +144,7 @@ def create_author_table(dsn):
             NATIONALITY VARCHAR(50) NOT NULL,
             PENNAME VARCHAR(50),
             DESCRIPTION VARCHAR(255),
-            PICTURE VARCHAR(255) 
+            PICTURE VARCHAR(255)
         )"""
         cursor.execute(statement)
         cursor.close()
