@@ -259,6 +259,8 @@ def profile_page():
                         mIsFollowing = True
                     else:
                         mIsFollowing = False
+                else:
+                    mIsFollowing = False
                 getUserById(cursor,userId)
                 mUser = cursor.fetchone()
                 getUserFollowings(cursor,userId)
