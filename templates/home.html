@@ -1,34 +1,123 @@
 {% extends "template.html" %}
 {% block title %}Home{% endblock %}
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='timeline.css') }}" />
 {% endblock %}
 {% block content %}
-<div class="row">
-					        <div class="col-sm-3">
-					            <a href="#" class="nav-tabs-dropdown btn btn-block btn-primary">Popular</a>
-					            <ul id="nav-tabs-wrapper" class="nav nav-tabs nav-pills nav-stacked well">
-						            <li class="active"><a href="#vtab1" data-toggle="tab">Book 1</a></li>
-						            <li><a href="#vtab2" data-toggle="tab">Book 2</a></li>
-						            <li><a href="#vtab3" data-toggle="tab">Book 3</a></li>
-					            </ul>
-					        </div>
-					        <div class="col-sm-9">
-					            <div class="tab-content">
-					                <div role="tabpanel" class="tab-pane fade in active" id="vtab1">
-					                    <h3>Book 1</h3>
-					                    <p>Etiam id pharetra quam. Morbi tristique nunc vel sapien dapibus, sit amet imperdiet quam venenatis. Vestibulum et suscipit urna. Suspendisse volutpat quis est eu volutpat. Nulla non tortor venenatis turpis congue aliquet. Vivamus at elit vel massa elementum tempor sit amet sed odio. Nullam placerat, arcu sed ullamcorper ornare, erat erat placerat quam, in feugiat nulla purus in nunc. Maecenas vitae erat auctor, aliquam tellus et, vulputate eros.</p>
-					                </div>
-					                <div role="tabpanel" class="tab-pane fade" id="vtab2">
-					                    <h3>Book 2</h3>
-					                    <p> Mauris imperdiet dignissim ante, in efficitur mauris elementum sed. Cras vulputate malesuada magna. Morbi tincidunt eros a dui cursus, vitae dignissim nulla scelerisque. Duis pharetra scelerisque mi vel luctus. Cras eu purus efficitur, blandit nisi id, fringilla nulla.</p>
-					                </div>
-					                <div role="tabpanel" class="tab-pane fade in" id="vtab3">
-					                    <h3>Book 3</h3>
-					                    <p>Etiam id pharetra quam. Morbi tristique nunc vel sapien dapibus, sit amet imperdiet quam venenatis. Vestibulum et suscipit urna. Suspendisse volutpat quis est eu volutpat. Nulla non tortor venenatis turpis congue aliquet. Vivamus at elit vel massa elementum tempor sit amet sed odio. Nullam placerat, arcu sed ullamcorper ornare, erat erat placerat quam, in feugiat nulla purus in nunc. Maecenas vitae erat auctor, aliquam tellus et, vulputate eros.</p>
-					                </div>
-					            </div>
-					        </div>
-					    </div>
+<div class="container">
+  <header class="page-header">
+    <h1>Dark Responsive Timeline with Bootstrap</h1>
+  </header>
+
+  <ul class="timeline">
+    <li><div class="tldate">Apr 2014</div></li>
+
+    <li>
+      <div class="tl-circ"></div>
+      <div class="timeline-panel">
+        <div class="tl-heading">
+          <h4>Surprising Headline Right Here</h4>
+          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 3 hours ago</small></p>
+        </div>
+        <div class="tl-body">
+          <p>Lorem Ipsum and such.</p>
+        </div>
+      </div>
+    </li>
+
+    <li class="timeline-inverted">
+      <div class="tl-circ"></div>
+      <div class="timeline-panel">
+        <div class="tl-heading">
+          <h4>Breaking into Spring!</h4>
+          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 4/07/2014</small></p>
+        </div>
+        <div class="tl-body">
+          <p>Hope the weather gets a bit nicer...</p>
+
+          <p>Y'know, with more sunlight.</p>
+        </div>
+      </div>
+    </li>
+
+    <li><div class="tldate">Mar 2014</div></li>
+
+    <li>
+      <div class="tl-circ"></div>
+      <div class="timeline-panel">
+        <div class="tl-heading">
+          <h4>New Apple Device Release Date</h4>
+          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 3/22/2014</small></p>
+        </div>
+        <div class="tl-body">
+          <p>In memory of Steve Jobs.</p>
+        </div>
+      </div>
+    </li>
+    <li class="timeline-inverted">
+      <div class="timeline-panel">
+        <div class="tl-heading">
+          <h4>No icon here</h4>
+          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 3/16/2014</small></p>
+        </div>
+        <div class="tl-body">
+          <p>Here you'll find some beautiful photography for your viewing pleasure, courtesy of <a href="http://lorempixel.com/">lorempixel</a>.</p>
+
+          <p><img src="http://lorempixel.com/600/300/nightlife/" alt="lorem pixel"></p>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="tl-circ"></div>
+      <div class="timeline-panel">
+        <div class="tl-heading">
+          <h4>Some Important Date!</h4>
+          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 3/03/2014</small></p>
+        </div>
+        <div class="tl-body">
+          <p>Write up a quick summary of the event.</p>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="timeline-panel noarrow">
+        <div class="tl-heading">
+          <h4>Secondary Timeline Box</h4>
+          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 3/01/2014</small></p>
+        </div>
+        <div class="tl-body">
+          <p>This might be a follow-up post with related info. Maybe we include some extra links, tweets, user comments, photos, etc.</p>
+        </div>
+      </div>
+    </li>
+
+    <li><div class="tldate">Feb 2014</div></li>
+
+    <li class="timeline-inverted">
+      <div class="tl-circ"></div>
+      <div class="timeline-panel">
+        <div class="tl-heading">
+          <h4>The Winter Months</h4>
+          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 02/23/2014</small></p>
+        </div>
+        <div class="tl-body">
+          <p>Gee time really flies when you're having fun.</p>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="tl-circ"></div>
+      <div class="timeline-panel">
+        <div class="tl-heading">
+          <h4>Yeah we're pretty much done here</h4>
+          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 02/11/2014</small></p>
+        </div>
+        <div class="tl-body">
+          <p>Wasn't this fun though?</p>
+        </div>
+      </div>
+    </li>
+  </ul>
 {% endblock %}
 
 
