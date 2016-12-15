@@ -162,15 +162,12 @@ def create_groups_table(dsn):
         cursor.execute(statement)
         cursor.close()
 
-def create_genre_table(dsn):
-    with dbapi2.connect(dsn) as connection:
-        cursor = connection.cursor()
+def create_genre_table(cursor):
         statement = """ CREATE TABLE IF NOT EXISTS GENRES (
             ID SERIAL PRIMARY KEY,
             NAME VARCHAR(50) NOT NULL
         )"""
         cursor.execute(statement)
-        cursor.close()
 
 
 def create_members_table(dsn):

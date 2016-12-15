@@ -75,8 +75,9 @@ def initialize():
         cursor =connection.cursor()
         try:
             drop_tables(cursor)
+
+            create_genre_table(cursor)
             create_book_table(cursor)
-            create_genre_table(app.config['dsn'])
             create_quote_table(cursor)
             create_news_table(cursor)
         except dbapi2.Error as e:
