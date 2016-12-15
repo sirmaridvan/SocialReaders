@@ -13,6 +13,10 @@ def follow(cursor,followeruserid,followinguserid):
                 )"""
     cursor.execute(statement,{'followeruserid':followeruserid,'followinguserid':followinguserid});
 
+def isFollowing(cursor,followeruserid,followinguserid):
+    statement = """SELECT * FROM FOLLOWER WHERE (FOLLOWINGUSERID = %(followinguserid)s AND FOLLOWERUSERID = %(followeruserid)s)"""
+    cursor.execute(statement,{'followeruserid':followeruserid,'followinguserid':followinguserid});    
+
 def unfollow(cursor,followeruserid, followinguserid):
     statement = """DELETE FROM FOLLOWER WHERE (FOLLOWINGUSERID = %(followinguserid)s AND FOLLOWERUSERID = %(followeruserid)s)"""
     cursor.execute(statement,{'followinguserid':followinguserid,'followeruserid':followeruserid})

@@ -51,7 +51,7 @@ $(document).ready(function() {
 		unfollowFunc(event.target);
 	});
 	$('button[name^=follow-button]').bind('click',function(event) {
-		followFunc(event);
+		followFunc(event.target);
 	});
 });
 </script>
@@ -73,12 +73,12 @@ $(document).ready(function() {
                         <div class="row">
                             {% if isFollowed %}
                             	<div class="col-xs-6">
-                                	<button type="button" class="btn btn-danger btn-block" name="unfollow-button"><i class="fa fa-close-round"></i> Unfollow</button>
+                                	<button type="button" class="btn btn-danger btn-block" name="unfollow-button">Unfollow</button>
                                 	<input name="userid" type="hidden" value="{{user[0]}}" />
                             	</div>
                             {% else %}
                             	<div class="col-xs-6">
-                            		<button type="button" class="btn btn-success btn-block" name="follow-button"><i class="fa fa-plus"></i> Follow</button>
+                            		<button type="button" class="btn btn-success btn-block" name="follow-button">Follow</button>
                             		<input name="userid" type="hidden" value="{{user[0]}}" />
                             	</div>
                             {% endif %}

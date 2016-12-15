@@ -252,6 +252,13 @@ def profile_page():
                 userId = request.args.get('userid', 0, type=int)
                 if userId == 0:
                     userId = session['userId']
+                    mIsFollowing = False
+                elif userId != 0 and userId != session['userId']:
+                    isFollowing(cursor,session['userId'],userId)
+                    if cursor.rowcount > 0:
+                        mIsFollowing = True
+                    else:
+                        mIsFollowing = False
                 getUserById(cursor,userId)
                 mUser = cursor.fetchone()
                 getUserFollowings(cursor,userId)
@@ -260,7 +267,7 @@ def profile_page():
                 getUserFollowers(cursor,userId)
                 mFollowerCount = cursor.rowcount
                 mFollowers = cursor.fetchall()
-                return render_template('profile.html',user = mUser, followingCount = mFollowingCount, followerCount = mFollowerCount, followers = mFollowers,  followings = mFollowings, isFollowed = True)
+                return render_template('profile.html',user = mUser, followingCount = mFollowingCount, followerCount = mFollowerCount, followers = mFollowers,  followings = mFollowings, isFollowed = mIsFollowing)
             except dbapi2.Error as e:
                 print(e.pgerror)
             finally:
