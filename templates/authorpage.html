@@ -1,0 +1,34 @@
+{% extends "template.html" %}
+{% block title %}Author{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='authors.css') }}" />
+{% endblock %}
+{% block navbar %}
+
+{% endblock %}
+{% block content %}
+{% for id, name, lastname, birthdate, nationality, penname,description,picture  in author %}
+   
+
+<div class="container">
+  <div class="row">
+    <div class="span2">
+      <img src= {{ picture }}  alt="" class="img-rounded">
+    </div>
+    <div class="span4">
+      <blockquote>
+        <p>{{name}} {{lastname}}</p>
+        <small><cite title="Source Title">{{nationality }} <i class="icon-map-marker"></i></cite></small>
+      </blockquote>
+      <p>
+        <i class="icon-envelope"></i> masterwayne@batman.com <br>
+        <i class="icon-globe"></i> www.bootsnipp.com <br>
+        <i class="icon-gift"></i> January 30, 1974
+      </p>
+    </div>
+ 
+{% endfor %}
+
+{% endblock %}
+
+

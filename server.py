@@ -902,6 +902,14 @@ def authors_page():
         return redirect(url_for('about_page'))
 
 
+@app.route('/authorpage',methods=['GET', 'POST'])
+def authorpage_page():
+    if 'logged_in' in session and session['logged_in'] == True:
+        if request.method == 'GET':
+            id=1
+            return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],id))
+    else:
+        return redirect(url_for('about_page'))
 
 @app.route('/groups',methods=['GET', 'POST'])
 def groups_page():
