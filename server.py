@@ -281,7 +281,7 @@ def profile_page():
             connection.commit()
             connection.close()
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 
 @app.route('/_follow')
 def followPage():
@@ -359,7 +359,7 @@ def users_page():
             connection.commit()
             connection.close()
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 
 @app.route('/admin/useradd',methods=['GET', 'POST'])
 def userAdd_page():
@@ -390,7 +390,7 @@ def userAdd_page():
             connection.commit()
             connection.close()
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 
 @app.route('/admin/userupdate',methods=['GET', 'POST'])
 def userUpdate_page():
@@ -424,7 +424,7 @@ def userUpdate_page():
             connection.close()
         return render_template('userupdate.html')
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 
 @app.route('/messages',methods=['GET', 'POST'])
 @app.route('/messages/<int:messageId>', methods=['GET','POST'])
@@ -535,7 +535,7 @@ def messages_page(messageId = 0):
             return render_template('messages.html')
 
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 
 ##############
 
@@ -554,9 +554,10 @@ def home_page():
         now = datetime.datetime.now()
         return render_template('home.html', current_time=now.ctime())
     else:
-        ##Kullanici giris yapmamis. Burada baska tipte bir anasayfa olacak
-        now = datetime.datetime.now()
-        return render_template('home.html', current_time=now.ctime())
+        return redirect(url_for('about_page'))
+@app.route('/about')
+def about_page():
+        return render_template('aboutus.html')
 @app.route('/jobs', methods=['GET', 'POST'])
 def jobs_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -584,7 +585,7 @@ def jobs_page():
             connection.close()
         return render_template('jobs.html')
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 @app.route('/describeJob', methods=['GET', 'POST'])
 def describe_job_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -613,7 +614,7 @@ def describe_job_page():
                 return redirect(url_for('jobs_page'))
         return render_template('describeJob.html')
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 @app.route('/updateJob', methods=['GET', 'POST'])
 def update_job_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -642,7 +643,7 @@ def update_job_page():
 
         return render_template('updateJob.html')
     else:
-        redirect(url_for('home_page'))
+        redirect(url_for('about_page'))
 
 @app.route('/updatePost', methods=['GET', 'POST'])
 def update_post_page():
@@ -676,7 +677,7 @@ def update_post_page():
 
         return render_template('updatePost.html')
     else:
-        redirect(url_for('home_page'))
+        redirect(url_for('about_page'))
 
 @app.route('/blogs', methods=['GET', 'POST'])
 def blogs_page():
@@ -709,7 +710,7 @@ def blogs_page():
             connection.close()
         return render_template('blogs.html')
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 
 @app.route('/writepost', methods=['GET', 'POST'])
 def write_post_page():
@@ -740,7 +741,7 @@ def write_post_page():
                 return redirect(url_for('blogs_page'))
         return render_template('writePost.html')
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 ##########ADMIN PAGES##########
 
 @app.route('/admin')
@@ -749,7 +750,7 @@ def admin_index():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
         return render_template('admin_index.html')
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 ###############################
 
 
@@ -770,7 +771,7 @@ def authoradmin_page():
                 return render_template('authorupdate.html')
 
     else:
-        return render_template('home_page.html')
+        return redirect(url_for('about_page'))
 
 
 
@@ -791,7 +792,7 @@ def authorAdd_page():
                 return redirect(url_for('authoradmin_page'))
         return render_template('authoradd.html')
     else:
-        return render_template('home_page.html')
+        return redirect(url_for('about_page'))
 
 
 
@@ -814,8 +815,7 @@ def authorupdate_page():
                 return redirect(url_for('authoradmin_page'))
             return render_template('authorupdate.html',updateauthor = selectAuthorbyId(app.config['dsn'],updateid))
     else:
-        return render_template('home_page.html')
-
+        return redirect(url_for('about_page'))
 
 @app.route('/news',methods=['GET', 'POST'])
 def news_page():
@@ -844,7 +844,7 @@ def news_page():
             connection.close()
         return render_template('news.html')
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 @app.route('/newsAdd',methods=['GET', 'POST'])
 def newsadd_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -860,7 +860,7 @@ def newsadd_page():
                 return redirect(url_for('newsadmin_page'))
         return render_template('newsadd.html')
     else:
-        return render_template('home_page.html')
+        return redirect(url_for('about_page'))
 
 @app.route('/updatenews', methods=['GET', 'POST'])
 def update_news_page():
@@ -889,7 +889,7 @@ def update_news_page():
 
         return render_template('updateJob.html')
     else:
-        redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 
 
 
@@ -899,7 +899,7 @@ def authors_page():
         if request.method == 'GET':
             return render_template('authors.html', authors = selectAuthor(app.config['dsn']))
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 
 
 
@@ -937,7 +937,7 @@ def groups_page():
                 return redirect(url_for('grouppage_page'));
 
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 
 @app.route('/grouppage',methods=['GET', 'POST'])
 def grouppage_page():
@@ -964,7 +964,7 @@ def grouppage_page():
             groupid = session["group"];
             return render_template('grouppage.html',comments = selectcomments(app.config['dsn'],groupid),membernames = getmembersbyjoin(app.config['dsn'],groupid))
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 
 
 
@@ -990,7 +990,7 @@ def genres_page():
                 updateGenre(app.config['dsn'],id,newgenre)
                 return render_template('genres.html',genres = selectGenre(app.config['dsn']))
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 
 
 @app.route('/bookpage', methods=['GET', 'POST'])
@@ -1023,7 +1023,7 @@ def book_page():
                 deleteBook(app.config['dsn'],id)
                 return render_template('bookpage.html',books = selectBookwithJoin(app.config['dsn']))
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 
 
 
@@ -1036,7 +1036,7 @@ def books_page():
         except dbapi2.Error as e:
             print(e.pgerror)
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 @app.route('/admin/bookadd',methods=['GET', 'POST'])
 def bookAdd_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -1058,7 +1058,7 @@ def bookAdd_page():
             connection.close()
         return render_template('bookadd.html')
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 @app.route('/admin/bookupdate',methods=['GET', 'POST'])
 def bookUpdate_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -1086,7 +1086,7 @@ def bookUpdate_page():
             connection.close()
         return render_template('bookupdate.html')
     else:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('about_page'))
 
 def logout():
     session['logged_in'] = False;

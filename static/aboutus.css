@@ -1,0 +1,39 @@
+/* Footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+  background: #8999A8;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  background: #8999A8;
+}
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 100%;
+  background: #8999A8;
+}
+
+
+/* Custom footer CSS
+-------------------------------------------------- */
+
+.container {
+  width: auto;
+  max-width: 680px;
+  padding: 0 15px;
+  background: #8999A8;
+}
+.container .text-muted {
+  margin: 20px 0;
+  background: #8999A8;
+}
+.footertext {
+  color: #ffffff;
+  background: #8999A8;
+}
