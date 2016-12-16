@@ -98,8 +98,8 @@ def initialize():
         try:
             create_blogs_table(cursor)
             create_jobs_table(cursor)
-            '''create_feeds_table(cursor)
-            create_feedtypes_table(cursor)'''
+            create_feedtypes_table(cursor)
+            create_feeds_table(cursor)
         except dbapi2.Error as e:
             print(e.pgerror)
         finally:
@@ -562,30 +562,51 @@ def about_page():
         return render_template('aboutus.html')
 @app.route('/jobs', methods=['GET', 'POST'])
 def jobs_page():
-    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
-        connection = dbapi2.connect(app.config['dsn'])
-        try:
-            cursor =connection.cursor()
+    if 'logged_in' in session and session['logged_in'] == True:
+        if session['isAdmin'] == True:
+            connection = dbapi2.connect(app.config['dsn'])
             try:
-                if request.method == 'GET':
-                    getAllJobs(cursor)
-                    return render_template('jobs.html', jobs = cursor)
-                if request.method == 'POST':
-                    if "delete" in request.form:
-                        id = request.form['deleteid']
-                        deleteJob(cursor,id)
-                        return redirect(url_for('jobs_page'))
+                cursor =connection.cursor()
+                try:
+                    if request.method == 'GET':
+                        getAllJobs(cursor)
+                        return render_template('jobsadmin.html', jobs = cursor)
+                    if request.method == 'POST':
+                        if "delete" in request.form:
+                            id = request.form['deleteid']
+                            deleteJob(cursor,id)
+                            return redirect(url_for('jobs_page'))
+                except dbapi2.Error as e:
+                    print(e.pgerror)
+                finally:
+                    cursor.close()
             except dbapi2.Error as e:
                 print(e.pgerror)
+                connection.rollback()
             finally:
-                cursor.close()
-        except dbapi2.Error as e:
-            print(e.pgerror)
-            connection.rollback()
-        finally:
-            connection.commit()
-            connection.close()
-        return render_template('jobs.html')
+                connection.commit()
+                connection.close()
+            return render_template('jobsadmin.html')
+        else:
+            connection = dbapi2.connect(app.config['dsn'])
+            try:
+                cursor =connection.cursor()
+                try:
+                    if request.method == 'GET':
+                        getAllJobs(cursor)
+                        return render_template('jobs.html', jobs = cursor)
+                except dbapi2.Error as e:
+                    print(e.pgerror)
+                finally:
+                    cursor.close()
+            except dbapi2.Error as e:
+                print(e.pgerror)
+                connection.rollback()
+            finally:
+                connection.commit()
+                connection.close()
+            return render_template('jobs.html')
+
     else:
         return redirect(url_for('about_page'))
 @app.route('/describeJob', methods=['GET', 'POST'])
