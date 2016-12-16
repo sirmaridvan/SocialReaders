@@ -902,15 +902,32 @@ def authors_page():
     else:
         return redirect(url_for('about_page'))
 
-
 @app.route('/authorpage',methods=['GET', 'POST'])
 def authorpage_page():
     if 'logged_in' in session and session['logged_in'] == True:
+        authorid = request.args.get('id')
         if request.method == 'GET':
-            id= request.args.get('id')
-            return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],id))
+            id = request.args.get('id')
+            return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],authorid),comments = selectauthorcomments(app.config['dsn'],authorid))
+        else:
+            if 'Add' in request.form:
+                text=request.form["comment"]
+                userid = session['userId']
+                print(authorid)
+                newcomment = AuthorComment(userid,authorid,text)
+                insertauthorcomment(app.config['dsn'],newcomment)
+            if 'Delete' in request.form:
+                userid =session["userId"]
+                commentid = request.form["commentid"]
+                ownerid = getauthorcommenterbycommentid(app.config['dsn'],commentid)
+                print (userid)
+                print (ownerid[0])
+                if userid == (ownerid[0]):
+                    deleteauthorcommentbyid(app.config['dsn'],commentid)
+        return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],authorid),comments = selectauthorcomments(app.config['dsn'],authorid))
     else:
         return redirect(url_for('about_page'))
+
 
 @app.route('/groups',methods=['GET', 'POST'])
 def groups_page():
