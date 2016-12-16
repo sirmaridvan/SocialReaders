@@ -85,7 +85,7 @@ def create_jobs_table(cursor):
 
 def create_feedtypes_table(cursor):
     statement = """CREATE TABLE IF NOT EXISTS FEEDTYPES (
-                ID PRIMARY KEY,
+                ID SERIAL PRIMARY KEY,
                 TYPE TEXT NOT NULL
                 )"""
     cursor.execute(statement);
@@ -95,7 +95,7 @@ def create_feeds_table(cursor):
                 ID SERIAL PRIMARY KEY,
                 DATE DATE NOT NULL DEFAULT CURRENT_DATE,
                 USERID INTEGER REFERENCES SITEUSER (USERID),
-                BOOKID INTEGER REFERENCES BOOKS (BOOKID),
+                BOOKID INTEGER REFERENCES BOOKS (ID),
                 TYPEID INTEGER REFERENCES FEEDTYPES (ID)
                 )"""
     cursor.execute(statement);

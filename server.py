@@ -101,8 +101,8 @@ def initialize():
         try:
             create_blogs_table(cursor)
             create_jobs_table(cursor)
-            '''create_feeds_table(cursor)
-            create_feedtypes_table(cursor)'''
+            create_feedtypes_table(cursor)
+            create_feeds_table(cursor)
         except dbapi2.Error as e:
             print(e.pgerror)
         finally:
@@ -159,13 +159,19 @@ def initialize():
 
             insert_quote(cursor, quote1)
             insert_quote(cursor, quote2)
+            feedtype=FeedType(1,'adlı kitabı beğendi')
+            insert_feedtype(cursor,feedtype)
+            feedtype=FeedType(2,'adlı kitabı önerdi')
+            insert_feedtype(cursor,feedtype)
+            feedtype=FeedType(3,'adlı kitaba yorum yaptı')
+            insert_feedtype(cursor,feedtype)
+            feed=Feed(1,datetime.datetime.now(),1,1,1)
+            insert_feed(cursor,feed)
+            feed=Feed(2,datetime.datetime.now(),1,1,2)
+            insert_feed(cursor,feed)
+            feed=Feed(3,datetime.datetime.now(),1,1,3)
+            insert_feed(cursor,feed)
 
-#             feedtype=FeedType(0,'adlı kitabı beğendi')
-#             insert_feedtype(cursor,feedtype)
-#             feedtype=FeedType(0,'adlı kitabı önerdi')
-#             insert_feedtype(cursor,feedtype)
-#             feedtype=FeedType(0,'adlı kitaba yorum yaptı')
-#             insert_feedtype(cursor,feedtype)
 
         except dbapi2.Error as e:
             print(e.pgerror)
@@ -653,32 +659,16 @@ def messages_page(messageId = 0):
         return redirect(url_for('about_page'))
 
 ##############
-
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home_page():
     if 'logged_in' in session and session['logged_in'] == True:
-        now = datetime.datetime.now()
-        return render_template('home.html', current_time=now.ctime())
-    else:
-        return render_template('aboutus.html')
-@app.route('/about')
-def about_page():
-        return render_template('aboutus.html')
-@app.route('/jobs', methods=['GET', 'POST'])
-def jobs_page():
-    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
         connection = dbapi2.connect(app.config['dsn'])
         try:
             cursor =connection.cursor()
             try:
                 if request.method == 'GET':
-                    getAllJobs(cursor)
-                    return render_template('jobs.html', jobs = cursor)
-                if request.method == 'POST':
-                    if "delete" in request.form:
-                        id = request.form['deleteid']
-                        deleteJob(cursor,id)
-                        return redirect(url_for('jobs_page'))
+                    get_all_feeds(cursor)
+                    return render_template('home.html', feed = cursor)
             except dbapi2.Error as e:
                 print(e.pgerror)
             finally:
@@ -689,7 +679,59 @@ def jobs_page():
         finally:
             connection.commit()
             connection.close()
-        return render_template('jobs.html')
+        return render_template('home.html')
+    else:
+        return render_template('aboutus.html')
+@app.route('/about')
+def about_page():
+        return render_template('aboutus.html')
+@app.route('/jobs', methods=['GET', 'POST'])
+def jobs_page():
+    if 'logged_in' in session and session['logged_in'] == True:
+        if session['isAdmin'] == True:
+            connection = dbapi2.connect(app.config['dsn'])
+            try:
+                cursor =connection.cursor()
+                try:
+                    if request.method == 'GET':
+                        getAllJobs(cursor)
+                        return render_template('jobsadmin.html', jobs = cursor)
+                    if request.method == 'POST':
+                        if "delete" in request.form:
+                            id = request.form['deleteid']
+                            deleteJob(cursor,id)
+                            return redirect(url_for('jobs_page'))
+                except dbapi2.Error as e:
+                    print(e.pgerror)
+                finally:
+                    cursor.close()
+            except dbapi2.Error as e:
+                print(e.pgerror)
+                connection.rollback()
+            finally:
+                connection.commit()
+                connection.close()
+            return render_template('jobsadmin.html')
+        else:
+            connection = dbapi2.connect(app.config['dsn'])
+            try:
+                cursor =connection.cursor()
+                try:
+                    if request.method == 'GET':
+                        getAllJobs(cursor)
+                        return render_template('jobs.html', jobs = cursor)
+                except dbapi2.Error as e:
+                    print(e.pgerror)
+                finally:
+                    cursor.close()
+            except dbapi2.Error as e:
+                print(e.pgerror)
+                connection.rollback()
+            finally:
+                connection.commit()
+                connection.close()
+            return render_template('jobs.html')
+
     else:
         return redirect(url_for('about_page'))
 @app.route('/describeJob', methods=['GET', 'POST'])
@@ -1162,7 +1204,7 @@ def book_page():
 def books_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
         try:
-            return render_template('bookadmin.html', books = selectBook(app.config['dsn']))
+            return render_template('bookadmin.html', books = selectBookwithJoin(app.config['dsn']))
 
         except dbapi2.Error as e:
             print(e.pgerror)
