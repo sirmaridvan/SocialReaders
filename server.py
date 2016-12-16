@@ -555,7 +555,7 @@ def home_page():
         now = datetime.datetime.now()
         return render_template('home.html', current_time=now.ctime())
     else:
-        return redirect(url_for('about_page'))
+        return render_template('aboutus.html')
 @app.route('/about')
 def about_page():
         return render_template('aboutus.html')

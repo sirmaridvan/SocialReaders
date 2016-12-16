@@ -61,7 +61,7 @@
 	                    		<li class=""><a href={{url_for('logout_page')}}>Log Out</a></li>
 	                        {% else %}
 		                        <li class=""><a href={{url_for('login_page')}}>Login</a></li>
-		                        <li class=""><a href={{url_for('login_page')}}>Register</a></li>
+		                        <li class=""><a href={{url_for('login_page',t='reg')}}>Register</a></li>
 	                        {% endif %}
 	                    </ul>
 	                </div>
