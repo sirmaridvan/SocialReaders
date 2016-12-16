@@ -340,7 +340,7 @@ def adminevents_page():
             connection.close()
     else:
         return redirect(url_for('home_page'))
-    
+
 @app.route('/admin/eventadd',methods=['GET', 'POST'])
 def eventAdd_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -1231,13 +1231,18 @@ def bookAdd_page():
                         title = request.form['title']
                         year = request.form['year']
                         author_text = request.form['author_id']
+                        author = author_text.split()
+                        author_count = len(author)
+                        author_name = ""
+                        for x in range (0, author_count-1):
+                            author_name = author_name + author[x] + ' '
                         genre_text = request.form['genre_id']
                         statement = """SELECT ID FROM GENRES WHERE NAME = %s"""
                         cursor.execute(statement,(genre_text,))
                         genre_id = cursor.fetchall()
 
-                        statement = """SELECT ID FROM AUTHORS WHERE NAME = %s"""
-                        cursor.execute(statement,(author_text,))
+                        statement = """SELECT ID FROM AUTHORS WHERE NAME = %s AND LASTNAME = %s"""
+                        cursor.execute(statement,(author[0],author[author_count-1]))
                         author_id = cursor.fetchall()
                         book = Book(None, title, year, author_id[0], genre_id[0])
                         insert_book(app.config['dsn'],book)
