@@ -4,34 +4,79 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='aboutus.css') }}" />
 {% endblock %}
 {% block content %}
-<div id="footer">
-    <div class="container">
-        <div class="row">
-            <h3 class="footertext">About Us:</h3>
-            <br>
-              <div class="col-md-4">
-                <center>
-                  <img src="http://oi60.tinypic.com/w8lycl.jpg" class="img-circle" alt="the-brains">
-                  <br>
-                  <p class="footertext">Deciding what to read next?<br>
-                </center>
-              </div>
-              <div class="col-md-4">
-                <center>
-                  <img src="http://oi60.tinypic.com/2z7enpc.jpg" class="img-circle" alt="...">
-                  <br>
-                  <p class="footertext">What are your friends reading?<br>
-                </center>
-              </div>
-              <div class="col-md-4">
-                <center>
-                  <img src="http://oi61.tinypic.com/307n6ux.jpg" class="img-circle" alt="...">
-                  <br>
-                  <p class="footertext">What will you discover?<br>
-                </center>
-              </div>
-            </div>
 
+<h4 class="text-center">find more in <a href="https://github.com/itucsdb1612/itucsdb1612" target="__blank">Github</a></h4>
+<div class="container bootstrap snippet">
+    <div class="row">
+        <h2>
+            SocialReaders</h2>	
+        <div class="col-md-6">
+            <div class="blockquote-box clearfix">
+                <div class="square pull-left">
+                    <img src="http://placehold.it/60/8e44ad/FFF&text=B" alt="" class="" />
+                </div>
+                <h4>
+                    Bootnipets</h4>
+                <p>
+                    Deciding what you read next?
+                </p>
+            </div>
+            <div class="blockquote-box blockquote-primary clearfix">
+                <div class="square pull-left">
+                    <span class="glyphicon glyphicon-book glyphicon-lg"></span>
+                </div>
+                <h4>
+                    Let's read books</h4>
+                <p>
+                    What are your friends reading?
+                </p>
+            </div>
+            <div class="blockquote-box blockquote-success clearfix">
+                <div class="square pull-left">
+                    <span class="glyphicon glyphicon-tree-conifer glyphicon-lg"></span>
+                </div>
+                <h4>
+                    Tree conifer</h4>
+                <p>
+					What will you discover?
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="blockquote-box blockquote-info clearfix">
+                <div class="square pull-left">
+                    <span class="glyphicon glyphicon-info-sign glyphicon-lg"></span>
+                </div>
+                <h4>
+                    Information</h4>
+                <p>
+                    If you want extra information about site, <a href={{url_for('login_page',t='reg')}}> Join Us!</a> 
+                </p>
+            </div>
+            <div class="blockquote-box blockquote-warning clearfix">
+                <div class="square pull-left">
+                    <span class="glyphicon glyphicon-warning-sign glyphicon-lg"></span>
+                </div>
+                <h4>
+                    Warning</h4>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a
+                    ante.
+                </p>
+            </div>
+            <div class="blockquote-box blockquote-danger clearfix">
+                <div class="square pull-left">
+                    <span class="glyphicon glyphicon-record glyphicon-lg"></span>
+                </div>
+                <h4>
+                    Danger</h4>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a
+                    ante.
+                </p>
+            </div>
+        </div>
     </div>
 </div>
+                                                      
 {% endblock %}

@@ -30,6 +30,7 @@ from Members import *
 from message import *
 from follow import *
 from Groupcomments import *
+from Authorcomments import *
 
 app = Flask(__name__)
 
@@ -97,8 +98,8 @@ def initialize():
         try:
             create_blogs_table(cursor)
             create_jobs_table(cursor)
-            '''create_feeds_table(cursor)
-            create_feedtypes_table(cursor)'''
+            create_feedtypes_table(cursor)
+            create_feeds_table(cursor)
         except dbapi2.Error as e:
             print(e.pgerror)
         finally:
@@ -555,36 +556,57 @@ def home_page():
         now = datetime.datetime.now()
         return render_template('home.html', current_time=now.ctime())
     else:
-        return redirect(url_for('about_page'))
+        return render_template('aboutus.html')
 @app.route('/about')
 def about_page():
         return render_template('aboutus.html')
 @app.route('/jobs', methods=['GET', 'POST'])
 def jobs_page():
-    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
-        connection = dbapi2.connect(app.config['dsn'])
-        try:
-            cursor =connection.cursor()
+    if 'logged_in' in session and session['logged_in'] == True:
+        if session['isAdmin'] == True:
+            connection = dbapi2.connect(app.config['dsn'])
             try:
-                if request.method == 'GET':
-                    getAllJobs(cursor)
-                    return render_template('jobs.html', jobs = cursor)
-                if request.method == 'POST':
-                    if "delete" in request.form:
-                        id = request.form['deleteid']
-                        deleteJob(cursor,id)
-                        return redirect(url_for('jobs_page'))
+                cursor =connection.cursor()
+                try:
+                    if request.method == 'GET':
+                        getAllJobs(cursor)
+                        return render_template('jobsadmin.html', jobs = cursor)
+                    if request.method == 'POST':
+                        if "delete" in request.form:
+                            id = request.form['deleteid']
+                            deleteJob(cursor,id)
+                            return redirect(url_for('jobs_page'))
+                except dbapi2.Error as e:
+                    print(e.pgerror)
+                finally:
+                    cursor.close()
             except dbapi2.Error as e:
                 print(e.pgerror)
+                connection.rollback()
             finally:
-                cursor.close()
-        except dbapi2.Error as e:
-            print(e.pgerror)
-            connection.rollback()
-        finally:
-            connection.commit()
-            connection.close()
-        return render_template('jobs.html')
+                connection.commit()
+                connection.close()
+            return render_template('jobsadmin.html')
+        else:
+            connection = dbapi2.connect(app.config['dsn'])
+            try:
+                cursor =connection.cursor()
+                try:
+                    if request.method == 'GET':
+                        getAllJobs(cursor)
+                        return render_template('jobs.html', jobs = cursor)
+                except dbapi2.Error as e:
+                    print(e.pgerror)
+                finally:
+                    cursor.close()
+            except dbapi2.Error as e:
+                print(e.pgerror)
+                connection.rollback()
+            finally:
+                connection.commit()
+                connection.close()
+            return render_template('jobs.html')
+
     else:
         return redirect(url_for('about_page'))
 @app.route('/describeJob', methods=['GET', 'POST'])
@@ -902,15 +924,32 @@ def authors_page():
     else:
         return redirect(url_for('about_page'))
 
-
 @app.route('/authorpage',methods=['GET', 'POST'])
 def authorpage_page():
     if 'logged_in' in session and session['logged_in'] == True:
+        authorid = request.args.get('id')
         if request.method == 'GET':
-            id=1
-            return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],id))
+            id = request.args.get('id')
+            return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],authorid),comments = selectauthorcomments(app.config['dsn'],authorid))
+        else:
+            if 'Add' in request.form:
+                text=request.form["comment"]
+                userid = session['userId']
+                print(authorid)
+                newcomment = AuthorComment(userid,authorid,text)
+                insertauthorcomment(app.config['dsn'],newcomment)
+            if 'Delete' in request.form:
+                userid =session["userId"]
+                commentid = request.form["commentid"]
+                ownerid = getauthorcommenterbycommentid(app.config['dsn'],commentid)
+                print (userid)
+                print (ownerid[0])
+                if userid == (ownerid[0]):
+                    deleteauthorcommentbyid(app.config['dsn'],commentid)
+        return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],authorid),comments = selectauthorcomments(app.config['dsn'],authorid))
     else:
         return redirect(url_for('about_page'))
+
 
 @app.route('/groups',methods=['GET', 'POST'])
 def groups_page():
