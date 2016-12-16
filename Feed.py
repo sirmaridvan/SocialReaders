@@ -13,7 +13,7 @@ def insert_feed(cursor,feed):
     cursor.execute(statement,(feed.date,feed.userId,feed.bookId,feed.typeId));
 def get_all_feeds(cursor):
     statement = """SELECT FEEDS.DATE, SITEUSER.USERNAME, BOOKS.TITLE, FEEDTYPES.TYPE FROM FEEDS, SITEUSER, BOOKS, FEEDTYPES
-                    WHERE (FEEDS.USERID=SITEUSER.USERID) AND (FEEDS.BOOKID=BOOKS.BOOKID) AND (FEEDS.TYPEID=FEEDTYPES.ID) """
+                    WHERE (FEEDS.USERID=SITEUSER.USERID) AND (FEEDS.BOOKID=BOOKS.ID) AND (FEEDS.TYPEID=FEEDTYPES.ID) """
     cursor.execute(statement);
 def get_like_number_of_book(cursor,bookId):
     statement = """ SELECT COUNT(ID) FROM FEEDS WHERE (BOOKID = %(bookId)s) AND (TYPEID=1)"""

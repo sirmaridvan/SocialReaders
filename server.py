@@ -156,13 +156,19 @@ def initialize():
 
             insert_quote(cursor, quote1)
             insert_quote(cursor, quote2)
+            feedtype=FeedType(1,'adlı kitabı beğendi')
+            insert_feedtype(cursor,feedtype)
+            feedtype=FeedType(2,'adlı kitabı önerdi')
+            insert_feedtype(cursor,feedtype)
+            feedtype=FeedType(3,'adlı kitaba yorum yaptı')
+            insert_feedtype(cursor,feedtype)
+            feed=Feed(1,datetime.datetime.now(),1,1,1)
+            insert_feed(cursor,feed)
+            feed=Feed(2,datetime.datetime.now(),1,1,2)
+            insert_feed(cursor,feed)
+            feed=Feed(3,datetime.datetime.now(),1,1,3)
+            insert_feed(cursor,feed)
 
-#             feedtype=FeedType(0,'adlı kitabı beğendi')
-#             insert_feedtype(cursor,feedtype)
-#             feedtype=FeedType(0,'adlı kitabı önerdi')
-#             insert_feedtype(cursor,feedtype)
-#             feedtype=FeedType(0,'adlı kitaba yorum yaptı')
-#             insert_feedtype(cursor,feedtype)
 
         except dbapi2.Error as e:
             print(e.pgerror)
@@ -549,12 +555,27 @@ def messages_page(messageId = 0):
 
 #Omer's Part
 ##############
-
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home_page():
     if 'logged_in' in session and session['logged_in'] == True:
-        now = datetime.datetime.now()
-        return render_template('home.html', current_time=now.ctime())
+        connection = dbapi2.connect(app.config['dsn'])
+        try:
+            cursor =connection.cursor()
+            try:
+                if request.method == 'GET':
+                    get_all_feeds(cursor)
+                    return render_template('home.html', feed = cursor)
+            except dbapi2.Error as e:
+                print(e.pgerror)
+            finally:
+                cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
+        return render_template('home.html')
     else:
         return render_template('aboutus.html')
 @app.route('/about')
