@@ -1,0 +1,45 @@
+{% extends "template.html" %}
+{% block title %}Messages{% endblock %}
+{% block head %}
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='events.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='template.css') }}" />
+{% endblock %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="[ col-xs-12 col-sm-offset-2 col-sm-8 ]">
+			<ul class="event-list">
+				{% for eventid, eventdate, eventname, eventorganizer in events %}
+					{% set list1 = eventdate.split('/') %}
+					<li>
+						<time datetime="2014-07-20 0000">
+							<span class="day">{{list1[0]}}</span>
+							<span class="month">{{list1[1]}}</span>
+							<span class="year">{{list1[2]}}</span>
+							<span class="time">12:00 AM</span>
+						</time>
+						<div class="info">
+							<h2 class="title">{{eventname}}</h2>
+							<p class="desc">{{eventorganizer}}</p>
+							<ul>
+								<li style="width:33%;">1 <span class="glyphicon glyphicon-ok"></span></li>
+								<li style="width:34%;">3 <span class="fa fa-question"></span></li>
+								<li style="width:33%;">103 <span class="fa fa-envelope"></span></li>
+							</ul>
+						</div>
+						<div class="social">
+							<ul>
+								<li class="facebook" style="width:33%;"><a href="#facebook"><span class="fa fa-facebook"></span></a></li>
+								<li class="twitter" style="width:34%;"><a href="#twitter"><span class="fa fa-twitter"></span></a></li>
+								<li class="google-plus" style="width:33%;"><a href="#google-plus"><span class="fa fa-google-plus"></span></a></li>
+							</ul>
+						</div>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</div>
+{% endblock %}
+

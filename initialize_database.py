@@ -50,6 +50,12 @@ def dropFollowerTable(cursor):
                 """
     cursor.execute(statement)
 
+def dropEventTable(cursor):
+    statement = """
+                DROP TABLE IF EXISTS EVENT CASCADE;
+                """
+    cursor.execute(statement)
+
 def dropUserMessagesTable(cursor):
     statement = """
                 DROP TABLE IF EXISTS USERMESSAGE CASCADE;
@@ -132,6 +138,14 @@ def create_user_message_table(cursor):
                 )"""
     cursor.execute(statement)
 
+def create_event_table(cursor):
+    statement = """CREATE TABLE EVENT(
+                EVENTID SERIAL PRIMARY KEY,
+                EVENTDATE DATE NOT NULL,
+                EVENTNAME VARCHAR(300) NOT NULL,
+                EVENTORGANIZER VARCHAR(100) NOT NULL
+                )"""
+    cursor.execute(statement)
 ''' Author table '''
 
 def create_author_table(dsn):

@@ -12,6 +12,9 @@
 	<!-- Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+     <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 	<link rel="stylesheet" href="{{ url_for('static', filename='admintemplate.css') }}" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     {% block head %}{% endblock %}
@@ -68,7 +71,8 @@
 							<div class="side-menu-container">
 								<ul class="nav navbar-nav">
 									<li class="active"><a href={{url_for('admin_index')}}><span class="glyphicon glyphicon-dashboard"></span> Index</a></li>
-									<li><a href={{url_for('users_page')}}><span class="glyphicon glyphicon-plane"></span> Users</a></li>
+									<li><a href={{url_for('users_page')}}><span class="glyphicon glyphicon-user"></span> Users</a></li>
+									<li><a href={{url_for('adminevents_page')}}><span class="glyphicon glyphicon-plane"></span> Events</a></li>
 									<li><a href={{url_for('books_page')}}><span class="glyphicon glyphicon-cloud"></span> Books</a></li>
 									<li><a href={{url_for('authoradmin_page')}}><span class="glyphicon glyphicon-user"></span> Authors</a></li>
 
