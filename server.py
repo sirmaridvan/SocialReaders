@@ -30,6 +30,7 @@ from Members import *
 from message import *
 from follow import *
 from Groupcomments import *
+from Authorcomments import *
 
 app = Flask(__name__)
 
