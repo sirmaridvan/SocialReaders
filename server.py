@@ -907,7 +907,7 @@ def authors_page():
 def authorpage_page():
     if 'logged_in' in session and session['logged_in'] == True:
         if request.method == 'GET':
-            id=1
+            id= request.args.get('id')
             return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],id))
     else:
         return redirect(url_for('about_page'))

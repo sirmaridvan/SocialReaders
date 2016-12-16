@@ -22,11 +22,11 @@
             <tbody>
             {% for id, name, lastname, birthdate, nationality, penname,description,picture  in authors %}
                 <tr>
-                    <td>{{ name }}</td>
-                    <td>{{ lastname }}</td>
-                    <td>{{ birthdate }}</td>
-                    <td>{{ nationality }}</td>
-                    <td>{{ penname }}</td>
+                    <td><a href="/authorpage?id={{id}}"> {{ name }} </a> </td>
+                    <td><a href="/authorpage?id={{id}}"> {{ lastname }} </a> </td>
+                    <td><a href="/authorpage?id={{id}}"> {{ birthdate }} </a> </td>
+                    <td><a href="/authorpage?id={{id}}"> {{ nationality }}</a> </td>
+                    <td><a href="/authorpage?id={{id}}"> {{ penname }}</a> </td>
                 </tr>
             </tbody>
             {% endfor %}
