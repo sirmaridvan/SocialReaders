@@ -39,13 +39,13 @@
 							<tr>
 								<td align="center">
 									<form action="{{ url_for('bookUpdate_page')}}" method="get" style="float: left;">
-										<button type="submit" name="edit" class="btn btn-default">
+										<button type="submit" name="Update" class="btn btn-default">
 											<i class="fa fa-pencil"></i>
 										</button>
-										<input type="hidden" name="id" value="{{id}}"/>
+										<input type="hidden" name="updateid" value="{{id}}"/>
 									</form>
 									<form action="{{ url_for('books_page')}}" method="post">
-										<button type="submit" name="delete" class="btn btn-danger">
+										<button type="submit" name="Delete" class="btn btn-danger">
 											<i class="glyphicon glyphicon-trash"></i>
 										</button>
 										<input type="hidden" name="deleteid" value="{{id}}"/>
