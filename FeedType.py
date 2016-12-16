@@ -9,5 +9,5 @@ def insert_feedtype(cursor,feedtype):
                 )"""
     cursor.execute(statement,(feedtype.id,feed.feedtype));
 def get_feedtype_by_id(cursor,id):
-    statement = """SELECT TYPE FROM FEEDTYPE WHERE (ID== %s)"""
-    cursor.execute(statement,id);
+    statement = """SELECT TYPE FROM FEEDTYPE WHERE (ID = %(id)s)"""
+    cursor.execute(statement,{'id':id});
