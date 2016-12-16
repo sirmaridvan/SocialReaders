@@ -1040,7 +1040,7 @@ def book_page():
 def books_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
         try:
-            return render_template('bookadmin.html', books = selectBook(app.config['dsn']))
+            return render_template('bookadmin.html', books = selectBookwithJoin(app.config['dsn']))
 
         except dbapi2.Error as e:
             print(e.pgerror)
