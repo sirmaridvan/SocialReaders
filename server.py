@@ -29,6 +29,7 @@ from News import *
 from Members import *
 from message import *
 from follow import *
+from event import *
 from Groupcomments import *
 from Authorcomments import *
 
@@ -41,6 +42,7 @@ def initialize():
     try:
         cursor =connection.cursor()
         try:
+            dropEventTable(cursor)
             dropFollowerTable(cursor)
             dropUserMessagesTable(cursor)
             dropUserTable(cursor)
@@ -49,6 +51,7 @@ def initialize():
             create_user_table(cursor)
             create_user_message_table(cursor)
             create_user_follower_table(cursor)
+            create_event_table(cursor)
             insert_usertype(cursor,'Admin')
             insert_usertype(cursor,'User')
             salt1 = createRandomSalt()
@@ -290,6 +293,116 @@ def profile_page():
             connection.close()
     else:
         return redirect(url_for('about_page'))
+
+@app.route('/events', methods=['GET'])
+def events_page():
+    if 'logged_in' in session and session['logged_in'] == True:
+        connection = dbapi2.connect(app.config['dsn'])
+        try:
+            cursor =connection.cursor()
+            try:
+                getAllEventsWithStrMonth(cursor)
+                mEvents = cursor.fetchall()
+                return render_template('events.html',events = mEvents)
+            except dbapi2.Error as e:
+                print(e.pgerror)
+            finally:
+                cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
+    else:
+        return redirect('home_page')
+@app.route('/admin/events', methods=['GET', 'POST'])
+def adminevents_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        connection = dbapi2.connect(app.config['dsn'])
+        try:
+            cursor =connection.cursor()
+            try:
+                if request.method == 'POST' and 'delete' in request.form:
+                    deleteEvent(cursor,request.form['deleteid'])
+                getAllEvents(cursor)
+                mEvents = cursor.fetchall()
+                return render_template('adminevents.html',events = mEvents)
+            except dbapi2.Error as e:
+                print(e.pgerror)
+            finally:
+                cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
+    else:
+        return redirect(url_for('home_page'))
+    
+@app.route('/admin/eventadd',methods=['GET', 'POST'])
+def eventAdd_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        connection = dbapi2.connect(app.config['dsn'])
+        try:
+            cursor =connection.cursor()
+            try:
+                if request.method == 'POST':
+                    if "add" in request.form:
+                        event= Event(0,request.form['date'],request.form['name'],request.form['organizer'])
+                        insertEvent(cursor,event)
+                        return redirect(url_for('adminevents_page'))
+                else:
+                    return render_template('eventadd.html')
+            except dbapi2.Error as e:
+                    print(e.pgerror)
+            finally:
+                    cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
+        return render_template('eventadd.html')
+    else:
+        return redirect(url_for('home_page'))
+
+@app.route('/admin/eventupdate',methods=['GET', 'POST'])
+def eventUpdate_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        connection = dbapi2.connect(app.config['dsn'])
+        try:
+            cursor =connection.cursor()
+            try:
+                if request.method == 'GET':
+                    eventid = request.args.get('id',0,int)
+                    if eventid == 0:
+                        return redirect(url_for('adminevents_page'))
+                    getEventById(cursor,eventid)
+                    ((id,name,date,organizer),) = cursor.fetchall()
+                    mEvent = Event(id,name,date,organizer)
+                    return render_template('eventupdate.html',event = mEvent)
+                elif request.method == 'POST':
+                    if 'update' in request.form:
+                        event = Event(request.form['eventid'],request.form['date'],request.form['name'],request.form['organizer'])
+                        updateEvent(cursor,event)
+                    return redirect(url_for('adminevents_page'))
+            except dbapi2.Error as e:
+                    print(e.pgerror)
+            finally:
+                    cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
+        return render_template('eventupdate.html')
+    else:
+        return redirect(url_for('about_page'))
+
 
 @app.route('/_follow')
 def followPage():
@@ -545,15 +658,6 @@ def messages_page(messageId = 0):
     else:
         return redirect(url_for('about_page'))
 
-##############
-
-#Emre's Part
-##############
-
-#Metehan's Part
-##############
-
-#Omer's Part
 ##############
 @app.route('/', methods=['GET', 'POST'])
 def home_page():
