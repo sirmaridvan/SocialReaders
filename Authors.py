@@ -11,10 +11,10 @@ class Author:
         self.description = description
         self.picture=picture
 
-author1 = Author(None,"Ernest","Hemingway",1899,"American",None,None,None)
-author2 = Author(None,"Samuel","Clemens",1835,"American","Mark Twain",None,None)
-author3 = Author(None,"Metehan","Gültekin",1994,"Turkish",None,None,None)
-author4 = Author(None,"Ilay","Köksal",1995,"Turkish",None,None,None)
+author1 = Author(None,"Ernest","Hemingway",1899,"American",None,None,"https://raw.githubusercontent.com/itucsdb1612/itucsdb1612/master/wiki_screenshots/sahalemre/Pic/hemingway.jpg")
+author2 = Author(None,"Samuel","Clemens",1835,"American","Mark Twain",None,"https://raw.githubusercontent.com/itucsdb1612/itucsdb1612/master/wiki_screenshots/sahalemre/Pic/marktwain.jpg")
+author3 = Author(None,"Metehan","Gültekin",1994,"Turkish",None,None,"https://raw.githubusercontent.com/itucsdb1612/itucsdb1612/master/wiki_screenshots/sahalemre/Pic/mete.jpg")
+author4 = Author(None,"Ilay","Köksal",1995,"Turkish",None,None,"https://raw.githubusercontent.com/itucsdb1612/itucsdb1612/master/wiki_screenshots/sahalemre/Pic/ilaay.jpg")
 
 
 def insertAuthor(dsn,author):

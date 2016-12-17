@@ -120,6 +120,7 @@ def initialize():
     create_members_table(app.config['dsn'])
     create_author_table(app.config['dsn'])
     create_groupcomments_table(app.config['dsn'])
+    create_authorcomments_table(app.config['dsn'])
     insertAuthor(app.config['dsn'],author1)
     insertAuthor(app.config['dsn'],author2)
     insertAuthor(app.config['dsn'],author3)
@@ -1071,7 +1072,7 @@ def authorpage_page():
         authorid = request.args.get('id')
         if request.method == 'GET':
             id = request.args.get('id')
-            return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],authorid),comments = selectauthorcomments(app.config['dsn'],authorid))
+            return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],authorid), comments = selectauthorcomments(app.config['dsn'],authorid))
         else:
             if 'Add' in request.form:
                 text=request.form["comment"]
