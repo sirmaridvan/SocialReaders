@@ -24,7 +24,7 @@
             <ul class="nav navbar-nav">
                 <li>
                     <a href="#inbox" role="tab" data-toggle="tab">
-                        Inbox <span class="label label-success">10</span>
+                        Inbox <span class="label label-success">{{unreadMessageCount}}</span>
                     </a>
                 </li>
                 <li><a href="#sent-mail" role="tab" data-toggle="tab">Sent mail</a>
@@ -114,14 +114,14 @@
                    <ul class="mail-list">
                    		{% for messageid, senderid, receiverid, text, isread, receiverusername in sentMessages %}
 	                       	<li>
-	                       		<a href="{{url_for('messages_page', messageId = messageid)}}">
+	                       		<a href="{{url_for('messages_page', messageId = messageid,fromSent=True)}}">
             		            	<div class="row">
 	                           			<div class="col-sm-12">
 			                               	<span class="mail-sender">{{ receiverusername }}</span>
 			                               	<span class="mail-message-preview">{{ text }}</span>
 			                           	</div>
 			                           	<div class="col-sm-2">
-			                           		<form action="{{url_for('messages_page')}}" method="post">
+			                           		<form action="{{url_for('messages_page',fromSent=True)}}" method="post">
 			                           			<input type="hidden" name="mid" value="{{messageid}}" />
 			                           			<button type="submit" name="delete" class="btn btn-danger">
 													<i class="glyphicon glyphicon-trash"></i>

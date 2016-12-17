@@ -42,4 +42,11 @@ def getSentMessages(cursor,userid):
                 WHERE(SENDERID = %(senderid)s
                 AND RECEIVERID = SITEUSER.USERID)"""
     cursor.execute(statement,{'senderid':userid})             
-                
+
+def getMessage(cursor,messageid):
+    statement = """SELECT MESSAGEID, SENDERID, RECEIVERID, TEXT, ISREAD, RECEIVER.USERNAME AS RECEIVERUSERNAME, SENDER.USERNAME AS SENDERUSERNAME FROM USERMESSAGE, SITEUSER AS RECEIVER, SITEUSER AS SENDER
+                WHERE(MESSAGEID = %(messageid)s
+                AND RECEIVERID = RECEIVER.USERID
+                AND SENDERID = SENDER.USERID)"""
+    cursor.execute(statement,{'messageid':messageid})  
+            

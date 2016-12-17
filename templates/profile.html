@@ -245,15 +245,23 @@ $(document).ready(function() {
                         <!-- end activities -->
                         <!-- followers -->
                         <div class="tab-pane fade" id="followers">
-                            {% for followeruserid, followerusername, followername, followersurname in followers %}
+                            {% for followeruserid, followerusername, followername, followersurname,isfollowing in followers %}
 	                            <div class="media user-follower">
 	                                <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="User Avatar" class="media-object pull-left">
 	                                <div class="media-body">
 	                                    <a href="{{url_for("profile_page",userid=followeruserid)}}">{{followername}} {{followersurname}}<br><span class="text-muted username">@{{followerusername}}</span></a>
-	                                    <button type="button" class="btn btn-sm btn-toggle-following pull-right"><i class="fa fa-checkmark-round"></i> <span>Following</span></button>
-	                                </div>
-	                            </div>
-                            {% endfor %}
+	                                    {% if session.userId != followeruserid %}
+		                                    {% if isfollowing %}
+				                                	<button type="button" class="btn btn-sm btn-danger pull-right" name="unfollow-button">Unfollow</button>
+				                                	<input name="userid" type="hidden" value="{{followeruserid}}" />
+				                            {% else %}
+				                            		<button type="button" class="btn btn-sm btn-success pull-right" name="follow-button">Follow</button>
+				                            		<input name="userid" type="hidden" value="{{followeruserid}}" />
+				                            {% endif %}
+			                            {% endif %}
+                                </div>
+                            </div>
+                           {% endfor %}
                         </div>
                         <!-- end followers -->
                         <!-- following -->
@@ -263,7 +271,7 @@ $(document).ready(function() {
 	                                <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="User Avatar" class="media-object pull-left">
 	                                <div class="media-body">
 	                                    <a href="{{url_for("profile_page",userid=followinguserid)}}">{{followingname}} {{followingsurname}}<br><span class="text-muted username">@{{followingusername}}</span></a>
-	                                    <button type="button" class="btn btn-sm btn-danger pull-right" name="follow-button"><i class="fa fa-close-round"></i> Unfollow</button>
+	                                    <button type="button" class="btn btn-sm btn-danger pull-right" name="unfollow-button">Unfollow</button>
 	                                	<input name="userid" type="hidden" value="{{followinguserid}}" />
 	                                </div>
 	                            </div>
