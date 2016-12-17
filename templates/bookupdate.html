@@ -4,52 +4,60 @@
 {% endblock %}
 {% block content %}
 	<div class="container">
-		<form class="form-horizontal" action="{{ url_for('bookUpdate_page')}}" method="POST">
-			<fieldset>
-				<!-- Form Name -->
-				<legend>UPDATE BOOK</legend>
+		<form class="form-horizontal" method="POST">
+<fieldset>
 
-				<input type="hidden" name="bookid" value="{{book.bookid}}"></input>
-				<!-- Text input-->
-				<div class="form-group">
-				  <label class="col-md-4 control-label" for="username">TITLE</label>
-				  <div class="col-md-4">
-				  <input id="username" name="title" value="{{book.title}}" type="text" placeholder="" class="form-control input-md" required="">
+<!-- Form Name -->
+<legend>Update Book</legend>
 
-				  </div>
-				</div>
-				<div class="form-group">
-				  <label class="col-md-4 control-label" for="email">YEAR</label>
-				  <div class="col-md-4">
-				  <input id="year" name="year" value="{{book.year}}" type="text" placeholder="" class="form-control input-md" required="">
+<!-- Text input-->
+{% for id, title, year, author_id, genre_id in updatebook %}
+<div class="form-group">
+  <label class="col-md-4 control-label" for="title">Title</label>
+  <div class="col-md-4">
+  <input id="title" name="title" type="text" value="{{ title }}" placeholder="" class="form-control input-md" required="">
 
-				  </div>
-				</div>
-				<div class="form-group">
-				  <label class="col-md-4 control-label" for="name">AUTHOR ID</label>
-				  <div class="col-md-4">
-				  <input id="author_id" name="author_id" value="{{book.author_id}}" type="text" placeholder="" class="form-control input-md" required="">
+  </div>
+</div>
 
-				  </div>
-				</div>
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="year">Year</label>
+  <div class="col-md-4">
+  <input id="year" name="year" type="text" value="{{ year }}"  placeholder="" class="form-control input-md" equired="">
 
-				<div class="form-group">
-				  <label class="col-md-4 control-label" for="surname">GENRE ID</label>
-				  <div class="col-md-4">
-				  <input id="genre_id" name="genre_id" value="{{book.genre_id}}" type="text" placeholder="" class="form-control input-md" required="">
+  </div>
+</div>
 
-				  </div>
-				</div>
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="author_id">Author</label>
+  <div class="col-md-4">
+  <input id="author_id" name="author_id" type="text" value="{{ author_id }}" placeholder="" class="form-control input-md" required="">
 
-				<!-- Text input-->
-				<div class="form-group">
-				  <label class="col-md-4 control-label" for="button1idFFF"></label>
-				  <div class="col-md-8">
-				    <button id="button1idFFF" name="update" class="btn btn-success">UPDATE</button>
-				    <button id="button2id" name="cancel" class="btn btn-danger">CANCEL</button>
-				  </div>
-				</div>
-			</fieldset>
-		</form>
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="genre_id">Genre</label>
+  <div class="col-md-4">
+  <input id="genre_id" name="genre_id" type="text" value= "{{ genre_id }}"  placeholder="" class="form-control input-md" required="">
+
+  </div>
+</div>
+
+<input name ="updateid" type="hidden" value = "{{ id }}">
+<!-- Button (Double) -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="Update"></label>
+  <div class="col-md-8">
+    <button id="Add" name="Update" class="btn btn-success">Update</button>
+    <button id="Cancel" name="Cancel" class="btn btn-danger">Cancel</button>
+  </div>
+</div>
+{% endfor %}
+</fieldset>
+</form>
 	</div>
 {% endblock %}

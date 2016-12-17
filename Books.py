@@ -46,6 +46,15 @@ def selectBookbyID(dsn, id):
         return books
         cursor.close()
 
+def selectBookbyIDwithJoin(dsn, id):
+    with dbapi2.connect(dsn) as connection:
+        cursor = connection.cursor()
+        statement = """SELECT * FROM (SELECT TB.ID, TB.TITLE, TB.YEAR, AUTHORS.NAME||' '||AUTHORS.LASTNAME AS AUTHOR, TB.NAME AS GENRE FROM (SELECT BOOKS.ID, BOOKS.TITLE, BOOKS.YEAR, BOOKS.AUTHORID, GENRES.NAME FROM BOOKS INNER JOIN GENRES ON GENRES.ID=BOOKS.GENREID)TB INNER JOIN AUTHORS ON AUTHORS.ID=TB.AUTHORID)LTB WHERE ID = %s"""
+        cursor.execute(statement,(id,))
+        books = cursor.fetchall()
+        return books
+        cursor.close()
+
 def selectBookbyTitle(dsn, title):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
@@ -92,6 +101,6 @@ def deleteBook(dsn, id):
 def updateBook(dsn, id, newbook):
     with dbapi2.connect(dsn) as connection:
         cursor = connection.cursor()
-        statement = """ UPDATE BOOKS SET TITLE = %s YEAR = %s AUTHORID = %s GENREID = %s WHERE ID = %s """
+        statement = """ UPDATE BOOKS SET TITLE = %s, YEAR = %s, AUTHORID = %s, GENREID = %s WHERE ID = %s """
         cursor.execute(statement,(newbook.title, newbook.year, newbook.author_id, newbook.genre_id, id,))
         cursor.close()

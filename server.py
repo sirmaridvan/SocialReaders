@@ -347,7 +347,7 @@ def adminevents_page():
             connection.close()
     else:
         return redirect(url_for('home_page'))
-    
+
 @app.route('/admin/eventadd',methods=['GET', 'POST'])
 def eventAdd_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -1219,22 +1219,48 @@ def book_page():
 @app.route('/admin/books',methods=['GET', 'POST'])
 def books_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
-        try:
-            return render_template('bookadmin.html', books = selectBookwithJoin(app.config['dsn']))
+        connection = dbapi2.connect(app.config['dsn'])
+        cursor =connection.cursor()
 
-        except dbapi2.Error as e:
-            print(e.pgerror)
+        if request.method == 'GET':
+            return render_template('bookadmin.html', books = selectBookwithJoin(app.config['dsn']))
+        else:
+            if 'Delete' in request.form:
+                deleteid = request.form['deleteid']
+                deleteBook(app.config['dsn'],deleteid)
+                return redirect(url_for('books_page'))
+            if 'Update' in request.form:
+                updateid = request.form['updateid']
+                return render_template('bookupdate.html')
     else:
         return redirect(url_for('about_page'))
+
 @app.route('/admin/bookadd',methods=['GET', 'POST'])
 def bookAdd_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
         connection = dbapi2.connect(app.config['dsn'])
+        cursor =connection.cursor()
         try:
             try:
                 if request.method == 'POST':
-                    if "add" in request.form:
-                        book = Book(0,request.form['title'],request.form['year'],request.form['author_id'],request.form['genre_id'])
+                    if "Add" in request.form:
+                        title = request.form['title']
+                        year = request.form['year']
+                        author_text = request.form['author_id']
+                        author = author_text.split()
+                        author_count = len(author)
+                        author_name = ""
+                        for x in range (0, author_count-1):
+                            author_name = author_name + author[x] + ' '
+                        genre_text = request.form['genre_id']
+                        statement = """SELECT ID FROM GENRES WHERE NAME = %s"""
+                        cursor.execute(statement,(genre_text,))
+                        genre_id = cursor.fetchall()
+
+                        statement = """SELECT ID FROM AUTHORS WHERE NAME = %s AND LASTNAME = %s"""
+                        cursor.execute(statement,(author[0],author[author_count-1]))
+                        author_id = cursor.fetchall()
+                        book = Book(None, title, year, author_id[0], genre_id[0])
                         insert_book(app.config['dsn'],book)
                         return redirect(url_for('books_page'))
             except dbapi2.Error as e:
@@ -1248,32 +1274,40 @@ def bookAdd_page():
         return render_template('bookadd.html')
     else:
         return redirect(url_for('about_page'))
+
 @app.route('/admin/bookupdate',methods=['GET', 'POST'])
 def bookUpdate_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
         connection = dbapi2.connect(app.config['dsn'])
-        try:
-            try:
-                if request.method == 'GET':
-                    bookid = request.args.get('id')
-                    selectBookbyID(app.config['dsn'],bookid)
-                    ((bookid, title, year, author_id, genre_id),) = cursor.fetchall()
-                    mBook = Book(bookid,title,year, author_id, genre_id)
-                    return render_template('bookupdate.html',book = mBook)
-                elif request.method == 'POST':
-                    if 'update' in request.form:
-                        book = book(request.form['bookid'],request.form['title'],request.form['year'],request.form['author_id'],request.form['genre_id'])
-                        update_book(cursor,book)
-                    return redirect(url_for('books_page'))
-            except dbapi2.Error as e:
-                    print(e.pgerror)
-        except dbapi2.Error as e:
-            print(e.pgerror)
-            connection.rollback()
-        finally:
-            connection.commit()
-            connection.close()
-        return render_template('bookupdate.html')
+        cursor =connection.cursor()
+        if request.method == 'GET':
+            updateid = request.args.get('updateid')
+            return render_template('bookupdate.html',updatebook = selectBookbyIDwithJoin(app.config['dsn'],updateid))
+
+        else:
+            if 'Update' in request.form:
+                updateid = request.form['updateid']
+                title = request.form['title']
+                year = request.form['year']
+                author_text = request.form['author_id']
+                author = author_text.split()
+                author_count = len(author)
+                author_name = ""
+                for x in range (0, author_count-1):
+                    author_name = author_name + author[x] + ' '
+                genre_text = request.form['genre_id']
+                statement = """SELECT ID FROM GENRES WHERE NAME = %s"""
+                cursor.execute(statement,(genre_text,))
+                genre_id = cursor.fetchall()
+
+                statement = """SELECT ID FROM AUTHORS WHERE NAME = %s AND LASTNAME = %s"""
+                cursor.execute(statement,(author[0],author[author_count-1]))
+                author_id = cursor.fetchall()
+                updatebook = Book(None, title, year, author_id[0], genre_id[0])
+                updateBook(app.config['dsn'], updateid, updatebook)
+                return redirect(url_for('books_page'))
+            return render_template('bookupdate.html',updatebook = selectBookbyIDwithJoin(app.config['dsn'],updateid))
+
     else:
         return redirect(url_for('about_page'))
 
