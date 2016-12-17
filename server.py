@@ -1101,17 +1101,22 @@ def groups_page():
         else:
             if 'Add' in request.form:
                 name = request.form['groupname']
-                group = Group(None,name)
+                owner = session['userId']
+                group = Group(None,name,owner)
                 insert_group(app.config['dsn'],group)
                 return render_template('groups.html',groups = selectGroup(app.config['dsn']))
             if 'Delete' in request.form:
                 id=request.form['id']
-                deleteGroup(app.config['dsn'],id)
+                owner = selectOwnerofGroup(app.config['dsn'],id)
+                user = session['userId']
+                if user == owner:
+                    deleteGroup(app.config['dsn'],id)
                 return render_template('groups.html',groups = selectGroup(app.config['dsn']))
             if 'Update' in request.form:
                 id=request.form['id']
                 newname = request.form['newname']
-                newgroup = Group(id,newname)
+                owner = session['userId']
+                newgroup = Group(id,newname,owner)
                 updateGroup(app.config['dsn'],id,newgroup)
                 return render_template('groups.html',groups = selectGroup(app.config['dsn']))
             if 'Join' in request.form:

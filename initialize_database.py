@@ -172,7 +172,8 @@ def create_groups_table(dsn):
         cursor = connection.cursor()
         statement = """ CREATE TABLE IF NOT EXISTS GROUPS (
             ID SERIAL PRIMARY KEY ,
-            NAME VARCHAR(50) NOT NULL
+            NAME VARCHAR(50) NOT NULL,
+            OWNER INTEGER REFERENCES SITEUSER (USERID) ON DELETE CASCADE
         )"""
         cursor.execute(statement)
         cursor.close()
