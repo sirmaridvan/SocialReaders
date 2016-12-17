@@ -22,8 +22,12 @@
       </blockquote>
       <p>
         <i class="icon-globe"></i> Penname: {{ penname }} <br>
-        <i class="icon-gift"></i> {{ birthdate }}
+        <i class="icon-gift"></i> {{ birthdate }} <br>
         
+         <i class="icon-gift"></i> Notable works:
+         {% for title  in books %}
+         {{ title }}
+		{% endfor %}
       </p>
     </div>
  

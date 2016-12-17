@@ -1072,7 +1072,7 @@ def authorpage_page():
         authorid = request.args.get('id')
         if request.method == 'GET':
             id = request.args.get('id')
-            return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],authorid), comments = selectauthorcomments(app.config['dsn'],authorid))
+            return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],authorid), comments = selectauthorcomments(app.config['dsn'],authorid),books = getBooksofAuthor(app.config['dsn'],authorid))
         else:
             if 'Add' in request.form:
                 text=request.form["comment"]
@@ -1088,7 +1088,7 @@ def authorpage_page():
                 print (ownerid[0])
                 if userid == (ownerid[0]):
                     deleteauthorcommentbyid(app.config['dsn'],commentid)
-        return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],authorid),comments = selectauthorcomments(app.config['dsn'],authorid))
+        return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],authorid),comments = selectauthorcomments(app.config['dsn'],authorid),books = getBooksofAuthor(app.config['dsn'],authorid))
     else:
         return redirect(url_for('about_page'))
 

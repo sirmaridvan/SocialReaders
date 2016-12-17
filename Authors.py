@@ -14,8 +14,7 @@ class Author:
 author1 = Author(None,"Ernest","Hemingway",1899,"American",None,None,"https://raw.githubusercontent.com/itucsdb1612/itucsdb1612/master/wiki_screenshots/sahalemre/Pic/hemingway.jpg")
 author2 = Author(None,"Samuel","Clemens",1835,"American","Mark Twain",None,"https://raw.githubusercontent.com/itucsdb1612/itucsdb1612/master/wiki_screenshots/sahalemre/Pic/marktwain.jpg")
 author3 = Author(None,"Metehan","Gültekin",1994,"Turkish",None,None,"https://raw.githubusercontent.com/itucsdb1612/itucsdb1612/master/wiki_screenshots/sahalemre/Pic/mete.jpg")
-author4 = Author(None,"Ilay","Köksal",1995,"Turkish",None,None,"https://raw.githubusercontent.com/itucsdb1612/itucsdb1612/master/wiki_screenshots/sahalemre/Pic/ilaay.jpg")
-
+author4 = Author(None,"Ilay","Köksal",1995,"Turkish",None,None,"https://raw.githubusercontent.com/itucsdb1612/itucsdb1612/master/wiki_screenshots/sahalemre/Pic/ilay.jpg")
 
 def insertAuthor(dsn,author):
     with dbapi2.connect(dsn) as connection:
@@ -68,3 +67,12 @@ def updateAuthor(dsn,updateid,newauthor):
         statement = """ UPDATE AUTHORS SET NAME = %s, LASTNAME = %s, BIRTHDATE = %s, NATIONALITY = %s, PENNAME = %s DESCRIPTION = %s PICTURE = %s WHERE ID = %s"""
         cursor.execute(statement,(newauthor.name,newauthor.lastname,newauthor.birthdate,newauthor.nationality,newauthor.penname,newauthor.description,newauthor.picture,updateid))
         cursor.close()
+        
+def getBooksofAuthor(dsn,authorid):
+        with dbapi2.connect(dsn) as connection:
+            cursor = connection.cursor()
+            statement = """ SELECT TITLE FROM BOOKS WHERE AUTHORID = %s"""
+            cursor.execute(statement,(authorid,))
+            books = cursor.fetchall()
+            cursor.close()
+            return books
