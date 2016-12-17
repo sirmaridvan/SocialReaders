@@ -982,7 +982,7 @@ def authorupdate_page():
     else:
         return redirect(url_for('about_page'))
 
-@app.route('/news',methods=['GET', 'POST'])
+'''@app.route('/news',methods=['GET', 'POST'])
 def news_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
         connection = dbapi2.connect(app.config['dsn'])
@@ -1054,7 +1054,7 @@ def update_news_page():
 
         return render_template('updateJob.html')
     else:
-        return redirect(url_for('about_page'))
+        return redirect(url_for('about_page'))'''
 
 
 
