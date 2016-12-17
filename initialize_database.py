@@ -67,7 +67,7 @@ def create_blogs_table(cursor):
                 ID SERIAL PRIMARY KEY ,
                 USERID INTEGER REFERENCES SITEUSER (USERID),
                 DATE DATE NOT NULL DEFAULT CURRENT_DATE,
-                HEADER VARCHAR(20) NOT NULL,
+                HEADER VARCHAR(80) NOT NULL,
                 TEXT TEXT NOT NULL
                 )"""
     cursor.execute(statement);
@@ -77,7 +77,7 @@ def create_jobs_table(cursor):
                 ID SERIAL PRIMARY KEY,
                 USERID INTEGER REFERENCES SITEUSER (USERID),
                 DATE DATE NOT NULL DEFAULT CURRENT_DATE,
-                HEADER VARCHAR(20) NOT NULL,
+                HEADER VARCHAR(80) NOT NULL,
                 DESCRIPTION TEXT NOT NULL
                 )"""
     cursor.execute(statement);

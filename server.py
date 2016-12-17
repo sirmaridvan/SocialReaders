@@ -885,7 +885,7 @@ def write_post_page():
 
                 userId=session['userId']
                 date=datetime.datetime.now()
-                header="header"
+                header=request.form['header']
                 text = request.form['text']
                 blogPost = BlogPost(0,userId,datetime.date.today(),header,text);
                 connection = dbapi2.connect(app.config['dsn'])

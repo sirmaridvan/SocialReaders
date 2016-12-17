@@ -28,6 +28,7 @@
                 <div class="well">
                     <h4><i class="fa fa-paper-plane-o"></i> Leave a Comment:</h4>
                     <form id="register-form" action={{url_for('write_post_page')}} method="post" role="form">
+                        <input type="text" id="header" name="header" class="input-block-level" placeholder="Header">
                         <div class="form-group">
                             <textarea type="text" name="text" id="text" class="form-control" rows="3"></textarea>
                         </div>
