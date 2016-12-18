@@ -12,6 +12,7 @@ def drop_tables(cursor):
                 DROP TABLE IF EXISTS BOOKS CASCADE;
                 DROP TABLE IF EXISTS QUOTES CASCADE;
                 DROP TABLE IF EXISTS GENRES CASCADE;
+                DROP TABLE IF EXISTS BOOKDETAILS CASCADE;
                 """
     cursor.execute(statement)
 
@@ -232,7 +233,14 @@ def create_book_table(cursor):
                 )"""
     cursor.execute(statement)
 
-
+def create_bookdetails_table(cursor):
+    statement = """CREATE TABLE IF NOT EXISTS BOOKDETAILS (
+                ID SERIAL PRIMARY KEY,
+                BOOKID INTEGER REFERENCES BOOKS (ID),
+                IMGURL VARCHAR(255),
+                DETAIL TEXT NOT NULL
+                )"""
+    cursor.execute(statement)
 
 ''' Quote Table'''
 

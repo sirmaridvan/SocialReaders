@@ -1,0 +1,55 @@
+{% extends "admin_template.html" %}
+{% block title %}Admin Panel - Update Book Details{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+	<div class="container">
+		<form class="form-horizontal" method="POST">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Update Book Details</legend>
+
+<!-- Text input-->
+{% for id, bookid, title, imgurl, details in detailbook %}
+<div class="form-group">
+  <label class="col-md-4 control-label" for="title">Title</label>
+  <div class="col-md-4">
+  <input id="title" name="title" type="text" value="{{ title }}" placeholder="" class="form-control input-md" disabled="disabled">
+
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="imgurl">Cover URL</label>
+  <div class="col-md-4">
+  <input id="imgurl" name="imgurl" type="text" value="{{ imgurl }}"  placeholder="" class="form-control input-md" equired="">
+
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="details">Details</label>
+  <div class="col-md-4">
+  <input id="details" name="details" type="text" value="{{ details }}" placeholder="" class="form-control input-md" required="">
+
+  </div>
+</div>
+
+<input name ="detailid" type="hidden" value = "{{ id }}">
+<input name ="bookid" type="hidden" value = "{{ bookid }}">
+<!-- Button (Double) -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="Detail"></label>
+  <div class="col-md-8">
+    <button id="Update" name="Update" class="btn btn-success">Update Details</button>
+    <button id="Cancel" name="Cancel" class="btn btn-danger">Cancel</button>
+  </div>
+</div>
+{% endfor %}
+</fieldset>
+</form>
+	</div>
+{% endblock %}

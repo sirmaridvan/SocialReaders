@@ -17,6 +17,7 @@ from initialize_database import *
 from user import *
 from Authors import *
 from Books import *
+from Bookdetails import *
 from Genres import *
 from Quotes import *
 from BlogPost import *
@@ -33,6 +34,7 @@ from event import *
 from Groupcomments import *
 from Authorcomments import *
 from distutils.command.check import check
+from apt.auth import update
 
 app = Flask(__name__)
 
@@ -80,10 +82,10 @@ def initialize():
         cursor =connection.cursor()
         try:
             drop_tables(cursor)
-
             create_genre_table(cursor)
             create_book_table(cursor)
             create_quote_table(cursor)
+            create_bookdetails_table(cursor)
             create_news_table(cursor)
         except dbapi2.Error as e:
             print(e.pgerror)
@@ -150,10 +152,13 @@ def initialize():
             book1 = Book(0, "The Sun Also Rises", 1926, 1, 1)
             book2 = Book(0, "Adventures of Hucleberry Finn", 1884, 2, 2)
 
-
-
+            details1 = Bookdetails(None, 1, "https://upload.wikimedia.org/wikipedia/en/9/93/Hemingwaysun1.jpg", "The Sun Also Rises is a 1926 novel written by American author Ernest Hemingway about a group of American and British expatriates who travel from Paris to the Festival of San Fermín in Pamplona to watch the running of the bulls and the bullfights.")
+            details2 = Bookdetails(None, 2, "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Huckleberry_Finn_book.JPG/220px-Huckleberry_Finn_book.JPG", "Adventures of Huckleberry Finn (or, in more recent editions, The Adventures of Huckleberry Finn) is a novel by Mark Twain, first published in the United Kingdom in December 1884 and in the United States in February 1885.")
             insert_book(app.config['dsn'], book1)
             insert_book(app.config['dsn'], book2)
+
+            insert_book_details(cursor, details1)
+            insert_book_details(cursor, details2)
 
             quote1 = Quote(0, "you can't get away from yourself by moving from one place to another.", 1, 1)
             quote2 = Quote(0, "All right, then, I'll go to hell.", 2, 2)
@@ -1211,6 +1216,9 @@ def books_page():
             if 'Update' in request.form:
                 updateid = request.form['updateid']
                 return render_template('bookupdate.html')
+            if 'Details' in request.form:
+                detailid = request.form['detailid']
+                return render_template('bookdetails.html')
     else:
         return redirect(url_for('about_page'))
 
@@ -1254,6 +1262,31 @@ def bookAdd_page():
     else:
         return redirect(url_for('about_page'))
 
+@app.route('/admin/bookdetails',methods=['GET', 'POST'])
+def bookDetails_page():
+    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
+        connection = dbapi2.connect(app.config['dsn'])
+        cursor =connection.cursor()
+        if request.method == 'GET':
+            detailid = request.args.get('detailid')
+            return render_template('bookdetails.html',detailbook = get_book_alldetails_byId(cursor,detailid))
+
+        else:
+            if 'Update' in request.form:
+                detailid = request.form['detailid']
+                bookid = request.form['bookid']
+                imgurl = request.form['imgurl']
+                details = request.form['details']
+                updateDetail = Bookdetails(detailid, bookid, imgurl, details)
+                update_book_details(cursor, bookid, updateDetail)
+                return redirect(url_for('books_page'))
+            else:
+                return redirect(url_for('books_page'))
+            return render_template('bookdetails.html',detailbook = get_book_alldetails_byId(cursor,detailid))
+
+    else:
+        return redirect(url_for('about_page'))
+
 @app.route('/admin/bookupdate',methods=['GET', 'POST'])
 def bookUpdate_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
@@ -1284,6 +1317,8 @@ def bookUpdate_page():
                 author_id = cursor.fetchall()
                 updatebook = Book(None, title, year, author_id[0], genre_id[0])
                 updateBook(app.config['dsn'], updateid, updatebook)
+                return redirect(url_for('books_page'))
+            else:
                 return redirect(url_for('books_page'))
             return render_template('bookupdate.html',updatebook = selectBookbyIDwithJoin(app.config['dsn'],updateid))
 
