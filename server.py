@@ -286,6 +286,13 @@ def profile_page():
                 getUserFollowers(cursor,userId)
                 mFollowerCount = cursor.rowcount
                 mFollowers = cursor.fetchall()
+                if cursor.rowcount > 0:
+                   for i in range(0,len(mFollowers)):
+                        isFollowing(cursor,session['userId'],mFollowers[i][0])
+                        if cursor.rowcount > 0:
+                            mFollowers[i] = mFollowers[i] + (True,)
+                        else:
+                            mFollowers[i] = mFollowers[i] + (False,)
                 return render_template('profile.html',user = mUser, followingCount = mFollowingCount, followerCount = mFollowerCount, followers = mFollowers,  followings = mFollowings, isFollowed = mIsFollowing)
             except dbapi2.Error as e:
                 print(e.pgerror)
@@ -563,13 +570,12 @@ def messages_page(messageId = 0):
                 try:
                     cursor =connection.cursor()
                     try:
-                        changeMessageReadStatus(cursor,messageId,True)
-                        getReceivedMessages(cursor,session['userId'])
-                        mReceivedMessages = cursor.fetchall()
-
-                        getSentMessages(cursor,session['userId'])
-                        mSentMessages = cursor.fetchall()
-                        return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
+                        comingFromSent = request.args.get('fromSent',False,bool)
+                        if comingFromSent == False:
+                          changeMessageReadStatus(cursor,messageId,True)
+                        getMessage(cursor,messageId)
+                        mMessage = cursor.fetchone()
+                        return render_template('messagedetail.html',isAlert = False, alertMessage = '',message = mMessage)
                     except dbapi2.Error as e:
                             print(e.pgerror)
                     finally:
@@ -587,7 +593,10 @@ def messages_page(messageId = 0):
                     try:
                         getReceivedMessages(cursor,session['userId'])
                         mReceivedMessages = cursor.fetchall()
-
+                        mUnreadMessageCount = 0
+                        for message in mReceivedMessages:
+                            if message[4] == False:
+                                mUnreadMessageCount = mUnreadMessageCount + 1
                         getSentMessages(cursor,session['userId'])
                         mSentMessages = cursor.fetchall()
                         return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
@@ -613,13 +622,20 @@ def messages_page(messageId = 0):
                         insertUserMessage(cursor,message)
                         getReceivedMessages(cursor,session['userId'])
                         mReceivedMessages = cursor.fetchall()
+                        mUnreadMessageCount = 0
+                        for message in mReceivedMessages:
+                           if message[4] == False:
+                               mUnreadMessageCount = mUnreadMessageCount + 1
                         getSentMessages(cursor,session['userId'])
                         mSentMessages = cursor.fetchall()
                         return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
                     else:
                         getReceivedMessages(cursor,session['userId'])
                         mReceivedMessages = cursor.fetchall()
-
+                        mUnreadMessageCount = 0
+                        for message in mReceivedMessages:
+                           if message[4] == False:
+                                mUnreadMessageCount = mUnreadMessageCount + 1
                         getSentMessages(cursor,session['userId'])
                         mSentMessages = cursor.fetchall()
                         return render_template('messages.html', isAlert = True, alertMessage = 'Could not find specified user.',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
