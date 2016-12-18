@@ -50,6 +50,12 @@
 										</button>
 										<input type="hidden" name="deleteid" value="{{id}}"/>
 									</form>
+									<form action="{{ url_for('bookDetails_page')}}" method="get" style="float: left;">
+										<button type="submit" name="Details" class="btn btn-info">
+											<i class="glyphicon glyphicon-edit	"></i>
+										</button>
+										<input type="hidden" name="detailid" value="{{id}}"/>
+									</form>
                          		</td>
 								<td>{{title}}</td>
 								<td>{{year}}</td>
