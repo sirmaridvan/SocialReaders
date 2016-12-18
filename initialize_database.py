@@ -95,8 +95,8 @@ def create_feeds_table(cursor):
     statement = """CREATE TABLE IF NOT EXISTS FEEDS (
                 ID SERIAL PRIMARY KEY,
                 DATE DATE NOT NULL DEFAULT CURRENT_DATE,
-                USERID INTEGER REFERENCES SITEUSER (USERID),
-                BOOKID INTEGER REFERENCES BOOKS (ID),
+                USERID INTEGER REFERENCES SITEUSER (USERID) ,
+                BOOKID INTEGER REFERENCES BOOKS (ID) ON DELETE CASCADE,
                 TYPEID INTEGER REFERENCES FEEDTYPES (ID)
                 )"""
     cursor.execute(statement);
@@ -228,15 +228,15 @@ def create_book_table(cursor):
                 ID SERIAL PRIMARY KEY,
                 TITLE VARCHAR(40) NOT NULL,
                 YEAR NUMERIC(4) NOT NULL,
-                AUTHORID INTEGER REFERENCES AUTHORS (ID),
-                GENREID INTEGER REFERENCES GENRES (ID)
+                AUTHORID INTEGER REFERENCES AUTHORS (ID) ON DELETE CASCADE,
+                GENREID INTEGER REFERENCES GENRES (ID) ON DELETE CASCADE
                 )"""
     cursor.execute(statement)
 
 def create_bookdetails_table(cursor):
     statement = """CREATE TABLE IF NOT EXISTS BOOKDETAILS (
                 ID SERIAL PRIMARY KEY,
-                BOOKID INTEGER REFERENCES BOOKS (ID),
+                BOOKID INTEGER REFERENCES BOOKS (ID) ON DELETE CASCADE,
                 IMGURL VARCHAR(255),
                 DETAIL TEXT NOT NULL
                 )"""
