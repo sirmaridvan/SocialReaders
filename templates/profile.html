@@ -271,8 +271,10 @@ $(document).ready(function() {
 	                                <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="User Avatar" class="media-object pull-left">
 	                                <div class="media-body">
 	                                    <a href="{{url_for("profile_page",userid=followinguserid)}}">{{followingname}} {{followingsurname}}<br><span class="text-muted username">@{{followingusername}}</span></a>
-	                                    <button type="button" class="btn btn-sm btn-danger pull-right" name="unfollow-button">Unfollow</button>
-	                                	<input name="userid" type="hidden" value="{{followinguserid}}" />
+	                                    {% if followinguserid != session.logged_in %}
+	                                    	<button type="button" class="btn btn-sm btn-danger pull-right" name="unfollow-button">Unfollow</button>
+	                                		<input name="userid" type="hidden" value="{{followinguserid}}" />
+	                                	{% endif %}
 	                                </div>
 	                            </div>
 	                        {% endfor %}
