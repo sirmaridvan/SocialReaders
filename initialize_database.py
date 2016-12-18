@@ -237,8 +237,8 @@ def create_bookdetails_table(cursor):
     statement = """CREATE TABLE IF NOT EXISTS BOOKDETAILS (
                 ID SERIAL PRIMARY KEY,
                 BOOKID INTEGER REFERENCES BOOKS (ID) ON DELETE CASCADE,
-                IMGURL VARCHAR(255),
-                DETAIL TEXT NOT NULL
+                IMGURL VARCHAR(255) DEFAULT ' ',
+                DETAIL TEXT DEFAULT ' '
                 )"""
     cursor.execute(statement)
 

@@ -1,0 +1,46 @@
+{% extends "template.html" %}
+{% block title %} {{ title }}  {% endblock %}
+{% block head %}
+{% endblock %}
+{% block navbar %}
+{% endblock %}
+{% block content %}
+<div class="container">
+{% for id, title, year, author, genre, imgurl, detail in details %}
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css"/>
+  <div class="well">
+      <div class="media">
+      	<a class="pull-left" href="#">
+    		<img class="media-object" src=" {{ imgurl }}">
+  		</a>
+  		<div class="media-body">
+    		<h4 class="media-heading">{{title}}</h4>
+          <p class="text-right"><i class="glyphicon glyphicon-user"></i> {{author}} </p>
+          <p class="text-right"><i class="glyphicon glyphicon-calendar"></i> {{year}} </p>
+          <p class="text-right"><i class="glyphicon glyphicon-tree-deciduous"></i> {{genre}} </p>
+          {{detail}}
+          <ul class="list-inline list-unstyled">
+
+            <li>|</li>
+            <span><i class="glyphicon glyphicon-comment"></i> 2 comments</span>
+            <li>|</li>
+            <li>
+               <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star-empty"></span>
+            </li>
+            <li></li>
+            <li>
+            <!-- Use Font Awesome http://fortawesome.github.io/Font-Awesome/ -->
+              <span><i></span>
+              <span><i></span>
+            </li>
+			</ul>
+       </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}

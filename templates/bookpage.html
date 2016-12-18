@@ -25,14 +25,17 @@
 
             {% for id, title, year, author, genre in books %}
             <tr>
-                <td name="title">{{ title }}</td>
+            <form method="POST" role="form">
+            	<input type = "hidden" name = "id" value={{ id }}>
+                <td name="title"><button href="{{ url_for('book') }}" type="submit" name="Book" class="btn btn-link btn-s"><span class="glyphicon glyphicon-book"></span> {{ title }} </button></td>
+                </form>
                 <td name="year">{{ year }}</td>
                 <td name="author_id">{{ author }}</td>
                 <td name="genre_id">{{ genre }}</td>
             <form method="POST" role="form">
                 <input type = "hidden" name = "id" value={{ id }}>
                 <td class="text-center"><button href="{{ url_for('book_page') }}" type="submit" name="Like" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-heart"></span> Like </button></td>
-                <td class="text-center"><button href="{{ url_for('book_page') }}" type="submit" name="Suggest" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-star"></span> Suggest  </button></td>
+                <td class="text-center"><button href="{{ url_for('book_page') }}" type="submit" name="Suggest" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-star"></span> Recommend  </button></td>
         </form>
             </tr>
         {% endfor%}

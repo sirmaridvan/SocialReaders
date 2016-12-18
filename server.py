@@ -941,7 +941,9 @@ def authorAdd_page():
                 birthyear = request.form['birthyear']
                 nationality = request.form['nationality']
                 penname = request.form['penname']
-                newauthor = Author(None,name,lastname,birthyear,nationality,penname)
+                description = request.form['description']
+                picture = request.form['picture']
+                newauthor = Author(None,name,lastname,birthyear,nationality,penname,description, picture)
                 insertAuthor(app.config['dsn'],newauthor)
                 return redirect(url_for('authoradmin_page'))
         return render_template('authoradd.html')
@@ -1172,32 +1174,60 @@ def genres_page():
         return redirect(url_for('about_page'))
 
 
+
 @app.route('/bookpage', methods=['GET', 'POST'])
 def book_page():
     if 'logged_in' in session and session['logged_in'] == True:
         connection = dbapi2.connect(app.config['dsn'])
-        cursor =connection.cursor()
-        if request.method == 'GET':
-            return render_template('bookpage.html',books = selectBookwithJoin(app.config['dsn']))
-        else:
-            if 'Like' in request.form:
-                feed=Feed(None,datetime.datetime.now(),int(session['userId']),int(request.form['id']),1)
-                checkfeeded = check_if_feeded(cursor, feed)
-                if checkfeeded[0] != 0:
-                    insert_feed(cursor, feed)
-                    #insert_feed methodu nedense database'e eklemiyor ancak sıradaki IDyi de harcıyor,
-                    #yani bi sonraki ekleme manuel yapıldığında 1 2 3 varsa 4 yerine 5 alınıyor vs.
-                    #acilen kontrol edilmesi lazım!!!!
-                return render_template('bookpage.html',books = selectBookwithJoin(app.config['dsn']))
-            if 'Suggest' in request.form:
-                feed=Feed(None,datetime.datetime.now(),int(session['userId']),int(request.form['id']),2)
-                checkfeeded = check_if_feeded(cursor, feed)
-                if checkfeeded[0] != 0:
-                    insert_feed(cursor, feed)
-                return render_template('bookpage.html',books = selectBookwithJoin(app.config['dsn']))
+        try:
+            cursor =connection.cursor()
+            try:
+                if request.method == 'GET':
+                    return render_template('bookpage.html',books = selectBookwithJoin(app.config['dsn']))
+                else:
+                    if 'Book' in request.form:
+                        gobookid = request.form['id']
+                        details = get_book_fulldetails_byId(cursor, gobookid)
+                        return render_template('book.html',details = get_book_fulldetails_byId(cursor, gobookid), title = details[0][1])
+                    if 'Like' in request.form:
+                        feed=Feed(None,datetime.datetime.now(),int(session['userId']),int(request.form['id']),1)
+                        checkfeeded = check_if_feeded(cursor, feed)
+                        if checkfeeded[0] != 0:
+                            insert_feed(cursor, feed)
+                        return render_template('bookpage.html',books = selectBookwithJoin(app.config['dsn']))
+                    if 'Suggest' in request.form:
+                        feed=Feed(None,datetime.datetime.now(),int(session['userId']),int(request.form['id']),2)
+                        checkfeeded = check_if_feeded(cursor, feed)
+                        if checkfeeded[0] != 0:
+                            insert_feed(cursor, feed)
+                        return render_template('bookpage.html',books = selectBookwithJoin(app.config['dsn']))
+            except dbapi2.Error as e:
+                print(e.pgerror)
+            finally:
+                cursor.close()
+        except dbapi2.Error as e:
+            print(e.pgerror)
+            connection.rollback()
+        finally:
+            connection.commit()
+            connection.close()
     else:
         return redirect(url_for('about_page'))
 
+@app.route('/book', methods=['GET', 'POST'])
+def book():
+    if 'logged_in' in session and session['logged_in'] == True:
+        connection = dbapi2.connect(app.config['dsn'])
+        cursor =connection.cursor()
+        if request.method == 'GET':
+            return render_template('book.html',details = get_book_fulldetails(cursor))
+        else:
+            if 'Book' in request.form:
+                gobookid = request.form['id']
+                return render_template('book.html',details = get_book_fulldetails_byId(cursor, gobookid))
+
+    else:
+        return redirect(url_for('about_page'))
 
 
 @app.route('/admin/books',methods=['GET', 'POST'])
@@ -1205,7 +1235,6 @@ def books_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
         connection = dbapi2.connect(app.config['dsn'])
         cursor =connection.cursor()
-
         if request.method == 'GET':
             return render_template('bookadmin.html', books = selectBookwithJoin(app.config['dsn']))
         else:
@@ -1219,6 +1248,9 @@ def books_page():
             if 'Details' in request.form:
                 detailid = request.form['detailid']
                 return render_template('bookdetails.html')
+
+
+
     else:
         return redirect(url_for('about_page'))
 
@@ -1227,63 +1259,83 @@ def bookAdd_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
         connection = dbapi2.connect(app.config['dsn'])
         cursor =connection.cursor()
-        try:
+        if request.method == 'GET':
+            return render_template('bookadd.html', authorlist = selectAuthor(app.config['dsn']), genrelist = selectGenre(app.config['dsn']))
+        else:
             try:
-                if request.method == 'POST':
-                    if "Add" in request.form:
-                        title = request.form['title']
-                        year = request.form['year']
-                        author_text = request.form['author_id']
-                        author = author_text.split()
-                        author_count = len(author)
-                        author_name = ""
-                        for x in range (0, author_count-1):
-                            author_name = author_name + author[x] + ' '
-                        genre_text = request.form['genre_id']
-                        statement = """SELECT ID FROM GENRES WHERE NAME = %s"""
-                        cursor.execute(statement,(genre_text,))
-                        genre_id = cursor.fetchall()
+                try:
+                    if request.method == 'GET':
+                        return render_template('bookadd.html')
+                    else:
+                        if "Add" in request.form:
+                            title = request.form['title']
+                            year = request.form['year']
+                            author_text = request.form['author_id']
+                            author = author_text.split()
+                            author_count = len(author)
+                            author_name = ""
+                            for x in range (0, author_count-1):
+                                author_name = author_name + author[x] + ' '
+                            genre_text = request.form['genre_id']
+                            statement = """SELECT ID FROM GENRES WHERE NAME = %s"""
+                            cursor.execute(statement,(genre_text,))
+                            genre_id = cursor.fetchall()
 
-                        statement = """SELECT ID FROM AUTHORS WHERE NAME = %s AND LASTNAME = %s"""
-                        cursor.execute(statement,(author[0],author[author_count-1]))
-                        author_id = cursor.fetchall()
-                        book = Book(None, title, year, author_id[0], genre_id[0])
-                        insert_book(app.config['dsn'],book)
-                        return redirect(url_for('books_page'))
+                            statement = """SELECT ID FROM AUTHORS WHERE NAME = %s AND LASTNAME = %s"""
+                            cursor.execute(statement,(author[0],author[author_count-1]))
+                            author_id = cursor.fetchall()
+                            book = Book(None, title, year, author_id[0], genre_id[0])
+                            insert_book(app.config['dsn'],book)
+
+                            bookid = selectBookbyTitle(app.config['dsn'], title)
+                            bookDetail = Bookdetails(None, bookid[0][0], "http://publications.iarc.fr/uploads/media/default/0001/02/thumb_1240_default_publication.jpeg", "Not available")
+                            insert_book_details(cursor, bookDetail)
+                            return redirect(url_for('books_page'))
+                except dbapi2.Error as e:
+                        print(e.pgerror)
             except dbapi2.Error as e:
-                    print(e.pgerror)
+                print(e.pgerror)
+                connection.rollback()
+            finally:
+                connection.commit()
+                connection.close()
+            return render_template('bookadd.html')
+    else:
+        return redirect(url_for('about_page'))
+
+@app.route('/admin/bookdetails',methods=['GET', 'POST'])
+def bookDetails_page():
+    if 'logged_in' in session and session['logged_in'] == True:
+        connection = dbapi2.connect(app.config['dsn'])
+        try:
+            cursor =connection.cursor()
+            try:
+                if request.method == 'GET':
+                    detailid = request.args.get('detailid')
+                    return render_template('bookdetails.html',detailbook = get_book_alldetails_byId(cursor,detailid))
+
+                else:
+                    if 'Update' in request.form:
+                        detailid = request.form['detailid']
+                        bookid = request.form['bookid']
+                        imgurl = request.form['imgurl']
+                        details = request.form['details']
+                        updateDetail = Bookdetails(None, bookid, imgurl, details)
+                        update_book_details(cursor, bookid, updateDetail)
+                        return redirect(url_for('books_page'))
+                    else:
+                        return redirect(url_for('books_page'))
+                    return render_template('bookdetails.html',detailbook = get_book_alldetails_byId(cursor,detailid))
+            except dbapi2.Error as e:
+                print(e.pgerror)
+            finally:
+                cursor.close()
         except dbapi2.Error as e:
             print(e.pgerror)
             connection.rollback()
         finally:
             connection.commit()
             connection.close()
-        return render_template('bookadd.html')
-    else:
-        return redirect(url_for('about_page'))
-
-@app.route('/admin/bookdetails',methods=['GET', 'POST'])
-def bookDetails_page():
-    if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
-        connection = dbapi2.connect(app.config['dsn'])
-        cursor =connection.cursor()
-        if request.method == 'GET':
-            detailid = request.args.get('detailid')
-            return render_template('bookdetails.html',detailbook = get_book_alldetails_byId(cursor,detailid))
-
-        else:
-            if 'Update' in request.form:
-                detailid = request.form['detailid']
-                bookid = request.form['bookid']
-                imgurl = request.form['imgurl']
-                details = request.form['details']
-                updateDetail = Bookdetails(detailid, bookid, imgurl, details)
-                update_book_details(cursor, bookid, updateDetail)
-                return redirect(url_for('books_page'))
-            else:
-                return redirect(url_for('books_page'))
-            return render_template('bookdetails.html',detailbook = get_book_alldetails_byId(cursor,detailid))
-
     else:
         return redirect(url_for('about_page'))
 

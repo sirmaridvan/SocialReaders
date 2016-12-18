@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
 	<div class="container">
-		<form class="form-horizontal" action="{{ url_for('bookAdd_page')}}" method="POST">
+		<form class="form-horizontal" method="POST">
 			<fieldset>
 				<!-- Form Name -->
 				<legend>ADD BOOK</legend>
@@ -27,24 +27,30 @@
 				<div class="form-group">
 				  <label class="col-md-4 control-label" for="author_id">AUTHOR</label>
 				  <div class="col-md-4">
-				  <input id="author_id" name="author_id" value="" type="text" placeholder="" class="form-control input-md" required="">
-
+				  <select class="col-md-12 control-label" name="author_id">
+				  	{% for id, name, lastname, birthdate, nationality, penname, description, picture in authorlist %}
+				  	<option  value= "{{name}} {{lastname}}"> {{name}} {{lastname}} </option>
+				  	{% endfor %}
+				  </select>
 				  </div>
 				</div>
-
 				<div class="form-group">
 				  <label class="col-md-4 control-label" for="genre_id">GENRE</label>
 				  <div class="col-md-4">
-				  <input id="genre_id" name="genre_id" value="" type="text" placeholder="" class="form-control input-md" required="">
-
+				  <select class="col-md-12 control-label" name="genre_id">
+				  	{% for id, genre in genrelist %}
+				  	<option  value= "{{genre}}"> {{genre}} </option>
+				  	{% endfor %}
+				  </select>
 				  </div>
+				</div>
 				</div>
 				<!-- Text input-->
 				<div class="form-group">
-				  <label class="col-md-4 control-label" for="button1idFFF"></label>
-				  <div class="col-md-8">
-				    <button id="button1idFFF" name="Add" class="btn btn-success">ADD</button>
-				    <button id="button2id" name="cancel" class="btn btn-danger">CANCEL</button>
+				  <label class="col-md-4 control-label" for="Add"></label>
+				  <div class="col-md-8"><br>
+				    <button id="Add" name="Add" class="btn btn-success">Add</button>
+				    <button id="Cancel" name="Cancel" class="btn btn-danger">Cancel</button>
 				  </div>
 				</div>
 			</fieldset>
