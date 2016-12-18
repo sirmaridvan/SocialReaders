@@ -34,7 +34,7 @@ from event import *
 from Groupcomments import *
 from Authorcomments import *
 from distutils.command.check import check
-from apt.auth import update
+
 
 app = Flask(__name__)
 
