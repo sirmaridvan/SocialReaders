@@ -32,6 +32,7 @@ from follow import *
 from event import *
 from Groupcomments import *
 from Authorcomments import *
+from distutils.command.check import check
 
 app = Flask(__name__)
 
@@ -120,7 +121,6 @@ def initialize():
     create_members_table(app.config['dsn'])
     create_author_table(app.config['dsn'])
     create_groupcomments_table(app.config['dsn'])
-    create_authorcomments_table(app.config['dsn'])
     insertAuthor(app.config['dsn'],author1)
     insertAuthor(app.config['dsn'],author2)
     insertAuthor(app.config['dsn'],author3)
@@ -281,13 +281,6 @@ def profile_page():
                 getUserFollowers(cursor,userId)
                 mFollowerCount = cursor.rowcount
                 mFollowers = cursor.fetchall()
-                if cursor.rowcount > 0:
-                    for i in range(0,len(mFollowers)):
-                        isFollowing(cursor,session['userId'],mFollowers[i][0])
-                        if cursor.rowcount > 0:
-                            mFollowers[i] = mFollowers[i] + (True,)
-                        else:
-                            mFollowers[i] = mFollowers[i] + (False,)
                 return render_template('profile.html',user = mUser, followingCount = mFollowingCount, followerCount = mFollowerCount, followers = mFollowers,  followings = mFollowings, isFollowed = mIsFollowing)
             except dbapi2.Error as e:
                 print(e.pgerror)
@@ -565,12 +558,13 @@ def messages_page(messageId = 0):
                 try:
                     cursor =connection.cursor()
                     try:
-                        comingFromSent = request.args.get('fromSent',False,bool)
-                        if comingFromSent == False:
-                            changeMessageReadStatus(cursor,messageId,True)
-                        getMessage(cursor,messageId)
-                        mMessage = cursor.fetchone()
-                        return render_template('messagedetail.html',isAlert = False, alertMessage = '',message = mMessage)
+                        changeMessageReadStatus(cursor,messageId,True)
+                        getReceivedMessages(cursor,session['userId'])
+                        mReceivedMessages = cursor.fetchall()
+
+                        getSentMessages(cursor,session['userId'])
+                        mSentMessages = cursor.fetchall()
+                        return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
                     except dbapi2.Error as e:
                             print(e.pgerror)
                     finally:
@@ -588,13 +582,10 @@ def messages_page(messageId = 0):
                     try:
                         getReceivedMessages(cursor,session['userId'])
                         mReceivedMessages = cursor.fetchall()
-                        mUnreadMessageCount = 0
-                        for message in mReceivedMessages:
-                            if message[4] == False:
-                                mUnreadMessageCount = mUnreadMessageCount + 1
+
                         getSentMessages(cursor,session['userId'])
                         mSentMessages = cursor.fetchall()
-                        return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages, unreadMessageCount = mUnreadMessageCount )
+                        return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
                     except dbapi2.Error as e:
                             print(e.pgerror)
                     finally:
@@ -617,23 +608,16 @@ def messages_page(messageId = 0):
                         insertUserMessage(cursor,message)
                         getReceivedMessages(cursor,session['userId'])
                         mReceivedMessages = cursor.fetchall()
-                        mUnreadMessageCount = 0
-                        for message in mReceivedMessages:
-                            if message[4] == False:
-                                mUnreadMessageCount = mUnreadMessageCount + 1
                         getSentMessages(cursor,session['userId'])
                         mSentMessages = cursor.fetchall()
-                        return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages, unreadMessageCount = mUnreadMessageCount)
+                        return render_template('messages.html',isAlert = False, alertMessage = '',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
                     else:
                         getReceivedMessages(cursor,session['userId'])
                         mReceivedMessages = cursor.fetchall()
-                        mUnreadMessageCount = 0
-                        for message in mReceivedMessages:
-                            if message[4] == False:
-                                mUnreadMessageCount = mUnreadMessageCount + 1
+
                         getSentMessages(cursor,session['userId'])
                         mSentMessages = cursor.fetchall()
-                        return render_template('messages.html', isAlert = True, alertMessage = 'Could not find specified user.',receivedMessages = mReceivedMessages, sentMessages = mSentMessages,unreadMessageCount = mUnreadMessageCount)
+                        return render_template('messages.html', isAlert = True, alertMessage = 'Could not find specified user.',receivedMessages = mReceivedMessages, sentMessages = mSentMessages)
                 except dbapi2.Error as e:
                         print(e.pgerror)
                 finally:
@@ -885,7 +869,7 @@ def write_post_page():
 
                 userId=session['userId']
                 date=datetime.datetime.now()
-                header=request.form['header']
+                header="header"
                 text = request.form['text']
                 blogPost = BlogPost(0,userId,datetime.date.today(),header,text);
                 connection = dbapi2.connect(app.config['dsn'])
@@ -982,7 +966,7 @@ def authorupdate_page():
     else:
         return redirect(url_for('about_page'))
 
-'''@app.route('/news',methods=['GET', 'POST'])
+@app.route('/news',methods=['GET', 'POST'])
 def news_page():
     if 'logged_in' in session and session['logged_in'] == True and session['isAdmin'] == True:
         connection = dbapi2.connect(app.config['dsn'])
@@ -1054,7 +1038,7 @@ def update_news_page():
 
         return render_template('updateJob.html')
     else:
-        return redirect(url_for('about_page'))'''
+        return redirect(url_for('about_page'))
 
 
 
@@ -1072,7 +1056,7 @@ def authorpage_page():
         authorid = request.args.get('id')
         if request.method == 'GET':
             id = request.args.get('id')
-            return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],authorid), comments = selectauthorcomments(app.config['dsn'],authorid),books = getBooksofAuthor(app.config['dsn'],authorid))
+            return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],authorid),comments = selectauthorcomments(app.config['dsn'],authorid))
         else:
             if 'Add' in request.form:
                 text=request.form["comment"]
@@ -1088,7 +1072,7 @@ def authorpage_page():
                 print (ownerid[0])
                 if userid == (ownerid[0]):
                     deleteauthorcommentbyid(app.config['dsn'],commentid)
-        return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],authorid),comments = selectauthorcomments(app.config['dsn'],authorid),books = getBooksofAuthor(app.config['dsn'],authorid))
+        return render_template('authorpage.html', author = selectAuthorbyId(app.config['dsn'],authorid),comments = selectauthorcomments(app.config['dsn'],authorid))
     else:
         return redirect(url_for('about_page'))
 
@@ -1101,22 +1085,17 @@ def groups_page():
         else:
             if 'Add' in request.form:
                 name = request.form['groupname']
-                owner = session['userId']
-                group = Group(None,name,owner)
+                group = Group(None,name)
                 insert_group(app.config['dsn'],group)
                 return render_template('groups.html',groups = selectGroup(app.config['dsn']))
             if 'Delete' in request.form:
                 id=request.form['id']
-                owner = selectOwnerofGroup(app.config['dsn'],id)
-                user = session['userId']
-                if user == owner:
-                    deleteGroup(app.config['dsn'],id)
+                deleteGroup(app.config['dsn'],id)
                 return render_template('groups.html',groups = selectGroup(app.config['dsn']))
             if 'Update' in request.form:
                 id=request.form['id']
                 newname = request.form['newname']
-                owner = session['userId']
-                newgroup = Group(id,newname,owner)
+                newgroup = Group(id,newname)
                 updateGroup(app.config['dsn'],id,newgroup)
                 return render_template('groups.html',groups = selectGroup(app.config['dsn']))
             if 'Join' in request.form:
@@ -1167,7 +1146,7 @@ def grouppage_page():
 def genres_page():
     if 'logged_in' in session and session['logged_in'] == True:
         if request.method == 'GET':
-            return render_template('genres.html',groups = selectGenre(app.config['dsn']))
+            return render_template('genres.html',genres  = selectGenre(app.config['dsn']))
         else:
             if 'Add' in request.form:
                 name = request.form['genrename']
@@ -1196,26 +1175,20 @@ def book_page():
         if request.method == 'GET':
             return render_template('bookpage.html',books = selectBookwithJoin(app.config['dsn']))
         else:
-            if 'Add' in request.form:
-                title = request.form['title']
-                year = request.form['year']
-                author_text = request.form['author_id']
-                genre_text = request.form['genre_id']
-                statement = """SELECT ID FROM GENRES WHERE NAME = %s"""
-                cursor.execute(statement,(genre_text,))
-                genre_id = cursor.fetchall()
-
-                statement = """SELECT ID FROM AUTHORS WHERE NAME = %s"""
-                cursor.execute(statement,(author_text,))
-                author_id = cursor.fetchall()
-
-                book = Book(None, title, year, author_id[0], genre_id[0])
-
-                insert_book(app.config['dsn'],book)
+            if 'Like' in request.form:
+                feed=Feed(None,datetime.datetime.now(),int(session['userId']),int(request.form['id']),1)
+                checkfeeded = check_if_feeded(cursor, feed)
+                if checkfeeded[0] != 0:
+                    insert_feed(cursor, feed)
+                    #insert_feed methodu nedense database'e eklemiyor ancak sıradaki IDyi de harcıyor,
+                    #yani bi sonraki ekleme manuel yapıldığında 1 2 3 varsa 4 yerine 5 alınıyor vs.
+                    #acilen kontrol edilmesi lazım!!!!
                 return render_template('bookpage.html',books = selectBookwithJoin(app.config['dsn']))
-            if 'Delete' in request.form:
-                id=request.form['id']
-                deleteBook(app.config['dsn'],id)
+            if 'Suggest' in request.form:
+                feed=Feed(None,datetime.datetime.now(),int(session['userId']),int(request.form['id']),2)
+                checkfeeded = check_if_feeded(cursor, feed)
+                if checkfeeded[0] != 0:
+                    insert_feed(cursor, feed)
                 return render_template('bookpage.html',books = selectBookwithJoin(app.config['dsn']))
     else:
         return redirect(url_for('about_page'))

@@ -21,3 +21,18 @@ def get_like_number_of_book(cursor,bookId):
 def get_suggestion_number_of_book(cursor,bookId):
     statement = """ SELECT COUNT(ID) FROM FEEDS WHERE (BOOKID = %(bookId)s) AND (TYPEID=2)"""
     cursor.execute(statement,{'bookId':bookId});
+
+def get_like_number_of_all_books(cursor):
+    statement = """ SELECT BOOKID, COUNT(ID) AS LIKE FROM FEEDS WHERE (TYPEID = 1) GROUP BY BOOKID """
+    cursor.execute(statement)
+
+def get_suggestion_number_of_all_books(cursor):
+    statement = """ SELECT BOOKID, COUNT(ID) AS SUGGESTION FROM FEEDS WHERE (TYPEID = 2) GROUP BY BOOKID """
+    cursor.execute(statement)
+
+def check_if_feeded(cursor, feed):
+    statement = """ SELECT COUNT(ID) FROM FEEDS WHERE (USERID = %s) AND (BOOKID = %s) AND (TYPEID = %s) """
+    cursor.execute(statement,(feed.userId, feed.bookId, feed.typeId))
+    ret = cursor.fetchall()
+    return ret
+
