@@ -123,6 +123,7 @@ def initialize():
     create_members_table(app.config['dsn'])
     create_author_table(app.config['dsn'])
     create_groupcomments_table(app.config['dsn'])
+    create_authorcomments_table(app.config['dsn'])
     insertAuthor(app.config['dsn'],author1)
     insertAuthor(app.config['dsn'],author2)
     insertAuthor(app.config['dsn'],author3)
