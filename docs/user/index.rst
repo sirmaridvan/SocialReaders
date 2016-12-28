@@ -1,8 +1,7 @@
-User Guide
-==========
+SocialReaders User Guide
+========================
 
-**explain how your application works from the user perspective, use
-screenshots whereever appropriate**
+**SocialReaders is the best way of bringing readers together and informing about books, authors, events etc. In this User Guide, you can find how to use this tool for your work.**
 
 **to add a picture, use the following example**::
 
