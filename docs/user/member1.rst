@@ -2,7 +2,7 @@ Parts Implemented by Elif Benli
 ===============================
 In the project,  there are two types of users as admin and user. For the admin operations, admin panel was created. 
 
-.. figure:: wiki_screenshots/benliel/admin_panel.png 
+.. figure:: ../../../../wiki_screenshots/benliel/admin_panel.png 
    :alt: admin panel screenshot
 
    Here we see a screenshot of Admin Panel
@@ -10,14 +10,14 @@ In the project,  there are two types of users as admin and user. For the admin o
 In this interface following features are possible to perform
    1) Add new admins by add section in Users tab.
    
-.. figure:: wiki_screenshots/benliel/userAdd.png
+.. figure:: ../../../../wiki_screenshots/benliel/userAdd.png
    :alt: user add screenshot
    
    Here we see a screenshot of Add User
    
    2) Edit existing admin data by edit button in Users tab.
 
-.. figure:: wiki_screenshots/benliel/userUpdate.png
+.. figure:: ../../../../wiki_screenshots/benliel/userUpdate.png
    :alt: user update screenshot
    
    Here we see a screenshot of Update User
@@ -26,7 +26,7 @@ In this interface following features are possible to perform
    
 To reach the site resources, login and register parts were created. The passwords don’t keep in the database. Instead of that, the hashes which are composing of passwords and randomly created salt keep in the database.
 
-.. figure:: wiki_screenshots/benliel/register.png
+.. figure:: ../../../../wiki_screenshots/benliel/register.png
    :alt: register screenshot
    
    Here we see a screenshot of Register
@@ -34,7 +34,7 @@ To reach the site resources, login and register parts were created. The password
 In this interface following features are possible to perform
    1) Register into the site after entering data.
 
-.. figure:: wiki_screenshots/benliel/login.png
+.. figure:: ../../../../wiki_screenshots/benliel/login.png
    :alt: login screenshot
    
    Here we see a screenshot of Login      
@@ -42,7 +42,7 @@ In this interface following features are possible to perform
 In this interface following features are possible to perform
    1) Log into the site after entering username and password.
 
-.. figure:: wiki_screenshots/benliel/profile.png
+.. figure:: ../../../../wiki_screenshots/benliel/profile.png
    :alt: profile screenshot
    
    Here we see a screenshot of Profile
@@ -51,7 +51,7 @@ In this interface following features are possible to perform
    1) Reach to user’s activities 
    2) Reach to user’s message
 
-.. figure:: wiki_screenshots/benliel/followers.png
+.. figure:: ../../../../wiki_screenshots/benliel/followers.png
    :alt: followers screenshot
    
    Here we see a screenshot of Followers  
@@ -59,7 +59,7 @@ In this interface following features are possible to perform
 In this interface following features are possible to perform
    1) Reach to user’s followers
 
-.. figure:: wiki_screenshots/benliel/followings.png
+.. figure:: ../../../../wiki_screenshots/benliel/followings.png
    :alt: followings screenshot
    
    Here we see a screenshot of Followings  
@@ -68,7 +68,7 @@ In this interface following features are possible to perform
    1) Reach to user’s followings
    2) If the user wants, unfollow the followed user
 
-.. figure:: wiki_screenshots/benliel/list_messages.png
+.. figure:: ../../../../wiki_screenshots/benliel/list_messages.png
    :alt: message screenshot
    
    Here we see a screenshot of Messages  
@@ -79,7 +79,7 @@ In this interface following features are possible to perform
 
 When the user click on the any message, message details screen are opened.
 
-.. figure:: wiki_screenshots/benliel/messagedetail.png
+.. figure:: ../../../../wiki_screenshots/benliel/messagedetail.png
    :alt: message detail screenshot
    
    Here we see a screenshot of Message Detail  
@@ -90,7 +90,7 @@ In this interface following features are possible to perform
    
 In event page, two perspectives were created like admin and user perspective.
 
-.. figure:: wiki_screenshots/benliel/eventsForUser.png
+.. figure:: ../../../../wiki_screenshots/benliel/eventsForUser.png
    :alt: events for users screenshot
    
    Here we see a screenshot of Events For Users  
@@ -98,7 +98,7 @@ In event page, two perspectives were created like admin and user perspective.
 In this interface following features are possible to perform
    1) Users can see the nearby events.
 
-.. figure:: wiki_screenshots/benliel/events.png
+.. figure:: ../../../../wiki_screenshots/benliel/events.png
    :alt: events for admins screenshot
    
    Here we see a screenshot of Events  For Admins 
@@ -106,14 +106,14 @@ In this interface following features are possible to perform
 In this interface following features are possible to perform
    1) Admins can add new event by clicking to ‘Create New’ button.
    
-.. figure:: wiki_screenshots/benliel/feventsAdd.png
+.. figure:: ../../../../wiki_screenshots/benliel/eventsAdd.png
    :alt: event add screenshot
    
    Here we see a screenshot of Add Event
     
    2) Admins can edit an existing event by clicking to edit button.
    
-.. figure:: wiki_screenshots/benliel/eventUpdate.png
+.. figure:: ../../../../wiki_screenshots/benliel/eventUpdate.png
    :alt: event update screenshot
    
    Here we see a screenshot of Update Event
