@@ -4,15 +4,28 @@ Developer Guide
 Database Design
 ---------------
 
-.. figure:: static/ER-DIAGRAM-v2_After_Corrections.png
+.. figure:: static/er_diagram.png
    :scale: 100% 
-   :alt: admin panel screenshot
+   :alt: Database Design screenshot
    
    Here we see the diagram of our database
 
-.. toctree::
+:Team: SocialReaders
 
-   Elif Benli
-   Rıdvan Sırma
-   Emre Şahal
-   Metehan Gültekin
+:Members:
+
+   * Elif Benli
+   * Rıdvan Sırma
+   * Emre Şahal
+   * Metehan Gültekin
+
+   
+Contents:
+
+.. toctree::
+   :maxdepth: 1
+
+   member1
+   member2
+   member3
+   member4

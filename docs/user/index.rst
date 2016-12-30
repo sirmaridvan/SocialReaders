@@ -1,20 +1,28 @@
 SocialReaders User Guide
 ========================
 
-**SocialReaders is the best way of bringing readers together and informing about books, authors, events etc. In this User Guide, you can find how to use this tool for your work.**
+**SocialReaders is the best way of bringing readers together and informing about books, authors, events etc.** 
+**In this User Guide, you can find how to use this site for your work.**
 
-**to add a picture, use the following example**::
+:Team: itucsdb1612
 
-   .. figure:: picture.png
-      :scale: 50 %
-      :alt: map to buried treasure
+:Members:
 
-      This is the caption of the figure (a simple paragraph).
+   * Elif Benli
+   * Rıdvan Sırma
+   * Emre Şahal
+   * Metehan Gültekin
+
+
+Contents:
 
 .. toctree::
+   :maxdepth: 1
 
-   Elif Benli
-   Rıdvan Sırma
-   Emre Şahal
-   Metehan Gültekin
+   member1
+   member2
+   member3
+   member4
+
+
    

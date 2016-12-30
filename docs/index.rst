@@ -1,17 +1,25 @@
 Welcome to itucsdb's documentation!
 ===================================
 
-:Team: Team Name
+:Team: SocialReaders
 
 :Members:
 
-   * Member 1
-   * Member 2
-   * Member 3
-   * Member 4
-   * Member 5
+   * Elif Benli
+   * Rıdvan Sırma
+   * Emre Şahal
+   * Metehan Gültekin
 
-**project description goes here (a few paragraphs)**
+**SocialReaders is a trustful and assertive social platform that brings readers together and let them share thoughts about books.**
+
+**Users can find information about books, authors, events, news, create groups with common readers and send/receive messages.**
+
+**This documentation includes two parts;**
+
+   **First part is the guide for users to explain how to use SocialReaders**
+   
+   **Second part explains the technical details for curious developers.**
+
 
 Contents:
 
