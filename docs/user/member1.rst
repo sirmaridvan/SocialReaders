@@ -2,7 +2,7 @@ Parts Implemented by Elif Benli
 ===============================
 In the project,  there are two types of users as admin and user. For the admin operations, admin panel was created. 
 
-.. figure:: static/benliel/admin_panel.png 
+.. figure:: static/benliel/admin_panel.png
    :alt: admin panel screenshot
 
    Here we see a screenshot of Admin Panel
