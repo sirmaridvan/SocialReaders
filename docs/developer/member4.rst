@@ -1,7 +1,8 @@
 Parts Implemented by Emre Şahal
 ================================
 
-Authors Table and operations:
+Authors Table and Operations:
+
 The authors table was implemented to hold the information related to the authors.  It contains a serial ID as a primary key. Also contains varchars name, last name, nationality, penname, description, picture and a numeric birthdate columns as local data.
 
 insertAuthor:
@@ -42,7 +43,8 @@ This is actually an operation concerning the books table.  This method is used t
     :alt: Figure 6. SQL code for the expalined function
 
     
-Groups table:
+Groups Table and Operations:
+
 This table is created to hold the data about groups created by users.  This table contains a primary key ID which is of type serial. A varchar type NAME to hold the name of the group and a foreign key OWNER that references the user in SITEUSER table who has created the group.
 
 
@@ -83,7 +85,7 @@ This method is used to fetch the owner of the group.  This function is used to c
     :alt: Figure 12. SQL code for the expalined function
 
     
-Members table:
+Members Table and Operations:
 
 Since many users can join many groups and many groups can have many joined members, meaning since the relationship between users and groups are many to many a map table was necessary. This table has two foreign keys GROUPUSER and GROUPID.  The GROUPUSER is the foreign key which references the SITEUSER table to the corresponding user and the foreign key GROUPID references the table GROUPS to the respective group that the referenced user has joined.  These two foreign keys are the primary key.
 
@@ -94,7 +96,6 @@ This method is used to insert a tuple to the members table containing the ID of 
     :alt: Figure 13. SQL code for the expalined function
 
 selectMember:
-
 This method returns the tuple with a given GROUPUSER and GROUPID. This method is used to check if the requested tuple exists or not.  Basically this method checks if the user has already joined the group or not.
 
 .. figure:: static/sahalemre/memberstable/selectMember.png
@@ -107,7 +108,8 @@ This method uses the SQL query JOIN to join the tables MEMBERS and SITEUSER and 
     :alt: Figure 15. SQL code for the expalined function
 
 
-Group Comments Table:
+Group Comments Table and Operations:
+
 This table holds the comments made in any group.  It contains the serial COMMENTID which is the primary of the table. It also contains two foreign keys, COMMENTER and GROUPCOMMENTED.  The COMMENTER column references the SITEUSER table and holds the ID of the user which has created the comment. The GROUPCOMMENTED column references the table GROUPS and holds the Id of the group where this comment was made.  Finally the varchar COMMENT holds the actual comment itself.
 
 selectComments:
@@ -134,7 +136,8 @@ This method is used to delete a specific comment from the database.
 .. figure:: static/sahalemre/gcommentstable/deletecommentbyid.png
     :alt: Figure 19. SQL code for the expalined function
 	
-Author Comments Table: 
+Author Comments Table and Operations:
+
 This is mostly same with the group comments.  The ID is the primary key, the columns COMMENTER is a foreign key referencing the table SITEUSER and the column AUTHORCOMMENTED is the foreign key that references the Authors table to hold the referenced user and author ID’s respectively.  Lastly the varchar COMMENT contains the actual comment data the same as group comments. The operations are identical with the group comments.
 
 selectAuthorComments:
