@@ -17,10 +17,10 @@ This method retrieves all of the authors in the database to display the existing
 .. figure:: static/sahalemre/authortable/selectAuthor.png
     :alt: Figure 2. SQL code for the expalined function
 
-SelectAuthorbyLastName:
+selectAuthorbyLastName:
 This method is used to search for the users with the given last name. This method also uses the SELECT query.
 
-.. figure:: static/sahalemre/authortable/SelectAuthorbyLastName.png
+.. figure:: static/sahalemre/authortable/selectAuthorbyLastName.png
     :alt: Figure 3. SQL code for the expalined function
 
 selectAuthorbyId:
@@ -84,6 +84,7 @@ This method is used to fetch the owner of the group.  This function is used to c
 
     
 Members table:
+
 Since many users can join many groups and many groups can have many joined members, meaning since the relationship between users and groups are many to many a map table was necessary. This table has two foreign keys GROUPUSER and GROUPID.  The GROUPUSER is the foreign key which references the SITEUSER table to the corresponding user and the foreign key GROUPID references the table GROUPS to the respective group that the referenced user has joined.  These two foreign keys are the primary key.
 
 insertMember:
@@ -93,6 +94,7 @@ This method is used to insert a tuple to the members table containing the ID of 
     :alt: Figure 13. SQL code for the expalined function
 
 selectMember:
+
 This method returns the tuple with a given GROUPUSER and GROUPID. This method is used to check if the requested tuple exists or not.  Basically this method checks if the user has already joined the group or not.
 
 .. figure:: static/sahalemre/memberstable/selectMember.png
@@ -111,25 +113,25 @@ This table holds the comments made in any group.  It contains the serial COMMENT
 selectComments:
 This method is used to retrieve the comments for a group.  It uses JOIN operation to join the SITEUSER and GROUPCOMMENTS table to show the comment and the username of the user who has commented.
 
-.. figure:: static/sahalemre/gcommnetstable/getMembersbyJoin.png
+.. figure:: static/sahalemre/gcommentstable/selectComments.png
     :alt: Figure 16. SQL code for the expalined function
 
 insertComment:
 This method is used to insert a comment, its commenter and the group the comments been made to, to the database.
 
-.. figure:: static/sahalemre/gcommnetstable/insertComment.png
+.. figure:: static/sahalemre/gcommentstable/insertComment.png
     :alt: Figure 17. SQL code for the expalined function
 
 getCommenterbyCommentId:
 This method retrieves the commenter of a specific comment. This method is used to check whether the logged in user is the one who created the comment or not.
 
-.. figure:: static/sahalemre/gcommnetstable/getCommenterbyCommentId.png
+.. figure:: static/sahalemre/gcommentstable/getCommenterbyCommentId.png
     :alt: Figure 18. SQL code for the expalined function
 
 deleteCommentbyId:
 This method is used to delete a specific comment from the database.
 
-.. figure:: static/sahalemre/gcommnetstable/deleteCommentbyId.png
+.. figure:: static/sahalemre/gcommentstable/deleteCommentbyId.png
     :alt: Figure 19. SQL code for the expalined function
 	
 Author Comments Table: 
@@ -138,23 +140,23 @@ This is mostly same with the group comments.  The ID is the primary key, the col
 selectAuthorComments:
 This method is used to retrieve the comments for an author.  It uses JOIN operation to join the SITEUSER and AUTHORCOMMENTS table to show the comment and the username of the user who has commented.
 
-.. figure:: static/sahalemre/acommnetstable/selectauthorcomments.png
+.. figure:: static/sahalemre/acommentstable/selectauthorcomments.png
     :alt: Figure 20. SQL code for the expalined function
 
 insertAuthorComment:
 This method is used to add the comment values and the commented author to the table.
 
-.. figure:: static/sahalemre/acommnetstable/insertauthorcomment.png
+.. figure:: static/sahalemre/acommentstable/insertauthorcomment.png
     :alt: Figure 21. SQL code for the expalined function
 
 getAuthorCommenterbyCommentId:
 This method retrieves the commenter of a specific comment. This method is used to check whether the logged in user is the one who created the comment or not.
 
-.. figure:: static/sahalemre/acommnetstable/getauthorcommenterbycommentid.png
+.. figure:: static/sahalemre/acommentstable/getauthorcommenterbycommentid.png
     :alt: Figure 22. SQL code for the expalined function
 
 deleteAuthorCommentbyId:
 This method is used to delete a specific comment from the database.
 
-.. figure:: static/sahalemre/acommnetstable/deleteauthorcommentbyid.png
+.. figure:: static/sahalemre/acommentstable/deleteauthorcommentbyid.png
     :alt: Figure 23. SQL code for the expalined function
