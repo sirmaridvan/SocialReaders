@@ -4,9 +4,11 @@ Developer Guide
 Database Design
 ---------------
 
-**explain the database design of your project**
-
-**include the E/R diagram(s)**
+.. figure:: static/ER-DIAGRAM-v2_After_Corrections.png
+   :scale: 100% 
+   :alt: admin panel screenshot
+   
+   Here we see the diagram of our database
 
 Code
 ----

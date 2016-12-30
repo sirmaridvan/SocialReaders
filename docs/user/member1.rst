@@ -106,7 +106,7 @@ In this interface following features are possible to perform
 In this interface following features are possible to perform
    1) Admins can add new event by clicking to ‘Create New’ button.
    
-.. figure:: static/benliel/eventsAdd.png
+.. figure:: static/benliel/eventAdd.png
    :alt: event add screenshot
    
    Here we see a screenshot of Add Event

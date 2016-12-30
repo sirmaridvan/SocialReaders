@@ -131,7 +131,7 @@ follow.py
    Functions:
       follow
          Used for adding followers in the follower table
-      isFollowing:
+      isFollowing
          Used to control of follow operation for two user 
       unfollow
          Used to unfollow a user with given userids
