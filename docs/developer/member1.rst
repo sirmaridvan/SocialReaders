@@ -1,6 +1,6 @@
 Parts Implemented by Elif Benli
 ===============================
-"SiteUser Table", "UserType Table", "Follower Table", "Event TAble" and "UserMessage Table" are created by me.
+"SiteUser Table", "UserType Table", "Follower Table", "Event Table" and "UserMessage Table" are created by me.
 
 SiteUser Table
    Columns:
@@ -10,13 +10,13 @@ SiteUser Table
       
       SALT varchar(40) not null,
       
-      HASH VARCHAR(64) not null,
+      HASH varchar(64) not null,
       
-      EMAIL VARCHAR(40) not null,
+      EMAIL varchar(40) not null,
       
-      NAME VARCHAR(20) not null,
+      NAME varchar(20) not null,
       
-      SURNAME VARCHAR(20) not null,
+      SURNAME varchar(20) not null,
       
       USERTYPEID integer references usertype(id) on delete restrict on update cascade,
       
