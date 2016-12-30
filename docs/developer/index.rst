@@ -4,9 +4,11 @@ Developer Guide
 Database Design
 ---------------
 
-.. figure:: static/er_diagram.png
-   :scale: 100% 
-   :alt: Database Design screenshot
+
+Entity-Relationship Diagram of our database can be found below.
+
+.. figure:: static/diagrams/erdiagram.png 
+   :alt: admin panel screenshot
    
    Here we see the diagram of our database
 
