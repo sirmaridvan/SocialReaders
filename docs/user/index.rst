@@ -13,9 +13,8 @@ SocialReaders User Guide
 
 .. toctree::
 
-   member1
-   member2
-   member3
-   member4
-   member5
+   Elif Benli
+   Rıdvan Sırma
+   Emre Şahal
+   Metehan Gültekin
    
