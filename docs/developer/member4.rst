@@ -113,25 +113,25 @@ This table holds the comments made in any group.  It contains the serial COMMENT
 selectComments:
 This method is used to retrieve the comments for a group.  It uses JOIN operation to join the SITEUSER and GROUPCOMMENTS table to show the comment and the username of the user who has commented.
 
-.. figure:: static/sahalemre/gcommentstable/selectComments.png
+.. figure:: static/sahalemre/gcommentstable/selectcomments.png
     :alt: Figure 16. SQL code for the expalined function
 
 insertComment:
 This method is used to insert a comment, its commenter and the group the comments been made to, to the database.
 
-.. figure:: static/sahalemre/gcommentstable/insertComment.png
+.. figure:: static/sahalemre/gcommentstable/insertcomment.png
     :alt: Figure 17. SQL code for the expalined function
 
 getCommenterbyCommentId:
 This method retrieves the commenter of a specific comment. This method is used to check whether the logged in user is the one who created the comment or not.
 
-.. figure:: static/sahalemre/gcommentstable/getCommenterbyCommentId.png
+.. figure:: static/sahalemre/gcommentstable/getcommenterbycommentid.png
     :alt: Figure 18. SQL code for the expalined function
 
 deleteCommentbyId:
 This method is used to delete a specific comment from the database.
 
-.. figure:: static/sahalemre/gcommentstable/deleteCommentbyId.png
+.. figure:: static/sahalemre/gcommentstable/deletecommentbyid.png
     :alt: Figure 19. SQL code for the expalined function
 	
 Author Comments Table: 
