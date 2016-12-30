@@ -42,10 +42,10 @@ The groups page can also be reached via the navigation bar.  In this page the ex
 .. figure:: static/sahalemre/grouppages/groupadd.png
     :alt: Figure 7. Screenshot of the textbox to create a group
     
-.. figure:: static/sahalemre/grouppages/groupalist.png
+.. figure:: static/sahalemre/grouppages/grouplist.png
     :alt: Figure 8. Screenshot of the list of groups
     
-In the page of a specific group you can see the list of members who have joined to the group.  In addition to this you can also leave comments to the group page.  Similar to the authors page, writing the comment to the text area and clicking share will create the comment and clicking the delete button under the specified comment will delete the comment if it was created by the logged in user.  The commenting interface is the same with the author page in Fihure 3.
+In the page of a specific group you can see the list of members who have joined to the group.  In addition to this you can also leave comments to the group page.  Similar to the authors page, writing the comment to the text area and clicking share will create the comment and clicking the delete button under the specified comment will delete the comment if it was created by the logged in user.  The commenting interface is the same with the author page in Figure 3.
 
 .. figure:: static/sahalemre/grouppages/memberlist.png
     :alt: Figure 9. Screenshot of the list of members of a group
